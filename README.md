@@ -1,3 +1,8 @@
+# Links
+Documentation: [Link](https://docs.google.com/document/d/1IeUWFhX0e-oZCGypDacakYkmwekxb9y4fgrSnrF2i9Q/edit?usp=sharing)<br/>
+UI Design (Figma): [Link](https://www.figma.com/file/k5eDd6Edq2NL3xGf4do5Ki/Guardian?type=design&node-id=0%3A1&t=Js4hdwCZioEZo3dU-1)<br/>
+Frontend Repo: [Link](https://github.com/ishtails/Guardian-Frontend)<br/>
+
 # Installation Guide
 
 This is a simple guide to help you locally install and run the backend.
