@@ -5,6 +5,7 @@ BACKEND:
 - create endpoints / routes for all operations
 
 - create controllers for major actions that manipulate the database directly e.g. GET / POST / PUT of all sorts (getUser, createUser, updateUser etc.)
+- a single controller should perform only a single function. input --> output
 
 - create middlewares like auth.js for handling stuff like verifying token or username for reusability
 
@@ -23,7 +24,7 @@ BACKEND:
 
 - reset password flow - pass email as query --> check if email exists --> generate an OTP & send it to email --> take OTP as query and compare with generated one --> create reset session if OTP matches (once) --> PUT / PATCH new password taken as query
 
-- nodemailer & mailgen for sending emails
+- nodemailer & mailgen for sending emails (ethereal account for testing)
 
 - fakerjs for generating fake data for testing purposes
 
@@ -37,3 +38,6 @@ FRONTEND:
 - separate all react logic into a utils/helper folder.
 
 - combine big hook logics into custom hooks e.g. useFetch(...)
+
+- convert images to base64 strings and store in DB..
+
