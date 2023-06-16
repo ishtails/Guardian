@@ -33,7 +33,7 @@ mongoose
 
 // Root Route
 app.get("/", (req, res) => {
-  res.send("Server Home");
+  res.send("Server Home Page");
 });
 
 app.use("/api", apiRouter);
