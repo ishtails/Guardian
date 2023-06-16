@@ -1,13 +1,9 @@
 import { Router } from "express";
+import { createUser } from "../controllers/users.js";
+
 const router = Router();
 
-// GET
-router.get("/", (req, res) => {res.send("GET /")});
+// Create New User
+router.post("/register", createUser);
 
-// POST
-router.post("/", (req, res) => {res.send("POST /")});
-
-// PUT
-router.put("/", (req, res) => {res.send("PUT /")});
-
-export default router
+export default router;

@@ -16,12 +16,31 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Provide Password"],
   },
+
+  rollNumber: {
+    type: String,
+    default: "",
+  },
+
+  name: {
+    type: String,
+    default: "",
+  },
+
+  mobile: {
+    type: Number,
+    default: "",
+  },
+
+  hostel: {
+    type: String,
+    default: "",
+  },
   
-  rollNumber: String,
-  name: String,
-  mobile: Number,
-  hostel: String,
-  room: Number,
+  room: {
+    type: Number,
+    default: "",
+  },
 });
 
 export default mongoose.model.users || mongoose.model("user", userSchema);
