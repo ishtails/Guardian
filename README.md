@@ -40,7 +40,7 @@ Follow these steps to install and run the Node Express app locally:
 
    ```
    PORT=8000
-   MONGO_URL = mongodb://localhost:27017/mydatabase
+   MONGO_URL = mongodb://localhost:27017/Guardian
    ```
 
    Note: Modify the values according to your needs.
