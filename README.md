@@ -18,7 +18,7 @@ Before proceeding with the installation, make sure you have the following prereq
 
 Follow these steps to install and run the Node Express app locally:
 
-1. Fork the Repo & Clone to repository to your local machine:
+1. Fork the Repo & Clone to the repository to your local machine:
 
    ```bash
    git clone <forked url>
