@@ -40,4 +40,3 @@ FRONTEND:
 - combine big hook logics into custom hooks e.g. useFetch(...)
 
 - convert images to base64 strings and store in DB..
-
