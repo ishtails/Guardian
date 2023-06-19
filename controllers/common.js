@@ -5,9 +5,13 @@ export const registerUser = (req, res) => {
   try {
     const { email, password, role } = req.body;
 
-    if (!email) throw "Provide an email!";
+    if (!email) {
+      throw "Error! Provide an email!";
+    }
 
-    // Add Role Check
+    if (!(role === "admin" || role === "security" || role === "student")) {
+      throw "Error! Invalid Role!";
+    }
 
     const username = email.split("@")[0];
     const newUser = new users({ email, password, role, username });
@@ -25,10 +29,10 @@ export const registerUser = (req, res) => {
   }
 };
 
-// Get a user by username
+// Get user by username
 export const getUser = (req, res) => {
   try {
-    const username = req.params.username;
+    const { username } = req.params;
     users
       .findOne({ username })
       .then((result) => {
@@ -40,7 +44,7 @@ export const getUser = (req, res) => {
   }
 };
 
-//Filter students
+//Get students
 export const getStudents = (req, res) => {
   try {
     const filters = req.query || {};

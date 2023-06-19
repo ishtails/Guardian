@@ -1,14 +1,21 @@
 import mongoose from "mongoose";
 
-const outingSchema = new mongoose.Schema({
-  rollNumber: {
-    type: String,
-    required: [true, "Provide Roll Number"],
+const outingSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      required: [true, "Provide Username"],
+    },
+    reason: {
+      type: String,
+      required: [true, "Provide Reason"],
+    },
+    isOpen: {
+      type: Boolean,
+      default: true,
+    },
   },
-  outTime: Date,
-  inTime: Date,
-  reason: String, 
-  isOpen: Boolean
-});
+  { timestamps: true }
+);
 
 export default mongoose.model.outings || mongoose.model("outing", outingSchema);
