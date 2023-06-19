@@ -1,32 +1,31 @@
 import users from "../models/userModel.js";
 
-export const createUser = (req, res) => {
+export const registerUser = (req, res) => {
   try {
-    const user = req.body;
-
-    const newUser = new users(user);
+    const {email, password, role} = req.body;
+    const newUser = new users({email, password, role});
 
     newUser
       .save()
-      .then((msg) => {
-        res.send(msg);
+      .then((result) => {
+        res.send(result);
       })
       .catch((err) => {
-        res.send(err);
+        res.status(400).send(err);
       });
-      
   } catch (error) {
-    res.status(401).send(error);
+    res.status(500).send(error);
   }
 };
 
 export const getUser = (req, res) => {
-  const email = req.params["id"] + "@iiitm.ac.in";
-
-  users
-    .findOne({ email })
-    .then((obj) => {
-      res.send(obj);
-    })
-    .catch((err) => res.send(err));
+  try {
+    const email = req.params["email"];
+    users
+      .findOne({ email })
+      .then((obj) => {
+        res.send(obj);
+      })
+      .catch((err) => res.status(400).send(err));
+  } catch (error) { res.status(500).send(error); }
 };

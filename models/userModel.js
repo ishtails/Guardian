@@ -14,12 +14,7 @@ const userSchema = new mongoose.Schema({
 
   role: {
     type: String,
-    required: [true, "Provide Password"],
-  },
-
-  rollNumber: {
-    type: String,
-    default: "",
+    required: [true, "Provide Role"],
   },
 
   name: {
