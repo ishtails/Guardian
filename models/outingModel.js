@@ -7,7 +7,8 @@ const outingSchema = new mongoose.Schema({
   },
   outTime: Date,
   inTime: Date,
-  reason: String
+  reason: String, 
+  isOpen: Boolean
 });
 
 export default mongoose.model.outings || mongoose.model("outing", outingSchema);
