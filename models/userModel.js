@@ -4,17 +4,23 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, "Provide Institute Email"],
-    unique: [true, "Already Exists"],
+    unique: [true, "Email already exists"],
+  },
+
+  username: {
+    type: String,
+    required: [true, "Provide Username"],
+    unique: [true, "Username already exists"],
   },
 
   password: {
     type: String,
-    required: [true, "Provide Password"],
+    required: [true, "Provide password"],
   },
 
   role: {
     type: String,
-    required: [true, "Provide Role"],
+    required: [true, "Provide role"],
   },
 
   name: {
@@ -31,7 +37,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
-  
+
   room: {
     type: Number,
     default: "",

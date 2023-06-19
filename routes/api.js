@@ -1,15 +1,16 @@
 import { Router } from "express";
-import { registerUser, getUser, getStudents } from "../controllers/common.js";
+import { registerUser, getUser, getStudents, updateUser } from "../controllers/common.js";
 
 const router = Router();
 
-// Register user
+// POST
 router.post("/register", registerUser);
 
-// Get a user by email
-router.get("/users/:email",  getUser);
-
-// Get all students
+// GET
+router.get("/users/:username",  getUser);
 router.get("/students",  getStudents);
+
+//PATCH
+router.patch("/users/:username", updateUser)
 
 export default router;

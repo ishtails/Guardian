@@ -4,7 +4,13 @@ import users from "../models/userModel.js";
 export const registerUser = (req, res) => {
   try {
     const { email, password, role } = req.body;
-    const newUser = new users({ email, password, role });
+
+    if (!email) throw "Provide an email!";
+
+    // Add Role Check
+
+    const username = email.split("@")[0];
+    const newUser = new users({ email, password, role, username });
 
     newUser
       .save()
@@ -19,12 +25,12 @@ export const registerUser = (req, res) => {
   }
 };
 
-// Get a user by email
+// Get a user by username
 export const getUser = (req, res) => {
   try {
-    const email = req.params["email"];
+    const username = req.params.username;
     users
-      .findOne({ email })
+      .findOne({ username })
       .then((result) => {
         res.status(200).send(result);
       })
@@ -34,11 +40,29 @@ export const getUser = (req, res) => {
   }
 };
 
-//Get all students
+//Filter students
 export const getStudents = (req, res) => {
   try {
+    const filters = req.query || {};
+
     users
-      .find({ role: "student" })
+      .find({ ...filters, role: "student" })
+      .then((result) => {
+        res.status(200).send(result);
+      })
+      .catch((err) => res.status(400).send(err));
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+//Update User Details
+export const updateUser = (req, res) => {
+  try {
+    const newObject = req.body;
+    const username = req.params.username;
+    users
+      .updateOne({ username }, { $set: newObject })
       .then((result) => {
         res.status(200).send(result);
       })
