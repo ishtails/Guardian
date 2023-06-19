@@ -4,7 +4,7 @@ dotenv.config();
 import cors from "cors";
 import mongoose from "mongoose";
 import morgan from "morgan";
-import apiRouter from './routes/api.js'
+import apiRouter from "./routes/api.js";
 
 // Const declarations
 const app = express();
@@ -17,7 +17,7 @@ app.use(cors());
 app.use(morgan("tiny"));
 app.disable("x-powered-by");
 
-// Database Connenction & Port Listening
+// Database Connenction
 mongoose
   .connect(MONG_URI)
   .then(
@@ -37,3 +37,27 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api", apiRouter);
+
+// import RedisStore from "connect-redis";
+// import session from "express-session";
+// import { createClient } from "redis";
+
+// Redis-Express Session
+// let redisClient = createClient();
+// redisClient.connect()
+//   .then(console.log("Redis Connected"))
+//   .catch(console.error);
+
+// let redisStore = new RedisStore({
+//   client: redisClient,
+//   prefix: "Guardian:",
+// });
+
+// app.use(
+//   session({
+//     store: redisStore,
+//     resave: false,
+//     saveUninitialized: false,
+//     secret: process.env.SESS_SECRET,
+//   })
+// );
