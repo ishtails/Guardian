@@ -7,6 +7,6 @@ const router = Router();
 router.post("/register", createUser);
 
 // Get User Details
-router.get("/user/:id", getUser);
+router.get("/user/:id",  getUser);
 
 export default router;

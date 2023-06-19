@@ -4,7 +4,7 @@ dotenv.config();
 import cors from "cors";
 import mongoose from "mongoose";
 import morgan from "morgan";
-import apiRouter from './routes/routes.js'
+import apiRouter from './routes/api.js'
 
 // Const declarations
 const app = express();
