@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { registerUser, getUser } from "../controllers/common.js";
+import { registerUser, getUser, getStudents } from "../controllers/common.js";
 
 const router = Router();
 
@@ -8,5 +8,8 @@ router.post("/register", registerUser);
 
 // Get a user by email
 router.get("/users/:email",  getUser);
+
+// Get all students
+router.get("/students",  getStudents);
 
 export default router;
