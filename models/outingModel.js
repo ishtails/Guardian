@@ -10,6 +10,13 @@ const outingSchema = new mongoose.Schema(
       type: String,
       required: [true, "Provide Reason"],
     },
+    outTime: {
+      type: Date,
+      required: [true, "Provide outTime"],
+    },
+    inTime: {
+      type: Date,
+    },
     isOpen: {
       type: Boolean,
       default: true,
