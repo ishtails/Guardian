@@ -13,6 +13,7 @@ export const openEntries = async (req, res) => {
     res.status(500).send(error);
   }
 };
+
 //Display Closed Outing Entry
 export const closedEntries = async (req, res) => {
   try {
@@ -22,6 +23,33 @@ export const closedEntries = async (req, res) => {
     //abhi ke liye we are printing the usernames only
     console.log(studentUsernames);
     res.json({ students: studentUsernames });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+//Display student info on search
+export const studentOnSearch = async (req, res) => {
+  try {
+    const { username } = req.params;
+    const outings = await outings.find({ username });
+    const user = await user.findOne({ username });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const studentData = {
+      username: user.username,
+      name: user.name,
+      email: user.email,
+      outings: outings.map((outing) => ({
+        outTime: outing.outTime,
+        inTime: outing.inTime,
+        reason: outing.reason,
+        isOpen: outing.isOpen,
+      })),
+    };
+    res.json({ student: studentData }); 
   } catch (error) {
     res.status(500).send(error);
   }

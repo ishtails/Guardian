@@ -6,7 +6,11 @@ import {
   updateUser,
 } from "../controllers/common.js";
 import { openGateEntry } from "../controllers/students.js";
-import { closedEntries, openEntries } from "../controllers/security.js";
+import {
+  closedEntries,
+  openEntries,
+  studentOnSearch,
+} from "../controllers/security.js";
 
 const router = Router();
 
@@ -19,6 +23,7 @@ router.get("/users/:username", getUser);
 router.get("/students", getStudents);
 router.get("/students/open", openEntries);
 router.get("/students/closed", closedEntries);
+router.get("/students/:username", studentOnSearch);
 
 //PATCH
 router.patch("/users/:username", updateUser);
