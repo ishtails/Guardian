@@ -4,18 +4,45 @@ dotenv.config();
 import cors from "cors";
 import mongoose from "mongoose";
 import morgan from "morgan";
+import helmet from "helmet";
 import apiRouter from "./routes/api.js";
+import RedisStore from "connect-redis";
+import session from "express-session";
+import { createClient } from "redis";
 
 // Const declarations
 const app = express();
 const PORT = process.env.PORT;
 const MONG_URI = process.env.MONG_URI;
 
+// Redis Initialization
+let redisClient = createClient();
+redisClient.connect()
+  .then(console.log("Connected to Redis Store"))
+  .catch(console.error);
+
 // Middlewares
 app.use(express.json());
 app.use(cors());
 app.use(morgan("tiny"));
-app.disable("x-powered-by");
+app.use(helmet());
+app.use(
+  session({
+    store: new RedisStore({
+      client: redisClient,
+    }),
+    credentials: true,
+    name: "ssid",
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.SESS_SECRET,
+    cookie: {
+      secure: false,
+      httpOnly: true,
+      expires: 1000 * 60 * 60 * 24 * 7, // Cookie expires in 7 Days
+    },
+  })
+);
 
 // Database Connenction
 mongoose
@@ -37,27 +64,3 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api", apiRouter);
-
-// import RedisStore from "connect-redis";
-// import session from "express-session";
-// import { createClient } from "redis";
-
-// Redis-Express Session
-// let redisClient = createClient();
-// redisClient.connect()
-//   .then(console.log("Redis Connected"))
-//   .catch(console.error);
-
-// let redisStore = new RedisStore({
-//   client: redisClient,
-//   prefix: "Guardian:",
-// });
-
-// app.use(
-//   session({
-//     store: redisStore,
-//     resave: false,
-//     saveUninitialized: false,
-//     secret: process.env.SESS_SECRET,
-//   })
-// );
