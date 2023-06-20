@@ -32,14 +32,14 @@ app.use(
       client: redisClient,
     }),
     credentials: true,
-    name: "ssid",
+    name: "sid",
     resave: false,
     saveUninitialized: false,
     secret: process.env.SESS_SECRET,
     cookie: {
       secure: false,
       httpOnly: true,
-      expires: 1000 * 60 * 60 * 24 * 7, // Cookie expires in 7 Days
+      expires: 1000 * 60 * 60 * 1 * 1, // Cookie expires in 1 Hour
     },
   })
 );
