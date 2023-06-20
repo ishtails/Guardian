@@ -12,7 +12,7 @@ const outingSchema = new mongoose.Schema(
     },
     outTime: {
       type: Date,
-      required: [true, "Provide outTime"],
+      default: Date.now,
     },
     inTime: {
       type: Date,
