@@ -39,4 +39,4 @@ FRONTEND:
 
 - combine big hook logics into custom hooks e.g. useFetch(...)
 
-- compress images using sharp & convert them to base64 strings for storing in mongoDB..
+- compress images using "sharp" & convert them to base64 strings for storing in mongoDB..
