@@ -31,13 +31,17 @@ export const closedEntries = async (req, res) => {
 //Display student info on search
 export const studentOnSearch = async (req, res) => {
   try {
-    const { username } = req.params;
-    const outings = await outings.find({ username });
-    const user = await user.findOne({ username });
-
+    const { searchKey } = req.params;
+    const user = await User.findOne({
+      $or: [{ username: searchKey }, { rollno: searchKey }]
+    });
+    
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
+    
+    const outings = await outings.find({ username: user.username });
+
     const studentData = {
       username: user.username,
       name: user.name,
