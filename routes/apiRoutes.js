@@ -1,32 +1,31 @@
 import { Router } from "express";
 import {
   registerUser,
-  getUser,
-  getStudents,
+  getUserDetails,
   updateUser,
   loginUser,
 } from "../controllers/common.js";
-import { openGateEntry } from "../controllers/students.js";
-import { authenticate } from "../middlewares/auth.js";
 import {
   closedEntries,
   openEntries,
+  getStudents,
   studentOnSearch,
 } from "../controllers/security.js";
+import { openGateEntry } from "../controllers/students.js";
 
 const router = Router();
 
 // POST
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.post("/student/:username/exit-request", openGateEntry);
+router.post("/exit-request/:username", openGateEntry);
 
 // GET
-router.get("/users/:username", authenticate, getUser);
-router.get("/students", getStudents);
+router.get("/users/:username", getUserDetails);
+router.get("/students", getStudents); //With Queries
 router.get("/students/open", openEntries);
 router.get("/students/closed", closedEntries);
-router.get("/students/:username", studentOnSearch);
+router.get("/students/search", studentOnSearch); //With Queries
 
 //PATCH
 router.patch("/users/:username", updateUser);

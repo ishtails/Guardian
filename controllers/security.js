@@ -1,14 +1,19 @@
 import outings from "../models/outingModel.js";
+import users from "../models/userModel.js";
+import { getUserFunc } from "./common.js";
 
 //Display Open Outing Entry
 export const openEntries = async (req, res) => {
   try {
     const openOutings = await outings.find({ isOpen: true });
-    const studentUsernames = openOutings.map((outing) => outing.username);
+    const studentArray = openOutings.map((outing) => {
+      outing.username;
+      const studentData = getUserFunc(username);
+      return studentData;
+    });
 
-    //abhi ke liye we are printing the usernames only
-    console.log(studentUsernames);
-    res.json({ students: studentUsernames });
+    console.log(studentArray);
+    res.json(studentArray);
   } catch (error) {
     res.status(500).send(error);
   }
@@ -18,31 +23,27 @@ export const openEntries = async (req, res) => {
 export const closedEntries = async (req, res) => {
   try {
     const closedOutings = await outings.find({ isOpen: false });
-    const studentUsernames = closedOutings.map((outing) => outing.username);
+    const studentArray = closedOutings.map((outing) => {
+      outing.username;
+      const studentData = getUserFunc(username);
+      return studentData;
+    });
 
-    //abhi ke liye we are printing the usernames only
-    console.log(studentUsernames);
-    res.json({ students: studentUsernames });
+    console.log(studentArray);
+    res.json(studentArray);
   } catch (error) {
     res.status(500).send(error);
   }
 };
 
-//Display student info on search
-export const studentOnSearch = async (req, res) => {
+//Display outings of individual student
+export const individualEntries = async (req, res) => {
   try {
-    const { searchKey } = req.params;
-    const user = await User.findOne({
-      $or: [{ username: searchKey }, { rollno: searchKey }]
-    });
-    
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-    
-    const outings = await outings.find({ username: user.username });
+    const username = req.params.username;
+    const user = await users.findOne({ username });
+    const outings = await outings.find({ username });
 
-    const studentData = {
+    const outingData = {
       username: user.username,
       name: user.name,
       email: user.email,
@@ -53,7 +54,62 @@ export const studentOnSearch = async (req, res) => {
         isOpen: outing.isOpen,
       })),
     };
-    res.json({ student: studentData }); 
+    res.json({ student: outingData });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+//Display student info on search
+export const studentOnSearch = async (req, res) => {
+  try {
+    const { searchKey } = req.params;
+    const student = await users
+      .find({
+        $or: [{ name: searchKey }, { username: searchKey }],
+      })
+      .limit(5);
+
+    if (!student) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const studentData = {
+      email: student.email,
+      username: student.username,
+      role: student.role,
+      name: student.name,
+      mobile: student.mobile,
+      hostel: student.hostel,
+      room: student.room,
+    };
+
+    res.status(200).send(studentData);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+//Filter students
+export const getStudents = (req, res) => {
+  try {
+    const filters = req.query || {};
+
+    users
+      .find({ ...filters, role: "student" })
+      .then((student) => {
+        const studentData = {
+          email: student.email,
+          username: student.username,
+          role: student.role,
+          name: student.name,
+          mobile: student.mobile,
+          hostel: student.hostel,
+          room: student.room,
+        };
+        res.status(200).send(studentData);
+      })
+      .catch((err) => res.status(400).send(err));
   } catch (error) {
     res.status(500).send(error);
   }

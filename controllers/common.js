@@ -1,6 +1,53 @@
 import users from "../models/userModel.js";
 import bcrypt from "bcrypt";
 
+export const getUserFunc = (username) => {
+  try {
+    users
+      .findOne({ username })
+      .then((result) => {
+        const userData = {
+          email: result.email,
+          username: result.username,
+          role: result.role,
+          name: result.name,
+          mobile: result.mobile,
+          hostel: result.hostel,
+          room: result.room,
+        };
+
+        return userData;
+      })
+      .catch((err) => console.log(err));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Get user details from username
+export const getUserDetails = (username) => {
+  try {
+    users
+      .findOne({ username })
+      .then((result) => {
+        const userData = {
+          email: result.email,
+          username: result.username,
+          role: result.role,
+          name: result.name,
+          mobile: result.mobile,
+          hostel: result.hostel,
+          room: result.room,
+        };
+
+        return userData;
+      })
+      .catch((err) => console.log(err));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 //Register user
 export const registerUser = (req, res) => {
   try {
@@ -46,13 +93,13 @@ export const loginUser = (req, res) => {
     users
       .findOne({ email })
       .then((user) => {
-        if(!user) throw "No user with these Credentials!"
+        if (!user) throw "No user with these Credentials!";
 
         bcrypt
           .compare(password, user.password)
           .then((result) => {
             if (result) {
-              console.log(req.session)
+              console.log(req.session);
               req.session.authenticated = true;
               res.status(200).send("Logged in!");
             } else {
@@ -64,37 +111,6 @@ export const loginUser = (req, res) => {
       .catch((err) => res.status(404).send(err));
   } catch (error) {
     res.status(400).send(error);
-  }
-};
-
-// Get user by username
-export const getUser = (req, res) => {
-  try {
-    const { username } = req.params;
-    users
-      .findOne({ username })
-      .then((result) => {
-        res.status(200).send(result);
-      })
-      .catch((err) => res.status(400).send(err));
-  } catch (error) {
-    res.status(500).send(error);
-  }
-};
-
-//Get students
-export const getStudents = (req, res) => {
-  try {
-    const filters = req.query || {};
-
-    users
-      .find({ ...filters, role: "student" })
-      .then((result) => {
-        res.status(200).send(result);
-      })
-      .catch((err) => res.status(400).send(err));
-  } catch (error) {
-    res.status(500).send(error);
   }
 };
 
