@@ -5,8 +5,9 @@ import users from "../models/userModel.js";
 export const openEntries = async (req, res) => {
   try {
     const openOutings = await outings.find({ isOpen: true });
-    const usernames = openOutings.map((outing) => outing.username);
-    console.log(usernames);
+    const usernames = openOutings.map(outing => outing.username)
+    console.log(usernames)
+    
   } catch (error) {
     res.status(500).send(error);
   }
@@ -55,30 +56,29 @@ export const individualEntries = async (req, res) => {
 
 //Display student info on search
 export const studentOnSearch = async (req, res) => {
-  const { searchKey } = req.params.query;
   try {
-    const students = await users.fuzzySearch({ searchKey });
-    // const student = await users
-    //   .find({
-    //     $or: [{ name: searchKey }, { username: searchKey }],
-    //   })
-    // //   .limit(5);
+    const { searchKey } = req.params;
+    const student = await users
+      .find({
+        $or: [{ name: searchKey }, { username: searchKey }],
+      })
+      .limit(5);
 
-    // if (!students) {
-    //   return res.status(404).json({ error: "User not found" });
-    // }
+    if (!student) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
-    // const studentData = {
-    //   email: student.email,
-    //   username: student.username,
-    //   role: student.role,
-    //   name: student.name,
-    //   mobile: student.mobile,
-    //   hostel: student.hostel,
-    //   room: student.room,
-    // };
-    // console.log(students);
-    res.send(students);
+    const studentData = {
+      email: student.email,
+      username: student.username,
+      role: student.role,
+      name: student.name,
+      mobile: student.mobile,
+      hostel: student.hostel,
+      room: student.room,
+    };
+
+    res.status(200).send(studentData);
   } catch (error) {
     res.status(500).send(error);
   }
@@ -92,21 +92,21 @@ export const getStudents = (req, res) => {
     users
       .find({ ...filters, role: "student" })
       .then((students) => {
-        let studentsDetails = [];
+          let studentsDetails = []
 
-        students.map((student) => {
-          const studentData = {
-            email: student.email,
-            username: student.username,
-            role: student.role,
-            name: student.name,
-            mobile: student.mobile,
-            hostel: student.hostel,
-            room: student.room,
-          };
+          students.map((student) => {
+            const studentData = {
+              email: student.email,
+              username: student.username,
+              role: student.role,
+              name: student.name,
+              mobile: student.mobile,
+              hostel: student.hostel,
+              room: student.room,
+            };
 
-          studentsDetails.push(studentData);
-        });
+            studentsDetails.push(studentData)
+          })
         res.status(200).json(studentsDetails);
       })
       .catch((err) => res.status(400).send(err));

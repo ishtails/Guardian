@@ -26,8 +26,7 @@ router.get("/users/:username", getUser);
 router.get("/students", getStudents); //With Queries
 router.get("/students/open", openEntries);
 router.get("/students/closed", closedEntries);
-router.get("/students/search/:query", studentOnSearch); //With Queries
-router.get("/close/:username", closeGateEntry);
+router.get("/students/search", studentOnSearch); //With Queries
 
 //PATCH
 router.patch("/users/:username", updateUser);

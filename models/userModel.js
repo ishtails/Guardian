@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import mongooseFuzzySearching from "mongoose-fuzzy-searching";
 
 const userSchema = new mongoose.Schema(
   {
@@ -13,7 +12,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Provide Username"],
       unique: [true, "Username already exists"],
-      index: true,
     },
 
     password: {
@@ -48,7 +46,5 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
-userSchema.plugin(mongooseFuzzySearching, { fields: ["username"] });
 
 export default mongoose.model.users || mongoose.model("user", userSchema);
