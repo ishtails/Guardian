@@ -17,7 +17,8 @@ const MONG_URI = process.env.MONG_URI;
 
 // Redis Initialization
 let redisClient = createClient();
-redisClient.connect()
+redisClient
+  .connect()
   .then(console.log("Connected to Redis Store"))
   .catch(console.error);
 
