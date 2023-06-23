@@ -13,13 +13,14 @@ import {
   closeGateEntry,
 } from "../controllers/security.js";
 import { openGateEntry } from "../controllers/students.js";
+import { verifyLocation, requireAuth } from "../middlewares/midllewares.js";
 
 const router = Router();
 
 // POST
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.post("/exit-request/:username", openGateEntry);
+router.post("/exit-request/:username", verifyLocation, openGateEntry);
 
 // GET
 router.get("/users/:username", getUser);
@@ -27,6 +28,7 @@ router.get("/students", getStudents); //With Queries
 router.get("/students/open", openEntries);
 router.get("/students/closed", closedEntries);
 router.get("/students/search", studentOnSearch); //With Queries
+router.get("/close-entry/:username", closeGateEntry);
 
 //PATCH
 router.patch("/users/:username", updateUser);

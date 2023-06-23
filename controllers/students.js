@@ -8,13 +8,11 @@ export const openGateEntry = async (req, res) => {
 
     const newOuting = new outings({
       username,
-      reason
+      reason,
     });
 
-    await newOuting.save()
-    res.send("Outing Registered Successfully!")
-
-    
+    await newOuting.save();
+    res.send("Outing Registered Successfully!");
   } catch (error) {
     res.status(422).send(error);
   }

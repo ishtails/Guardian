@@ -120,7 +120,7 @@ export const closeGateEntry = async (req, res) => {
   try {
     const { username } = req.params;
     outings
-      .updateOne({ username }, { $set: {isOpen: false, inTime: new Date()} })
+      .updateOne({ username, isOpen: true }, { $set: {isOpen: false, inTime: new Date()} })
       .then((result) => {
         res.status(200).send(result);
       })
