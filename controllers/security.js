@@ -114,3 +114,18 @@ export const getStudents = (req, res) => {
     res.status(500).send(error);
   }
 };
+
+//Close Outing Entry
+export const closeGateEntry = async (req, res) => {
+  try {
+    const { username } = req.params;
+    outings
+      .updateOne({ username }, { $set: {isOpen: false, inTime: new Date()} })
+      .then((result) => {
+        res.status(200).send(result);
+      })
+      .catch((err) => res.status(400).send(err));
+  } catch (error) {
+    res.status(422).send(error);
+  }
+};
