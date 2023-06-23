@@ -1,19 +1,13 @@
 import outings from "../models/outingModel.js";
 import users from "../models/userModel.js";
-import { getUserFunc } from "./common.js";
 
 //Display Open Outing Entry
 export const openEntries = async (req, res) => {
   try {
     const openOutings = await outings.find({ isOpen: true });
-    const studentArray = openOutings.map((outing) => {
-      outing.username;
-      const studentData = getUserFunc(username);
-      return studentData;
-    });
-
-    console.log(studentArray);
-    res.json(studentArray);
+    const usernames = openOutings.map(outing => outing.username)
+    console.log(usernames)
+    
   } catch (error) {
     res.status(500).send(error);
   }
@@ -97,17 +91,23 @@ export const getStudents = (req, res) => {
 
     users
       .find({ ...filters, role: "student" })
-      .then((student) => {
-        const studentData = {
-          email: student.email,
-          username: student.username,
-          role: student.role,
-          name: student.name,
-          mobile: student.mobile,
-          hostel: student.hostel,
-          room: student.room,
-        };
-        res.status(200).send(studentData);
+      .then((students) => {
+          let studentsDetails = []
+
+          students.map((student) => {
+            const studentData = {
+              email: student.email,
+              username: student.username,
+              role: student.role,
+              name: student.name,
+              mobile: student.mobile,
+              hostel: student.hostel,
+              room: student.room,
+            };
+
+            studentsDetails.push(studentData)
+          })
+        res.status(200).json(studentsDetails);
       })
       .catch((err) => res.status(400).send(err));
   } catch (error) {

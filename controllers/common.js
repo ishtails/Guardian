@@ -1,32 +1,11 @@
 import users from "../models/userModel.js";
 import bcrypt from "bcrypt";
 
-export const getUserFunc = (username) => {
-  try {
-    users
-      .findOne({ username })
-      .then((result) => {
-        const userData = {
-          email: result.email,
-          username: result.username,
-          role: result.role,
-          name: result.name,
-          mobile: result.mobile,
-          hostel: result.hostel,
-          room: result.room,
-        };
-
-        return userData;
-      })
-      .catch((err) => console.log(err));
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 // Get user details from username
-export const getUserDetails = (username) => {
+export const getUser = (req, res) => {
   try {
+    const username = req.params.username;
+
     users
       .findOne({ username })
       .then((result) => {
@@ -40,11 +19,11 @@ export const getUserDetails = (username) => {
           room: result.room,
         };
 
-        return userData;
+        res.send(userData);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => res.status(400).send(err));
   } catch (error) {
-    console.log(error);
+    res.status(500).send(error);
   }
 };
 

@@ -5,7 +5,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import morgan from "morgan";
 import helmet from "helmet";
-import apiRouter from "./routes/api.js";
+import apiRouter from "./routes/apiRoutes.js";
 import RedisStore from "connect-redis";
 import session from "express-session";
 import { createClient } from "redis";

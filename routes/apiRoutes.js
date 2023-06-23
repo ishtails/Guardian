@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
   registerUser,
-  getUserDetails,
+  getUser,
   updateUser,
   loginUser,
 } from "../controllers/common.js";
@@ -21,7 +21,7 @@ router.post("/login", loginUser);
 router.post("/exit-request/:username", openGateEntry);
 
 // GET
-router.get("/users/:username", getUserDetails);
+router.get("/users/:username", getUser);
 router.get("/students", getStudents); //With Queries
 router.get("/students/open", openEntries);
 router.get("/students/closed", closedEntries);
