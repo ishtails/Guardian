@@ -1,14 +1,23 @@
 import users from "../models/userModel.js";
 import outings from "../models/outingModel.js";
+import moment from "moment";
 
 //Master Table
 export const studentOutings = async (req, res) => {
   try {
-    const allOutings = await outings.find();
+    const { hostel, deadline, startDate, endDate } = req.query || {};
+
+    const outingFilters = {};
+    const userFilters = {};
+
+    if (hostel) {userFilters.hostel = hostel};
+
+    const allOutings = await outings.find(outingFilters);
     let outingData = [];
 
     for (const outing of allOutings) {
       const user = await users.findOne({
+        ...userFilters,
         username: outing.username,
       });
 
