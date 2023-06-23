@@ -14,7 +14,9 @@ export const getFunc = async (username) => {
       room: result.room,
     };
     return userData;
-  } catch (error) { res.status(400).send(error) }
+  } catch (error) {
+    res.status(400).send(error);
+  }
 };
 
 // Get user details from username
@@ -63,33 +65,37 @@ export const registerUser = (req, res) => {
 };
 
 // Login User
-export const loginUser = (req, res) => {
+export const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    if(req.session.username){
+      return res.status(400).send("Already logged in!");
+    }
 
-    if (!email) throw "Error! Provide an email!";
-    if (!password) throw "Error! Provide Password";
+    const { id, password } = req.body;
 
-    users
-      .findOne({ email })
-      .then((user) => {
-        if (!user) throw "No user with these Credentials!";
+    //Credential Constraints
+    if (!id || !password) {
+      return res.status(400).send("Error! Bad Credentials!"); 
+    };
 
-        bcrypt
-          .compare(password, user.password)
-          .then((result) => {
-            if (result) {
-              req.session.username = user.username;
-              res.status(200).send("Logged in!");
-            } else {
-              res.status(403).send("Bad Credentials!");
-            }
-          })
-          .catch((err) => res.status(400).send(err));
-      })
-      .catch((err) => res.status(404).send(err));
+    //Search in DB
+    const user = await users.findOne({
+      $or: [{ email: id }, { username: id }],
+    });
+    if (!user) {
+      return res.status(404).send("Not registered!");
+    }
+
+    //Verify Password
+    const passwordCorrect = await bcrypt.compare(password, user.password);
+    if (passwordCorrect) {
+      req.session.username = user.username;
+      return res.status(200).send(`Welcome Back ${user.name.split(" ")[0]}!`);
+    } else {
+      return res.status(400).send("Bad Credentials");
+    }
   } catch (error) {
-    res.status(400).send(error);
+    return res.status(500).send(error);
   }
 };
 
