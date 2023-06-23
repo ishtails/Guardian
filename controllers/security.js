@@ -5,9 +5,8 @@ import users from "../models/userModel.js";
 export const openEntries = async (req, res) => {
   try {
     const openOutings = await outings.find({ isOpen: true });
-    const usernames = openOutings.map(outing => outing.username)
-    console.log(usernames)
-    
+    const usernames = openOutings.map((outing) => outing.username);
+    console.log(usernames);
   } catch (error) {
     res.status(500).send(error);
   }
@@ -92,25 +91,40 @@ export const getStudents = (req, res) => {
     users
       .find({ ...filters, role: "student" })
       .then((students) => {
-          let studentsDetails = []
+        let studentsDetails = [];
 
-          students.map((student) => {
-            const studentData = {
-              email: student.email,
-              username: student.username,
-              role: student.role,
-              name: student.name,
-              mobile: student.mobile,
-              hostel: student.hostel,
-              room: student.room,
-            };
+        students.map((student) => {
+          const studentData = {
+            email: student.email,
+            username: student.username,
+            role: student.role,
+            name: student.name,
+            mobile: student.mobile,
+            hostel: student.hostel,
+            room: student.room,
+          };
 
-            studentsDetails.push(studentData)
-          })
+          studentsDetails.push(studentData);
+        });
         res.status(200).json(studentsDetails);
       })
       .catch((err) => res.status(400).send(err));
   } catch (error) {
     res.status(500).send(error);
+  }
+};
+
+//Close Outing Entry
+export const closeGateEntry = async (req, res) => {
+  try {
+    const { username } = req.params;
+    outings
+      .updateOne({ username }, { $set: {isOpen: false, inTime: new Date()} })
+      .then((result) => {
+        res.status(200).send(result);
+      })
+      .catch((err) => res.status(400).send(err));
+  } catch (error) {
+    res.status(422).send(error);
   }
 };

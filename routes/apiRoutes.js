@@ -10,6 +10,7 @@ import {
   openEntries,
   getStudents,
   studentOnSearch,
+  closeGateEntry,
 } from "../controllers/security.js";
 import { openGateEntry } from "../controllers/students.js";
 
@@ -26,6 +27,7 @@ router.get("/students", getStudents); //With Queries
 router.get("/students/open", openEntries);
 router.get("/students/closed", closedEntries);
 router.get("/students/search", studentOnSearch); //With Queries
+router.get("/close/:username", closeGateEntry);
 
 //PATCH
 router.patch("/users/:username", updateUser);
