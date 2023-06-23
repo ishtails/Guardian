@@ -1,27 +1,28 @@
 import users from "../models/userModel.js";
 import bcrypt from "bcrypt";
 
+export const getFunc = async (username) => {
+  try {
+    const result = await users.findOne({ username });
+    const userData = {
+      email: result.email,
+      username: result.username,
+      role: result.role,
+      name: result.name,
+      mobile: result.mobile,
+      hostel: result.hostel,
+      room: result.room,
+    };
+    return userData;
+  } catch (error) { res.status(400).send(error) }
+};
+
 // Get user details from username
-export const getUser = (req, res) => {
+export const getUser = async (req, res) => {
   try {
     const username = req.params.username;
-
-    users
-      .findOne({ username })
-      .then((result) => {
-        const userData = {
-          email: result.email,
-          username: result.username,
-          role: result.role,
-          name: result.name,
-          mobile: result.mobile,
-          hostel: result.hostel,
-          room: result.room,
-        };
-
-        res.send(userData);
-      })
-      .catch((err) => res.status(400).send(err));
+    const userData = await getFunc(username);
+    res.send(userData);
   } catch (error) {
     res.status(500).send(error);
   }
