@@ -2,7 +2,7 @@ import geolib from "geolib";
 
 // Check Session
 export const requireAuth = (req, res, next) => {
-  if (!req.session.authenticated) {
+  if (!req.session.username) {
     return res.status(401).send("Unauthorized");
   }
 

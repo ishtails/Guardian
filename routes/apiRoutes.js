@@ -13,7 +13,7 @@ import {
   closeGateEntry,
 } from "../controllers/security.js";
 import { isOutside, openGateEntry } from "../controllers/students.js";
-import { verifyLocation, requireAuth, } from "../middlewares/middlewares.js";
+import { verifyLocation, requireAuth } from "../middlewares/middlewares.js";
 
 const router = Router();
 

@@ -79,8 +79,7 @@ export const loginUser = (req, res) => {
           .compare(password, user.password)
           .then((result) => {
             if (result) {
-              console.log(req.session);
-              req.session.authenticated = true;
+              req.session.username = user.username;
               res.status(200).send("Logged in!");
             } else {
               res.status(403).send("Bad Credentials!");
