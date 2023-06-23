@@ -16,6 +16,7 @@ const outingSchema = new mongoose.Schema(
     },
     inTime: {
       type: Date,
+      default: "",
     },
     isOpen: {
       type: Boolean,
