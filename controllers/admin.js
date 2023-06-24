@@ -10,7 +10,9 @@ export const studentOutings = async (req, res) => {
     const outingFilters = {};
     const userFilters = {};
 
-    if (hostel) {userFilters.hostel = hostel};
+    if (hostel) {
+      userFilters.hostel = hostel;
+    }
 
     const allOutings = await outings.find(outingFilters);
     let outingData = [];
