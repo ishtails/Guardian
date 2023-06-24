@@ -108,20 +108,41 @@ export const getStudents = (req, res) => {
 };
 
 //Close Outing Entry
-export const closeEntry = async (req, res) => {
+// export const closeEntry = async (req, res) => {
+//   try {
+//     const { username } = req.params;
+//     const result = await outings.updateOne(
+//       { username, isOpen: true },
+//       { $set: { isOpen: false, inTime: new Date() } }
+//     );
+
+//     if (result.modifiedCount === 1) {
+//       return res.status(200).send("Successfully closed entry!");
+//     } else {
+//       return res.status(400).send("No open entries for this user!");
+//     }
+//   } catch (error) {
+//     res.status(500).send("Server Error!");
+//   }
+// };
+
+// Close Entry
+export const closeGateEntry = async (req, res) => {
   try {
     const { username } = req.params;
-    const result = await outings.updateOne(
-      { username, isOpen: true },
-      { $set: { isOpen: false, inTime: new Date() } }
-    );
+    const result = await outings.findOne({ username, isOpen: true });
 
-    if (result.modifiedCount === 1) {
-      return res.status(200).send("Successfully closed entry!");
-    } else {
-      return res.status(400).send("No open entries for this user!");
+    if (!result) {
+      return res.status(404).send("Outing record not found!");
     }
+    if (result.inTime) {
+      return res.status(400).send("Entry is already closed" );
+    }
+    result.inTime = new Date();
+    await result.save();
+
+    res.status(200).send("Entry closed successfully!");
   } catch (error) {
-    res.status(500).send("Server Error!");
+    res.status(500).send(error);
   }
 };
