@@ -43,6 +43,16 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: "",
     },
+
+    profilePic: {
+      type: String,
+      default: "",
+    },
+
+    idCard: {
+      type: String,
+      default: "",
+    }
   },
   { timestamps: true }
 );

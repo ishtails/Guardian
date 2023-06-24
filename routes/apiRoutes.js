@@ -17,8 +17,8 @@ import {
   openGateEntry,
   updateInfo,
 } from "../controllers/students.js";
-import { verifyLocation, requireAuth } from "../middlewares/middlewares.js";
-import { studentOutings } from "../controllers/admin.js";
+import { verifyOutingChecks, requireAuth } from "../middlewares/middlewares.js";
+import { studentTable } from "../controllers/admin.js";
 
 const router = Router();
 
@@ -37,7 +37,7 @@ router.get("/students/search/:username", studentOnSearch); //With Queries
 router.get("/close-entry/:username", closeGateEntry);
 router.get("/student/outing-status/:username", isOutside);
 
-router.get("/all-students", studentOutings);
+router.get("/all-students", studentTable);
 
 //PATCH
 router.patch("/users/:username", updateUser);
