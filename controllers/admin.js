@@ -1,10 +1,11 @@
 import users from "../models/userModel.js";
 import outings from "../models/outingModel.js";
+import moment from "moment";
 
 //Master Table
-export const studentOutings = async (req, res) => {
+export const studentTable = async (req, res) => {
   try {
-    const { hostel, deadline, startDate, endDate } = req.query || {};
+    const { hostel, room, deadline, startDate, endDate } = req.query;
 
     const outingFilters = {};
     const userFilters = {};
@@ -13,16 +14,19 @@ export const studentOutings = async (req, res) => {
       userFilters.hostel = hostel;
     }
 
-    const allOutings = await outings.find();
+    if (deadline) {
+      outingFilters.penalty = deadline;
+    }
+
+    const allOutings = await outings.find(outingFilters);
     let outingData = [];
 
     for (const outing of allOutings) {
       const user = await users.findOne({
-        // ...userFilters,
         username: outing.username,
       });
 
-      const { reason, isOpen, outTime, inTime } = outing;
+      const { reason, isOpen, outTime, inTime, penalty } = outing;
 
       const outingObj = {
         username: user.username,
@@ -30,11 +34,13 @@ export const studentOutings = async (req, res) => {
         mobile: user.mobile,
         hostel: user.hostel,
         room: user.room,
-        date: outTime,
+        profilePic: user.profilePic,
+        idCard: user.idCard,
         isOpen,
         reason,
-        outTime,
-        inTime,
+        penalty,
+        outTime: moment(outTime).format("DD-MM-YYYY HH:mm"),
+        inTime: moment(inTime).format("DD-MM-YYYY HH:mm"),
       };
 
       outingData.push(outingObj);

@@ -1,6 +1,5 @@
 import express from "express";
 import * as dotenv from "dotenv";
-dotenv.config();
 import cors from "cors";
 import mongoose from "mongoose";
 import morgan from "morgan";
@@ -11,6 +10,7 @@ import session from "express-session";
 import { createClient } from "redis";
 
 // Const declarations
+dotenv.config();
 const app = express();
 const PORT = process.env.PORT;
 const MONG_URI = process.env.MONG_URI;
