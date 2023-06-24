@@ -39,7 +39,6 @@ export const registerUser = (req, res) => {
     if (!(role === "admin" || role === "security" || role === "student"))
       throw "Error! Invalid Role!";
     if (!password) throw "Error! Provide Password";
-
     const username = email.split("@")[0];
 
     // Hash password & save to mongoDB
