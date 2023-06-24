@@ -67,7 +67,7 @@ export const registerUser = (req, res) => {
 // Login User
 export const loginUser = async (req, res) => {
   try {
-    if(req.session.username){
+    if (req.session.username) {
       return res.status(400).send("Already logged in!");
     }
 
@@ -75,8 +75,8 @@ export const loginUser = async (req, res) => {
 
     //Credential Constraints
     if (!id || !password) {
-      return res.status(400).send("Error! Bad Credentials!"); 
-    };
+      return res.status(400).send("Error! Bad Credentials!");
+    }
 
     //Search in DB
     const user = await users.findOne({
