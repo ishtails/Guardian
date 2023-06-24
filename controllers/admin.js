@@ -1,6 +1,5 @@
 import users from "../models/userModel.js";
 import outings from "../models/outingModel.js";
-import moment from "moment";
 
 //Master Table
 export const studentOutings = async (req, res) => {
@@ -14,7 +13,7 @@ export const studentOutings = async (req, res) => {
       userFilters.hostel = hostel;
     }
 
-    const allOutings = await outings.find(outingFilters);
+    const allOutings = await outings.find();
     let outingData = [];
 
     for (const outing of allOutings) {
@@ -31,6 +30,7 @@ export const studentOutings = async (req, res) => {
         mobile: user.mobile,
         hostel: user.hostel,
         room: user.room,
+        date: outTime,
         isOpen,
         reason,
         outTime,

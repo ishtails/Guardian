@@ -5,9 +5,8 @@ import users from "../models/userModel.js";
 export const openEntries = async (req, res) => {
   try {
     const openOutings = await outings.find({ isOpen: true });
-    const usernames = openOutings.map(outing => outing.username)
-    console.log(usernames)
-    
+    const usernames = openOutings.map((outing) => outing.username);
+    console.log(usernames);
   } catch (error) {
     res.status(500).send(error);
   }
@@ -92,21 +91,21 @@ export const getStudents = (req, res) => {
     users
       .find({ ...filters, role: "student" })
       .then((students) => {
-          let studentsDetails = []
+        let studentsDetails = [];
 
-          students.map((student) => {
-            const studentData = {
-              email: student.email,
-              username: student.username,
-              role: student.role,
-              name: student.name,
-              mobile: student.mobile,
-              hostel: student.hostel,
-              room: student.room,
-            };
+        students.map((student) => {
+          const studentData = {
+            email: student.email,
+            username: student.username,
+            role: student.role,
+            name: student.name,
+            mobile: student.mobile,
+            hostel: student.hostel,
+            room: student.room,
+          };
 
-            studentsDetails.push(studentData)
-          })
+          studentsDetails.push(studentData);
+        });
         res.status(200).json(studentsDetails);
       })
       .catch((err) => res.status(400).send(err));
@@ -119,13 +118,18 @@ export const getStudents = (req, res) => {
 export const closeGateEntry = async (req, res) => {
   try {
     const { username } = req.params;
-    outings
-      .updateOne({ username, isOpen: true }, { $set: {isOpen: false, inTime: new Date()} })
-      .then((result) => {
-        res.status(200).send(result);
-      })
-      .catch((err) => res.status(400).send(err));
+    const result = await outings.updateOne(
+      { username, isOpen: true },
+      { $set: { isOpen: false, inTime: new Date() } }
+    );
+
+    if (result.modifiedCount === 1) {
+      return res.status(200).send("Successfully closed entry!");
+    } else {
+      return res.status(400).send("No open entries for this user!");
+    }
+
   } catch (error) {
-    res.status(422).send(error);
+    res.status(500).send("Server Error!");
   }
 };
