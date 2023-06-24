@@ -6,6 +6,11 @@ export const openGateEntry = async (req, res) => {
     const { username } = req.params;
     const { reason } = req.body;
 
+    const result = await outings.findOne({username, isOpen: true})
+    if(result){
+      return res.status(400).send("Already outside!")
+    }
+
     const newOuting = new outings({
       username,
       reason,
@@ -25,10 +30,10 @@ export const isOutside = async (req, res) => {
     const result = await outings.findOne({ username, isOpen: true });
 
     if (!result) {
-      res.status(200).json({ username, status: "inside" });
+      return res.status(200).json({ username, status: "inside" });
     } else {
       const { reason, outTime } = result;
-      res.status(200).json({ username, status: "outside", outTime, reason });
+      return res.status(200).json({ username, status: "outside", outTime, reason });
     }
   } catch (error) {
     res.status(500).send(error);
