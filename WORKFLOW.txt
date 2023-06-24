@@ -33,7 +33,7 @@ FRONTEND:
 
 - create api.ts in frontend and create functions which send api calls to backend for all our needs using fetch/axios 
 
-- zustang (very easy and intuitive) / context-api / redux (overkill, no need) for state store
+- zustand (very easy and intuitive) / context-api / redux (overkill, no need) for state store
 
 - separate all react logic into a utils/helper folder.
 
