@@ -18,6 +18,10 @@ const outingSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    penalty: {
+      type: Number,
+      default: null,
+    },
     isOpen: {
       type: Boolean,
       default: true,

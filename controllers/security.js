@@ -1,3 +1,4 @@
+import { penaltyCalc } from "../middlewares/middlewares.js";
 import outings from "../models/outingModel.js";
 import users from "../models/userModel.js";
 
@@ -133,12 +134,12 @@ export const closeGateEntry = async (req, res) => {
     const result = await outings.findOne({ username, isOpen: true });
 
     if (!result) {
-      return res.status(404).send("Outing record not found!");
+      return res.status(404).send("No open entries for this user!");
     }
-    if (result.inTime) {
-      return res.status(400).send("Entry is already closed" );
-    }
+
     result.inTime = new Date();
+    result.isOpen = false;
+    result.penalty = penaltyCalc(result.outTime, result.inTime);
     await result.save();
 
     res.status(200).send("Entry closed successfully!");
