@@ -18,7 +18,7 @@ export const studentOutings = async (req, res) => {
 
     for (const outing of allOutings) {
       const user = await users.findOne({
-        ...userFilters,
+        // ...userFilters,
         username: outing.username,
       });
 

@@ -115,7 +115,7 @@ export const getStudents = (req, res) => {
 };
 
 //Close Outing Entry
-export const closeGateEntry = async (req, res) => {
+export const closeEntry = async (req, res) => {
   try {
     const { username } = req.params;
     const result = await outings.updateOne(
