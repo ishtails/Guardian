@@ -55,29 +55,22 @@ export const individualEntries = async (req, res) => {
 
 //Display student info on search
 export const studentOnSearch = async (req, res) => {
+  const { username } = req.params;
   try {
-    const { searchKey } = req.params;
-    const student = await users
-      .find({
-        $or: [{ name: searchKey }, { username: searchKey }],
-      })
-      .limit(5);
+    const user = await users.findOne({ username });
 
-    if (!student) {
-      return res.status(404).json({ error: "User not found" });
+    if (!user) {
+      return res.status(404).send("User not found!");
     }
+    const outing = await outings.find({ username });
 
-    const studentData = {
-      email: student.email,
-      username: student.username,
-      role: student.role,
-      name: student.name,
-      mobile: student.mobile,
-      hostel: student.hostel,
-      room: student.room,
+    const studentInfo = {
+      username: user.username,
+      name: user.name,
+      outing,
     };
 
-    res.status(200).send(studentData);
+    res.status(200).send(studentInfo);
   } catch (error) {
     res.status(500).send(error);
   }
@@ -128,7 +121,6 @@ export const closeEntry = async (req, res) => {
     } else {
       return res.status(400).send("No open entries for this user!");
     }
-
   } catch (error) {
     res.status(500).send("Server Error!");
   }

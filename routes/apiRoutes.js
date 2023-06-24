@@ -12,7 +12,11 @@ import {
   studentOnSearch,
   closeEntry,
 } from "../controllers/security.js";
-import { closeGateEntry, isOutside, openGateEntry } from "../controllers/students.js";
+import {
+  closeGateEntry,
+  isOutside,
+  openGateEntry,
+} from "../controllers/students.js";
 import { verifyLocation, requireAuth } from "../middlewares/middlewares.js";
 import { studentOutings } from "../controllers/admin.js";
 
@@ -29,7 +33,7 @@ router.get("/users/:username", getUser);
 router.get("/students", getStudents); //With Queries
 router.get("/students/open", openEntries);
 router.get("/students/closed", closedEntries);
-router.get("/students/search", studentOnSearch); //With Queries
+router.get("/students/search/:username", studentOnSearch); //With Queries
 router.get("/close-entry/:username", closeEntry);
 router.get("/student/outing-status/:username", isOutside);
 
