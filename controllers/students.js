@@ -43,7 +43,7 @@ export const isOutside = async (req, res) => {
   }
 };
 
-//update info
+//update student info
 export const updateInfo = async (req, res) => {
   try {
     const { username } = req.params;

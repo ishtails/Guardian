@@ -80,7 +80,8 @@ export const loginUser = async (req, res) => {
     //Search in DB
     const user = await users.findOne({
       $or: [{ email: id }, { username: id }],
-    });
+    }, {password:1, username:1, role:1, name:1});
+
     if (!user) {
       return res.status(404).send("Not registered!");
     }
@@ -89,6 +90,7 @@ export const loginUser = async (req, res) => {
     const passwordCorrect = await bcrypt.compare(password, user.password);
     if (passwordCorrect) {
       req.session.username = user.username;
+      req.session.role = user.role;
       return res.status(200).send(`Welcome Back ${user.name.split(" ")[0]}!`);
     } else {
       return res.status(400).send("Bad Credentials");
