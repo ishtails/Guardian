@@ -7,6 +7,10 @@ import Joi from "joi";
 //Register user
 export const registerStudent = async (req, res) => {
   try {
+    if (req.session.username) {
+      return res.status(400).json({ error: "You are logged in!" });
+    }
+
     //Form Validation
     const registerSchema = Joi.object({
       email: Joi.string()
@@ -98,12 +102,12 @@ export const loginUser = async (req, res) => {
 export const logOut = (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      console.error('Error destroying session:', err);
+      console.error("Error destroying session:", err);
     }
-    res.clearCookie('sid');
-    res.json({ message: 'Logged out successfully' }); 
+    res.clearCookie("sid");
+    res.json({ message: "Logged out successfully" });
   });
-}
+};
 
 //Update User Details
 export const updateUser = (req, res) => {
@@ -179,10 +183,17 @@ export const getOutings = async (req, res) => {
       };
     }
 
-    if(req.session.role == "student") {
-      console.log(req.session)
-      outingFilters = {username: req.session.username}
-    };
+    // Role-Based Control
+    if (req.session.role === "student") {
+      outingFilters.username = req.session.username;
+    }
+
+    if(req.session.role === "security") {
+      outingFilters.outTime = {
+        $gte: moment().subtract(1, "day").toDate(),
+        $lt: moment().add(1, "day").toDate(),
+      };
+    }
 
     // Fetching Outings
     const allOutings = await outings.find(outingFilters);
