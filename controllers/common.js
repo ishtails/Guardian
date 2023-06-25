@@ -2,17 +2,24 @@ import users from "../models/userModel.js";
 import outings from "../models/outingModel.js";
 import bcrypt from "bcrypt";
 import moment from "moment";
+import Joi from "joi";
 
 //Register user
-export const registerUser = (req, res) => {
+export const registerStudent = async (req, res) => {
   try {
-    const { email, password, role } = req.body;
+    //Form Validation
+    const registerSchema = Joi.object({
+      email: Joi.string()
+        .email({ tlds: { allow: false } })
+        .required(),
+      password: Joi.string().pattern(new RegExp("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[@$!%*#?&])[a-zA-Z0-9@$!%*#?&]{8,}$")),
+    });
 
-    if (!email) throw "Error! Provide an email!";
-    if (!(role === "admin" || role === "security" || role === "student"))
-      throw "Error! Invalid Role!";
-    if (!password) throw "Error! Provide Password";
+    await registerSchema.validateAsync(req.body);
+
+    const { email, password } = req.body;
     const username = email.split("@")[0];
+    const role = "student";
 
     // Hash password & save to mongoDB
     bcrypt
@@ -22,17 +29,22 @@ export const registerUser = (req, res) => {
         newUser
           .save()
           .then(() => {
-            res.send("User Registered Successfully!");
+            res.json({ message: "Registered Successfully!", username });
           })
           .catch((err) => {
             res.status(400).send(err);
           });
       })
       .catch((error) =>
-        res.status(422).send("Password couldn't be hashed: ", error)
+        res.status(500).send("Password couldn't be hashed: ", error)
       );
+
   } catch (error) {
-    res.status(422).send(error);
+    if (error.details) {
+      return res.status(422).send(error.details.map(detail => detail.message).join(', '));
+    }
+
+    return res.status(500).send(error);
   }
 };
 
@@ -85,7 +97,7 @@ export const updateUser = (req, res) => {
   try {
     const newObject = req.body;
     const { name, mobile, hostel, room } = newObject;
-    const updateFields = { name, mobile, hostel, room }
+    const updateFields = { name, mobile, hostel, room };
 
     const username = req.params.username;
     users
@@ -100,9 +112,9 @@ export const updateUser = (req, res) => {
 };
 
 // Get User
-export const getUser = async (req, res) => {
+export const getCurrentUser = async (req, res) => {
   try {
-    const username = req.params.username;
+    const username = req.session.username;
     const user = await users.findOne(
       { username },
       {
@@ -125,8 +137,7 @@ export const getUser = async (req, res) => {
 //Get Outings
 export const getOutings = async (req, res) => {
   try {
-    const { username, isLate, startDate, endDate, isOpen, reason } =
-      req.query;
+    const { username, isLate, startDate, endDate, isOpen, reason } = req.query;
 
     const outingFilters = {};
 
@@ -145,7 +156,7 @@ export const getOutings = async (req, res) => {
     }
 
     if (isLate) {
-      outingFilters.lateBy = {$gt: 0};
+      outingFilters.lateBy = { $gt: 0 };
     }
 
     if (startDate && endDate) {
@@ -160,12 +171,23 @@ export const getOutings = async (req, res) => {
     let studentOutingData = [];
 
     for (const outing of allOutings) {
-      const user = await users.findOne({ username: outing.username }, { _id:0, username:1, name:1, mobile:1, hostel:1, room:1, idCard:1 });
-      
-      let lateBy = "0"
-      if(outing.lateBy > 0) {
-        const duration = moment.duration(outing.lateBy, 'minutes');
-        lateBy = moment.utc(duration.asMilliseconds()).format('HH:mm');
+      const user = await users.findOne(
+        { username: outing.username },
+        {
+          _id: 0,
+          username: 1,
+          name: 1,
+          mobile: 1,
+          hostel: 1,
+          room: 1,
+          idCard: 1,
+        }
+      );
+
+      let lateBy = "0";
+      if (outing.lateBy > 0) {
+        const duration = moment.duration(outing.lateBy, "minutes");
+        lateBy = moment.utc(duration.asMilliseconds()).format("HH:mm");
       }
 
       const studentOutingObj = {
