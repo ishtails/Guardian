@@ -1,30 +1,24 @@
 import users from "../models/userModel.js";
 import bcrypt from "bcrypt";
 
-export const getFunc = async (username) => {
-  try {
-    const result = await users.findOne({ username });
-    const userData = {
-      email: result.email,
-      username: result.username,
-      role: result.role,
-      name: result.name,
-      mobile: result.mobile,
-      hostel: result.hostel,
-      room: result.room,
-    };
-    return userData;
-  } catch (error) {
-    res.status(400).send(error);
-  }
-};
-
-// Get user details from username
+// Get user details by username
 export const getUser = async (req, res) => {
   try {
-    const username = req.params.username;
-    const userData = await getFunc(username);
-    res.send(userData);
+    const username = req.session.username;
+    const user = await users.findOne(
+      { username },
+      {
+        email: 1,
+        username: 1,
+        name: 1,
+        role: 1,
+        name: 1,
+        mobile: 1,
+        hostel: 1,
+        room: 1,
+      }
+    );
+    return user;
   } catch (error) {
     res.status(500).send(error);
   }
@@ -56,7 +50,7 @@ export const registerUser = (req, res) => {
           });
       })
       .catch((error) =>
-        res.status(422).send("Password couldn't be hashed:", error)
+        res.status(422).send("Password couldn't be hashed: ", error)
       );
   } catch (error) {
     res.status(422).send(error);
@@ -78,9 +72,12 @@ export const loginUser = async (req, res) => {
     }
 
     //Search in DB
-    const user = await users.findOne({
-      $or: [{ email: id }, { username: id }],
-    }, {password:1, username:1, role:1, name:1});
+    const user = await users.findOne(
+      {
+        $or: [{ email: id }, { username: id }],
+      },
+      { password: 1, username: 1, role: 1, name: 1 }
+    );
 
     if (!user) {
       return res.status(404).send("Not registered!");
@@ -91,7 +88,11 @@ export const loginUser = async (req, res) => {
     if (passwordCorrect) {
       req.session.username = user.username;
       req.session.role = user.role;
-      return res.status(200).send(`Welcome Back ${user.name.split(" ")[0]}!`);
+      return res.status(200).json({
+        username: user.username,
+        role: user.role,
+        message: `Login Successful`,
+      });
     } else {
       return res.status(400).send("Bad Credentials");
     }
@@ -104,9 +105,12 @@ export const loginUser = async (req, res) => {
 export const updateUser = (req, res) => {
   try {
     const newObject = req.body;
+    const { name, mobile, hostel, room } = newObject;
+    const updateFields = { name, mobile, hostel, room }
+
     const username = req.params.username;
     users
-      .updateOne({ username }, { $set: newObject })
+      .updateOne({ username }, { $set: updateFields })
       .then((result) => {
         res.status(200).send(result);
       })
