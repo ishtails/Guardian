@@ -10,41 +10,44 @@ export const registerStudent = async (req, res) => {
     //Form Validation
     const registerSchema = Joi.object({
       email: Joi.string()
-        .email({ tlds: { allow: false } })
-        .required(),
-      password: Joi.string().pattern(new RegExp("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[@$!%*#?&])[a-zA-Z0-9@$!%*#?&]{8,}$")),
+        .email()
+        .required()
+        .custom((value, helpers) => {
+          if (value.endsWith("@iiitm.ac.in")) {
+            return value;
+          } else {
+            return helpers.error("any.invalid");
+          }
+        }, "Custom Domain Validation"),
+      password: Joi.string().pattern(
+        new RegExp(
+          "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[@$!%*#?&])[a-zA-Z0-9@$!%*#?&]{8,}$"
+        )
+      ),
     });
 
     await registerSchema.validateAsync(req.body);
 
+    // Destructuring Values
     const { email, password } = req.body;
     const username = email.split("@")[0];
     const role = "student";
 
     // Hash password & save to mongoDB
-    bcrypt
-      .hash(password, 10)
-      .then((hash) => {
-        const newUser = new users({ email, password: hash, role, username });
-        newUser
-          .save()
-          .then(() => {
-            res.json({ message: "Registered Successfully!", username });
-          })
-          .catch((err) => {
-            res.status(400).send(err);
-          });
-      })
-      .catch((error) =>
-        res.status(500).send("Password couldn't be hashed: ", error)
-      );
-
+    const hash = await bcrypt.hash(password, 10);
+    const newUser = new users({ email, password: hash, role, username });
+    await newUser.save();
+    res.json({ message: "Registered Successfully!", username, role });
   } catch (error) {
     if (error.details) {
-      return res.status(422).send(error.details.map(detail => detail.message).join(', '));
+      return res
+        .status(422)
+        .json(error.details.map((detail) => detail.message).join(", "));
     }
 
-    return res.status(500).send(error);
+    return res
+      .status(500)
+      .json({ error: "ERROR: " + error });
   }
 };
 
@@ -55,14 +58,16 @@ export const loginUser = async (req, res) => {
       return res.status(400).send("Already logged in!");
     }
 
-    const { id, password } = req.body;
+    //Form Validation
+    const registerSchema = Joi.object({
+      id: Joi.string().required(),
+      password: Joi.string().min(8).required(),
+    });
 
-    //Credential Constraints
-    if (!id || !password) {
-      return res.status(400).send("Error! Bad Credentials!");
-    }
+    await registerSchema.validateAsync(req.body);
 
     //Search in DB
+    const { id, password } = req.body;
     const user = await users.findOne(
       {
         $or: [{ email: id }, { username: id }],
