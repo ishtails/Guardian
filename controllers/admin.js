@@ -5,13 +5,24 @@ import moment from "moment";
 //Master Table
 export const studentTable = async (req, res) => {
   try {
-    const { hostel, room, deadline, startDate, endDate } = req.query;
+    const { username, deadline, startDate, endDate, isOpen, reason } =
+      req.query;
 
     const outingFilters = {};
     const userFilters = {};
 
-    if (hostel) {
-      userFilters.hostel = hostel;
+    // Conditional Queries
+    if (reason) {
+      const regexReason = new RegExp(reason, "i");
+      outingFilters.reason = regexReason;
+    }
+
+    if (username) {
+      outingFilters.username = username;
+    }
+
+    if (isOpen) {
+      outingFilters.isOpen = isOpen;
     }
 
     if (deadline) {
@@ -21,39 +32,38 @@ export const studentTable = async (req, res) => {
     if (startDate && endDate) {
       outingFilters.outTime = {
         $gte: moment(startDate).toDate(),
-        $lt: moment(endDate).add(1, 'day').toDate(),
-      }
+        $lt: moment(endDate).add(1, "day").toDate(),
+      };
     }
 
+    
+    // Fetching Outings
     const allOutings = await outings.find(outingFilters);
-    let outingData = [];
+    let studentOutingData = [];
 
     for (const outing of allOutings) {
-      const user = await users.findOne({
-        username: outing.username,
-      });
+      const user = await users.findOne({ username: outing.username });
+      
+      console.log(user)
 
-      const { reason, isOpen, outTime, inTime, penalty } = outing;
-
-      const outingObj = {
+      const studentOutingObj = {
         username: user.username,
         name: user.name,
         mobile: user.mobile,
         hostel: user.hostel,
         room: user.room,
-        profilePic: user.profilePic,
         idCard: user.idCard,
-        isOpen,
-        reason,
-        penalty,
-        outTime: moment(outTime).format("DD-MM-YYYY HH:mm"),
-        inTime: moment(inTime).format("DD-MM-YYYY HH:mm"),
+        isOpen: outing.isOpen,
+        reason: outing.reason,
+        penalty: outing.penalty,
+        outTime: moment(outing.outTime).format("DD-MM-YYYY HH:mm"),
+        inTime: moment(outing.inTime).format("DD-MM-YYYY HH:mm"),
       };
 
-      outingData.push(outingObj);
+      studentOutingData.push(studentOutingObj);
     }
 
-    res.status(200).send(outingData);
+    res.status(200).send(studentOutingData);
   } catch (error) {
     res.status(500).send(error);
   }
