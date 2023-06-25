@@ -2,16 +2,15 @@ import users from "../models/userModel.js";
 import outings from "../models/outingModel.js";
 import moment from "moment";
 
-//Master Table
-export const studentTable = async (req, res) => {
+//Display all outing (With Filters)
+export const outingTable = async (req, res) => {
   try {
     const { username, deadline, startDate, endDate, isOpen, reason } =
       req.query;
 
     const outingFilters = {};
-    const userFilters = {};
 
-    // Conditional Queries
+    // Conditional Outing Queries
     if (reason) {
       const regexReason = new RegExp(reason, "i");
       outingFilters.reason = regexReason;
@@ -36,14 +35,12 @@ export const studentTable = async (req, res) => {
       };
     }
 
-    
     // Fetching Outings
     const allOutings = await outings.find(outingFilters);
     let studentOutingData = [];
 
     for (const outing of allOutings) {
-      const user = await users.findOne({ username: outing.username });
-      
+      const user = await users.findOne({ username: outing.username }, { username:1, name:1, mobile:1, hostel:1, room:1, idCard:1 });
       console.log(user)
 
       const studentOutingObj = {
@@ -64,6 +61,33 @@ export const studentTable = async (req, res) => {
     }
 
     res.status(200).send(studentOutingData);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+//Display outings for specific student
+export const studentOutings = async (req, res) => {
+  try {
+    const username = req.params.username;
+    const user = await users.findOne({ username });
+    const outings = await outings.find({ username });
+
+    const outingData = {
+      username: user.username,
+      name: user.name,
+      mobile: user.mobile,
+      hostel: user.hostel,
+      room: user.room,
+      idCard: user.idCard,
+      outings: outings.map((outing) => ({
+        outTime: outing.outTime,
+        inTime: outing.inTime,
+        reason: outing.reason,
+        isOpen: outing.isOpen,
+      })),
+    };
+    res.json({ student: outingData });
   } catch (error) {
     res.status(500).send(error);
   }

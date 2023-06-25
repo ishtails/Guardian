@@ -6,8 +6,8 @@ import {
   loginUser,
 } from "../controllers/common.js";
 import {
-  closedEntries,
-  openEntries,
+  // closedEntries,
+  // openEntries,
   getStudents,
   studentOnSearch,
   closeGateEntry,
@@ -17,8 +17,8 @@ import {
   openGateEntry,
   updateInfo,
 } from "../controllers/students.js";
+import { outingTable } from "../controllers/admin.js";
 import { verifyOutingChecks, requireAuth } from "../middlewares/middlewares.js";
-import { studentTable } from "../controllers/admin.js";
 
 const router = Router();
 
@@ -31,13 +31,12 @@ router.post("/student/updateInfo/:username", updateInfo);
 // GET
 router.get("/users/:username", getUser);
 router.get("/students/:query", getStudents); //With Queries
-router.get("/students/open", openEntries);
-router.get("/students/closed", closedEntries);
-router.get("/students/search/:username", studentOnSearch); //With Queries
+// router.get("/students/open", openEntries);
+// router.get("/students/closed", closedEntries);
+router.get("/search", studentOnSearch); //With Queries
 router.get("/close-entry/:username", closeGateEntry);
 router.get("/student/outing-status/:username", isOutside);
-
-router.get("/all-students-outings", studentTable);
+router.get("/all-students-outings", outingTable);
 
 //PATCH
 router.patch("/users/:username", updateUser);
