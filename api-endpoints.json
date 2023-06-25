@@ -1,0 +1,242 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Guardian",
+    "dateExported": "2023-06-25T19:57:09.096Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "56c46b1c-c816-4238-b90a-0d8560f20cf7",
+            "colId": "130a0d35-e850-4272-94c7-536e70449844",
+            "containerId": "",
+            "name": "search",
+            "url": "http://localhost:8000/api/search",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-06-25T19:56:15.248Z",
+            "modified": "2023-06-25T19:56:15.248Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "key",
+                    "value": "",
+                    "isDisabled": true,
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "52f1c0ba-5528-4bf0-aac8-e31d2c165637",
+            "colId": "130a0d35-e850-4272-94c7-536e70449844",
+            "containerId": "",
+            "name": "isOutside",
+            "url": "http://localhost:8000/api/student/outing-status",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-06-25T19:56:20.976Z",
+            "modified": "2023-06-25T19:56:20.976Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "dd00ab8c-6c64-4550-aaf0-403e2729e174",
+            "colId": "130a0d35-e850-4272-94c7-536e70449844",
+            "containerId": "",
+            "name": "openEntry",
+            "url": "http://localhost:8000/api/student/exit-request",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-06-25T19:56:24.624Z",
+            "modified": "2023-06-25T19:56:24.624Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"reason\":\"Going to Market\",\n  \"latitude\": \"26.250106\", \n  \"longitude\": \"78.17652\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "624cad8a-542d-4df2-aed9-786d43eabbc5",
+            "colId": "130a0d35-e850-4272-94c7-536e70449844",
+            "containerId": "",
+            "name": "closeEntry",
+            "url": "http://localhost:8000/api/security/close-entry/bcs_2021076",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2023-06-25T19:56:28.640Z",
+            "modified": "2023-06-25T19:56:28.640Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "3b6d8a6f-1561-4552-a595-92cd3311726d",
+            "colId": "130a0d35-e850-4272-94c7-536e70449844",
+            "containerId": "",
+            "name": "registerUser",
+            "url": "http://localhost:8000/api/student/register",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2023-06-25T19:56:31.864Z",
+            "modified": "2023-06-25T19:56:31.864Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "hostel",
+                    "value": "BH1",
+                    "isDisabled": true,
+                    "isPath": false
+                },
+                {
+                    "name": "name",
+                    "value": "Kartikay Tiwari",
+                    "isDisabled": true,
+                    "isPath": false
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"bcs_2021076@iiitm.ac.in\",\n  \"password\": \"vyshnav@123\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "80f53711-3633-473b-a1a0-4b22ccdd04df",
+            "colId": "130a0d35-e850-4272-94c7-536e70449844",
+            "containerId": "",
+            "name": "getOutings",
+            "url": "http://localhost:8000/api/outings",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2023-06-25T19:56:35.016Z",
+            "modified": "2023-06-25T19:56:35.016Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "*/*",
+                    "isDisabled": true
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [
+                {
+                    "name": "startDate",
+                    "value": "2023-06-23",
+                    "isDisabled": true,
+                    "isPath": false
+                },
+                {
+                    "name": "endDate",
+                    "value": "2023-06-24",
+                    "isDisabled": true,
+                    "isPath": false
+                },
+                {
+                    "name": "isOpen",
+                    "value": "true",
+                    "isDisabled": true,
+                    "isPath": false
+                },
+                {
+                    "name": "username",
+                    "value": "bcs_2019003",
+                    "isDisabled": true,
+                    "isPath": false
+                },
+                {
+                    "name": "reason",
+                    "value": "hospital",
+                    "isDisabled": true,
+                    "isPath": false
+                },
+                {
+                    "name": "isLate",
+                    "value": "true",
+                    "isDisabled": true,
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "b098bcca-5aa6-48ea-95bf-c8f6fc0832eb",
+            "colId": "130a0d35-e850-4272-94c7-536e70449844",
+            "containerId": "",
+            "name": "logOut",
+            "url": "http://localhost:8000/api/logout",
+            "method": "GET",
+            "sortNum": 70000,
+            "created": "2023-06-25T19:56:39.040Z",
+            "modified": "2023-06-25T19:56:39.040Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "34938c18-0703-4500-b12a-052532ca0155",
+            "colId": "130a0d35-e850-4272-94c7-536e70449844",
+            "containerId": "",
+            "name": "updateUser",
+            "url": "http://localhost:8000/api/update-profile",
+            "method": "PATCH",
+            "sortNum": 80000,
+            "created": "2023-06-25T19:56:41.944Z",
+            "modified": "2023-06-25T19:56:41.944Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"room\":\"263\",\n  \"name\": \"Vyshnav Ajith\",\n  \"hostel\": \"BH1\",\n  \"mobile\": \"8129462042\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "1a8b3ec5-7a16-47bd-9f64-ac13083fa2d6",
+            "colId": "130a0d35-e850-4272-94c7-536e70449844",
+            "containerId": "",
+            "name": "getCurrentUser",
+            "url": "http://localhost:8000/api/profile",
+            "method": "GET",
+            "sortNum": 90000,
+            "created": "2023-06-25T19:56:45.016Z",
+            "modified": "2023-06-25T19:56:45.016Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": \"bcs_2021076\",\n  \"password\": \"vyshnav@123\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "fe0a9668-d9b8-4266-a311-1102ab44909d",
+            "colId": "130a0d35-e850-4272-94c7-536e70449844",
+            "containerId": "",
+            "name": "loginUser",
+            "url": "http://localhost:8000/api/login",
+            "method": "POST",
+            "sortNum": 100000,
+            "created": "2023-06-25T19:56:48.288Z",
+            "modified": "2023-06-25T19:56:48.288Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": \"bcs_2021076\",\n  \"password\": \"vyshnav@123\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}
