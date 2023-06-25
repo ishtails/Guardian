@@ -45,9 +45,7 @@ export const registerStudent = async (req, res) => {
         .json(error.details.map((detail) => detail.message).join(", "));
     }
 
-    return res
-      .status(500)
-      .json({ error: "ERROR: " + error });
+    return res.status(500).json({ error: "ERROR: " + error });
   }
 };
 
@@ -61,7 +59,7 @@ export const loginUser = async (req, res) => {
     //Form Validation
     const registerSchema = Joi.object({
       id: Joi.string().required(),
-      password: Joi.string().min(8).required(),
+      password: Joi.string().min(3).required(),
     });
 
     await registerSchema.validateAsync(req.body);
@@ -97,6 +95,16 @@ export const loginUser = async (req, res) => {
   }
 };
 
+export const logOut = (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Error destroying session:', err);
+    }
+    res.clearCookie('sid');
+    res.json({ message: 'Logged out successfully' }); 
+  });
+}
+
 //Update User Details
 export const updateUser = (req, res) => {
   try {
@@ -104,15 +112,15 @@ export const updateUser = (req, res) => {
     const { name, mobile, hostel, room } = newObject;
     const updateFields = { name, mobile, hostel, room };
 
-    const username = req.params.username;
+    const username = req.session.username;
     users
       .updateOne({ username }, { $set: updateFields })
       .then((result) => {
-        res.status(200).send(result);
+        res.status(200).json(result);
       })
       .catch((err) => res.status(400).send(err));
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).json({ error: "ERROR: " + error });
   }
 };
 
@@ -123,6 +131,7 @@ export const getCurrentUser = async (req, res) => {
     const user = await users.findOne(
       { username },
       {
+        _id: 0,
         email: 1,
         username: 1,
         name: 1,
@@ -133,7 +142,7 @@ export const getCurrentUser = async (req, res) => {
         room: 1,
       }
     );
-    return user;
+    res.send(user);
   } catch (error) {
     res.status(500).send(error);
   }
@@ -143,7 +152,6 @@ export const getCurrentUser = async (req, res) => {
 export const getOutings = async (req, res) => {
   try {
     const { username, isLate, startDate, endDate, isOpen, reason } = req.query;
-
     const outingFilters = {};
 
     // Conditional Outing Queries
@@ -170,6 +178,11 @@ export const getOutings = async (req, res) => {
         $lt: moment(endDate).add(1, "day").toDate(),
       };
     }
+
+    if(req.session.role == "student") {
+      console.log(req.session)
+      outingFilters = {username: req.session.username}
+    };
 
     // Fetching Outings
     const allOutings = await outings.find(outingFilters);
