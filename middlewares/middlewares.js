@@ -4,7 +4,7 @@ import moment from "moment";
 // Check Session
 export const requireAuth = (req, res, next) => {
   if (!req.session.username) {
-    return res.status(401).send("Unauthorized");
+    return res.status(401).json({error: "Unauthorized"});
   }
 
   next();
@@ -16,7 +16,7 @@ export const verifyOutingChecks = (req, res, next) => {
   const currentTime = moment().format("HH:mm");
 
   if (currentTime > "22:00" || currentTime < "05:00") {
-    return res.status(403).send("Cannot go out, deadline exceeded!");
+    return res.status(403).json({message: "Cannot go out, intime deadline exceeded!"});
   }
 
   // Check Location
@@ -34,27 +34,11 @@ export const verifyOutingChecks = (req, res, next) => {
   }
 };
 
-//Deadline Penalty
-export const penaltyCalc = (outTime, inTime) => {
-  const outDate = moment(outTime).format("YYYY-MM-DD");
-  const deadline = moment(
-    `${outDate} "22:00:00"`,
-    "YYYY-MM-DD HH:mm:ss"
-  ).toDate();
-  const lateInMinutes = moment(inTime).diff(moment(deadline), "minutes");
+// Send Email
+export const sendEmail = (req, res, next) => {next()}
 
-  let penalty = 0;
-  if (lateInMinutes > 0 && lateInMinutes < 1 * 60) {
-    penalty = 10;
-  }
+// OTP Generation
+export const generateOTP = (req, res, next) => {next()}
 
-  if (lateInMinutes > 1 * 60 && lateInMinutes < 1 * 60) {
-    penalty = 11;
-  }
-
-  if (lateInMinutes > 2 * 60) {
-    penalty = 12;
-  }
-
-  return penalty;
-};
+// OTP Verification
+export const verifyOTP = (req, res, next) => {next()}

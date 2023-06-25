@@ -39,7 +39,7 @@ app.use(
     cookie: {
       secure: false,
       httpOnly: true,
-      expires: 1000 * 60 * 60 * 1 * 1, // Cookie expires in 1 Hour
+      expires: 1000 * 60 * 60 * 24 * 1, // Cookie expires in 1 Day
     },
   })
 );

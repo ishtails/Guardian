@@ -1,44 +1,38 @@
 import { Router } from "express";
+import { verifyOutingChecks, requireAuth, generateOTP, sendEmail, verifyOTP } from "../middlewares/middlewares.js";
 import {
-  registerUser,
-  getUser,
+  registerStudent,
+  getCurrentUser,
   updateUser,
   loginUser,
+  getOutings,
+  logOut
 } from "../controllers/common.js";
 import {
-  // closedEntries,
-  // openEntries,
-  getStudents,
-  studentOnSearch,
+  searchStudents,
   closeGateEntry,
 } from "../controllers/security.js";
 import {
   isOutside,
   openGateEntry,
-  updateInfo,
 } from "../controllers/students.js";
-import { outingTable } from "../controllers/admin.js";
-import { verifyOutingChecks, requireAuth } from "../middlewares/middlewares.js";
 
 const router = Router();
 
-// POST
-router.post("/register", registerUser);
+// COMMON
 router.post("/login", loginUser);
-router.post("/exit-request/:username", openGateEntry);
-router.post("/student/updateInfo/:username", updateInfo);
+router.get("/profile", requireAuth, getCurrentUser);
+router.patch("/update-profile",requireAuth, updateUser);
+router.get("/outings", getOutings);
+router.get('/logout',requireAuth, logOut);
 
-// GET
-router.get("/users/:username", getUser);
-router.get("/students/:query", getStudents); //With Queries
-// router.get("/students/open", openEntries);
-// router.get("/students/closed", closedEntries);
-router.get("/search", studentOnSearch); //With Queries
-router.get("/close-entry/:username", closeGateEntry);
-router.get("/student/outing-status/:username", isOutside);
-router.get("/all-students-outings", outingTable);
+// STUDENTS
+router.post("/student/register", generateOTP, sendEmail, verifyOTP, registerStudent); //WIP
+router.post("/student/exit-request", requireAuth, verifyOutingChecks, openGateEntry);
+router.get("/student/outing-status", requireAuth, isOutside);
 
-//PATCH
-router.patch("/users/:username", updateUser);
+// ADMIN & SECURITY
+router.get("/search", searchStudents); 
+router.get("/security/close-entry/:username", closeGateEntry);
 
 export default router;
