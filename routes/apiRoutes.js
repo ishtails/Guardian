@@ -37,7 +37,7 @@ router.get("/students/search/:username", studentOnSearch); //With Queries
 router.get("/close-entry/:username", closeGateEntry);
 router.get("/student/outing-status/:username", isOutside);
 
-router.get("/all-students", studentTable);
+router.get("/all-students-outings", studentTable);
 
 //PATCH
 router.patch("/users/:username", updateUser);

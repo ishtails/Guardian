@@ -18,6 +18,13 @@ export const studentTable = async (req, res) => {
       outingFilters.penalty = deadline;
     }
 
+    if (startDate && endDate) {
+      outingFilters.outTime = {
+        $gte: moment(startDate).toDate(),
+        $lt: moment(endDate).add(1, 'day').toDate(),
+      }
+    }
+
     const allOutings = await outings.find(outingFilters);
     let outingData = [];
 
