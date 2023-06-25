@@ -18,9 +18,9 @@ const outingSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
-    penalty: {
+    lateBy: {
       type: Number,
-      default: null,
+      default: 0,
     },
     isOpen: {
       type: Boolean,

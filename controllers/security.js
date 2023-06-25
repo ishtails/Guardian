@@ -1,4 +1,4 @@
-import { penaltyCalc } from "../middlewares/middlewares.js";
+import moment from "moment";
 import outings from "../models/outingModel.js";
 import users from "../models/userModel.js";
 
@@ -8,7 +8,13 @@ export const studentOnSearch = async (req, res) => {
     const { key } = req.query;
     const regexKey = new RegExp(key, "i");
 
-    const user = await users.find({ $or:[{username: regexKey}, {name: regexKey}] }, {_id:0, username:1, name:1}).sort({name:1}).limit(5);
+    const user = await users
+      .find(
+        { $or: [{ username: regexKey }, { name: regexKey }] },
+        { _id: 0, username: 1, name: 1 }
+      )
+      .sort({ name: 1 })
+      .limit(5);
     res.status(200).send(user);
   } catch (error) {
     res.status(500).send(error);
@@ -56,9 +62,18 @@ export const closeGateEntry = async (req, res) => {
       return res.status(404).send("No open entries for this user!");
     }
 
-    result.inTime = new Date();
     result.isOpen = false;
-    result.penalty = penaltyCalc(result.outTime, result.inTime);
+    result.inTime = new Date();
+
+    // //Late (in minutes) calculation
+    const outDate = moment(result.outTime).format("YYYY-MM-DD");
+    const deadlineTime = moment(
+      `${outDate} "22:00:00"`,
+      "YYYY-MM-DD HH:mm:ss"
+    ).toDate();
+    const lateInMinutes = moment(result.inTime).diff(moment(deadlineTime), "minutes");
+    result.lateBy = lateInMinutes;
+    
     await result.save();
 
     res.status(200).send("Entry closed successfully!");

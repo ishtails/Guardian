@@ -33,28 +33,3 @@ export const verifyOutingChecks = (req, res, next) => {
     return res.status(403).send("Location verification failed!");
   }
 };
-
-//Deadline Penalty
-export const penaltyCalc = (outTime, inTime) => {
-  const outDate = moment(outTime).format("YYYY-MM-DD");
-  const deadline = moment(
-    `${outDate} "22:00:00"`,
-    "YYYY-MM-DD HH:mm:ss"
-  ).toDate();
-  const lateInMinutes = moment(inTime).diff(moment(deadline), "minutes");
-
-  let penalty = 0;
-  if (lateInMinutes > 0 && lateInMinutes < 1 * 60) {
-    penalty = 10;
-  }
-
-  if (lateInMinutes > 1 * 60 && lateInMinutes < 1 * 60) {
-    penalty = 11;
-  }
-
-  if (lateInMinutes > 2 * 60) {
-    penalty = 12;
-  }
-
-  return penalty;
-};
