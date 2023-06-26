@@ -27,7 +27,7 @@ router.get("/outings", getOutings);
 router.get('/logout',requireAuth, logOut);
 
 // STUDENTS
-router.post("/student/register", generateOTP, sendEmail, verifyOTP, registerStudent); //WIP
+router.post("/register", generateOTP, sendEmail, verifyOTP, registerStudent); //WIP
 router.post("/student/exit-request", requireAuth, verifyOutingChecks, openGateEntry);
 router.get("/student/outing-status", requireAuth, isOutside);
 
