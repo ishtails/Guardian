@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { verifyOutingChecks, requireAuth, generateOTP, sendEmail, verifyOTP } from "../middlewares/middlewares.js";
+import { verifyOutingChecks, requireAuth, sendOTP, sendMail, verifyOTP } from "../middlewares/middlewares.js";
 import {
   registerStudent,
   getCurrentUser,
@@ -36,6 +36,7 @@ router.get("/search", searchStudents);
 router.get("/security/close-entry/:username", closeGateEntry);
 
 // TESTING
-router.post("/send-email", sendEmail);
+router.post("/send-OTP", sendOTP);
+router.post("/verifyOTP", verifyOTP);
 
 export default router;

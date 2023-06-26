@@ -4,7 +4,8 @@ import moment from "moment";
 import nodemailer from "nodemailer";
 import fs from "fs";
 import path from "path";
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from "url";
+import otpGenerator from "otp-generator";
 
 // Check Session
 export const requireAuth = (req, res, next) => {
@@ -42,26 +43,9 @@ export const verifyOutingChecks = (req, res, next) => {
 };
 
 // OTP Generation
-export const generateOTP = (req, res, next) => {
-  next();
-};
-
-// OTP Verification
-export const verifyOTP = (req, res, next) => {
-  next();
-};
-
-// Send Email
-export const sendEmail = async (req, res) => {
+export const sendOTP = async (req, res, next) => {
   try {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "ishtails@gmail.com",
-        pass: process.env.GMAIL_PASS,
-      },
-    });
-
+    //Institute Email Validation
     const emailSchema = Joi.object({
       email: Joi.string()
         .email()
@@ -74,25 +58,56 @@ export const sendEmail = async (req, res) => {
           }
         }, "Custom Domain Validation"),
     });
-
     await emailSchema.validateAsync(req.body);
-    const { email } = req.body;
-    const otp = 123456;
 
+    //Generate OTP
+    const otp = otpGenerator.generate(6, {
+      upperCaseAlphabets: false,
+      lowerCaseAlphabets: false,
+      specialChars: false,
+    });
+
+    //load OTP Email template
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
-    const template = fs.readFileSync(path.join(__dirname, '../others/otpTemplate.html'), "utf-8");
-    const emailTemplate = template.replace("{{otp}}", otp);
+    const otpTemplate = fs
+      .readFileSync(path.join(__dirname, "../others/otpTemplate.html"), "utf-8")
+      .replace("{{otp}}", otp);
 
+    //Configure options for NodeMailer
     const mailOptions = {
       from: "ishtails@gmail.com",
-      to: email,
-      subject: "Guardian - Gate Entry / Exit System",
-      html: emailTemplate,
+      to: req.body.email,
+      subject: "Guardian - OTP Verification",
+      html: otpTemplate,
     };
 
-    const info = await transporter.sendMail(mailOptions);
-    res.status(200).send(info);
+    const result = await sendMail(mailOptions);
+    res.send(result);
+
   } catch (error) {
     res.status(500).json({ message: "ERROR: " + error });
+  }
+};
+
+// OTP Verification
+export const verifyOTP = (req, res, next) => {
+  next();
+};
+
+// Send Email
+export const sendMail = async (mailOptions) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "ishtails@gmail.com",
+        pass: process.env.GMAIL_APP_PASS,
+      },
+    });
+
+    const info = await transporter.sendMail(mailOptions);
+    return info;
+  } catch (error) {
+    return { message: "ERROR: " + error };
   }
 };
