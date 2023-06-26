@@ -2,6 +2,9 @@ import geolib from "geolib";
 import Joi from "joi";
 import moment from "moment";
 import nodemailer from "nodemailer";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from 'url';
 
 // Check Session
 export const requireAuth = (req, res, next) => {
@@ -76,23 +79,20 @@ export const sendEmail = async (req, res) => {
     const { email } = req.body;
     const otp = 123456;
 
+    const __dirname = path.dirname(fileURLToPath(import.meta.url));
+    const template = fs.readFileSync(path.join(__dirname, '../others/otpTemplate.html'), "utf-8");
+    const emailTemplate = template.replace("{{otp}}", otp);
+
     const mailOptions = {
       from: "ishtails@gmail.com",
       to: email,
       subject: "Guardian - Gate Entry / Exit System",
-      html: `
-      <h1>Email Verification</h1>
-      <h3>Hello there,</h3>
-      <p>Your One-Time Password (OTP) for verification is: <strong>${otp}</strong></p>
-      <p>Please enter this OTP to complete the verification process.</p>
-      <p>If you did not request this verification, you can safely ignore this email.</p>
-      <p>Thank you!</p>
-    `,
+      html: emailTemplate,
     };
 
     const info = await transporter.sendMail(mailOptions);
     res.status(200).send(info);
   } catch (error) {
-    res.status(500).json({message: "ERROR: " + error});
+    res.status(500).json({ message: "ERROR: " + error });
   }
 };
