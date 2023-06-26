@@ -27,12 +27,15 @@ router.get("/outings", getOutings);
 router.get('/logout',requireAuth, logOut);
 
 // STUDENTS
-router.post("/register", generateOTP, sendEmail, verifyOTP, registerStudent); //WIP
+router.post("/register", registerStudent);
 router.post("/student/exit-request", requireAuth, verifyOutingChecks, openGateEntry);
 router.get("/student/outing-status", requireAuth, isOutside);
 
 // ADMIN & SECURITY
 router.get("/search", searchStudents); 
 router.get("/security/close-entry/:username", closeGateEntry);
+
+// TESTING
+router.post("/send-email", sendEmail);
 
 export default router;
