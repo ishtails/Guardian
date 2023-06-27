@@ -1,13 +1,12 @@
 import users from "../models/userModel.js";
 import bcrypt from "bcrypt";
-import Joi from "joi";
-import { redisClient } from "../server.js";
-import { revokeUserSessions } from "../helpers/helpers.js";
 import fs from "fs";
 import path from "path";
-import { fileURLToPath } from "url";
+import Joi from "joi";
 import otpGenerator from "otp-generator";
-import { sendMail } from "./helpers.js";
+import { fileURLToPath } from "url";
+import { redisClient } from "../server.js";
+import { revokeUserSessions, sendMail } from "../helpers/helpers.js";
 
 // Login User
 export const loginUser = async (req, res) => {
@@ -110,11 +109,9 @@ export const sendOTP = async (req, res) => {
       res.status(400).json({ error: "No Email Provided!" });
     }
 
-    //load OTP Email template
-    const __dirname = path.dirname(fileURLToPath(import.meta.url));
-    const otpTemplate = fs
-      .readFileSync(path.join(__dirname, "../others/otpTemplate.html"), "utf-8")
-      .replace("{{otp}}", otp);
+    if(req.session.username){
+      res.status(403).json({ error: "Already Logged in!" });
+    }
 
     //Generate & Store OTP in redis
     const otp = otpGenerator.generate(6, {
@@ -122,6 +119,12 @@ export const sendOTP = async (req, res) => {
       lowerCaseAlphabets: false,
       specialChars: false,
     });
+
+    //load OTP Email template
+    const __dirname = path.dirname(fileURLToPath(import.meta.url));
+    const otpTemplate = fs
+      .readFileSync(path.join(__dirname, "../others/otpTemplate.html"), "utf-8")
+      .replace("{{otp}}", otp);
 
     //NodeMailer
     const mailOptions = {
@@ -147,12 +150,16 @@ export const sendOTP = async (req, res) => {
 // OTP Verification
 export const verifyOTP = async (req, res) => {
   try {
+    if(req.session.username){
+      return res.status(403).send("Already Logged in!");
+    }
+
     const userEnteredOTP = req.body.otp;
     const storedOTP = req.session.otp;
     const storedOTPExpiry = req.session.otpExpiry;
 
-    if (!storedOTP || !storedOTPExpiry) {
-      return res.status(401).send("No OTP generated!");
+    if (!req.session.otp || !req.session.otpExpiry || !req.session.email) {
+      return res.status(400).send("No OTP generated!");
     }
 
     if (Date.now() > storedOTPExpiry) {
@@ -244,16 +251,18 @@ export const registerStudent = async (req, res) => {
 // Reset Password
 export const resetPassword = async (req, res) => {
   try {
-    let id = "";
+    let id = null;
     if (req.session.username) {
       id = req.session.username;
     } else {
       id = req.session.email;
     }
 
-    if (id === "") {
-      res.status(400).send({ error: "No username or email active session!" });
+    if (!id) {
+      return res.status(400).send({ error: "No login or OTP based temp active session!" });
     }
+
+    console.log(id)
 
     const { currentPassword, newPassword } = req.body;
 
@@ -270,8 +279,14 @@ export const resetPassword = async (req, res) => {
       currentPassword,
       user.password
     );
+
     if (!passwordCorrect) {
       return res.status(400).send("Current Password doesn't match!");
+    }
+
+    // Same Password Check
+    if(currentPassword === newPassword){
+      return res.status(400).send({ error: "Old & new password cannot be same" });
     }
 
     //newPassword Validation

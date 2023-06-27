@@ -1,25 +1,63 @@
 {
     "client": "Thunder Client",
     "collectionName": "Guardian",
-    "dateExported": "2023-06-27T10:47:21.380Z",
+    "dateExported": "2023-06-27T20:51:14.599Z",
     "version": "1.1",
     "folders": [],
     "requests": [
         {
-            "_id": "b8f23ecc-5ec2-494e-8dac-ea2fb76f9a88",
+            "_id": "fe0a9668-d9b8-4266-a311-1102ab44909d",
             "colId": "130a0d35-e850-4272-94c7-536e70449844",
             "containerId": "",
-            "name": "generateOTP",
-            "url": "http://localhost:8000/api/send-otp",
+            "name": "loginUser",
+            "url": "http://localhost:8000/api/login",
             "method": "POST",
-            "sortNum": 1250,
-            "created": "2023-06-26T07:10:24.696Z",
-            "modified": "2023-06-27T07:30:17.226Z",
+            "sortNum": 625,
+            "created": "2023-06-25T19:56:48.288Z",
+            "modified": "2023-06-27T20:48:36.980Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"email\": \"bcs_2021076@iiitm.ac.in\"\n}",
+                "raw": "{\n  \"id\": \"bcs_2021035@iiitm.ac.in\",\n  \"password\": \"kartik@123\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "7f2e4939-1338-4827-b740-241dfab246b0",
+            "colId": "130a0d35-e850-4272-94c7-536e70449844",
+            "containerId": "",
+            "name": "isRegistered",
+            "url": "http://localhost:8000/api/is-registered",
+            "method": "POST",
+            "sortNum": 937.5,
+            "created": "2023-06-27T09:40:12.034Z",
+            "modified": "2023-06-27T20:41:40.597Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"bcs_2021035@iiitm.ac.in\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "b8f23ecc-5ec2-494e-8dac-ea2fb76f9a88",
+            "colId": "130a0d35-e850-4272-94c7-536e70449844",
+            "containerId": "",
+            "name": "sendOTP",
+            "url": "http://localhost:8000/api/send-otp",
+            "method": "POST",
+            "sortNum": 1250,
+            "created": "2023-06-26T07:10:24.696Z",
+            "modified": "2023-06-27T20:35:38.218Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"bcs_2021035@iiitm.ac.in\"\n}",
                 "form": []
             },
             "tests": []
@@ -33,12 +71,12 @@
             "method": "POST",
             "sortNum": 1875,
             "created": "2023-06-26T19:29:34.656Z",
-            "modified": "2023-06-27T07:30:42.889Z",
+            "modified": "2023-06-27T20:41:28.997Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"otp\":\"777908\"\n}",
+                "raw": "{\n  \"otp\":\"858041\"\n}",
                 "form": []
             },
             "tests": []
@@ -47,12 +85,12 @@
             "_id": "3b6d8a6f-1561-4552-a595-92cd3311726d",
             "colId": "130a0d35-e850-4272-94c7-536e70449844",
             "containerId": "",
-            "name": "registerUser",
-            "url": "http://localhost:8000/api/register",
+            "name": "registerStudent",
+            "url": "http://localhost:8000/api/register-student",
             "method": "POST",
             "sortNum": 2500,
             "created": "2023-06-25T19:56:31.864Z",
-            "modified": "2023-06-27T07:30:53.512Z",
+            "modified": "2023-06-27T20:41:57.981Z",
             "headers": [],
             "params": [
                 {
@@ -70,94 +108,28 @@
             ],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"password\": \"vyshnav@123\"\n}",
+                "raw": "{\n  \"password\": \"kartik@123\"\n}",
                 "form": []
             },
             "tests": []
         },
         {
-            "_id": "34938c18-0703-4500-b12a-052532ca0155",
+            "_id": "526d02c4-f120-47b3-be49-ed814585cce2",
             "colId": "130a0d35-e850-4272-94c7-536e70449844",
             "containerId": "",
-            "name": "updateUser",
-            "url": "http://localhost:8000/api/update-profile",
-            "method": "PATCH",
-            "sortNum": 3750,
-            "created": "2023-06-25T19:56:41.944Z",
-            "modified": "2023-06-27T07:31:33.542Z",
-            "headers": [],
-            "params": [],
-            "body": {
-                "type": "json",
-                "raw": "{\n  \"room\":\"263\",\n  \"name\": \"Vysh\",\n  \"hostel\": \"BH1\",\n  \"mobile\": \"8129462042\"\n}",
-                "form": []
-            },
-            "tests": []
-        },
-        {
-            "_id": "fe0a9668-d9b8-4266-a311-1102ab44909d",
-            "colId": "130a0d35-e850-4272-94c7-536e70449844",
-            "containerId": "",
-            "name": "login",
-            "url": "http://localhost:8000/api/login",
+            "name": "resetPassword",
+            "url": "http://localhost:8000/api/reset-password",
             "method": "POST",
-            "sortNum": 5000,
-            "created": "2023-06-25T19:56:48.288Z",
-            "modified": "2023-06-27T10:13:02.083Z",
+            "sortNum": 3125,
+            "created": "2023-06-27T10:09:11.192Z",
+            "modified": "2023-06-27T20:48:20.847Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"id\": \"bcs_2021012@iiitm.ac.in\",\n  \"password\": \"aneeka@123\"\n}",
+                "raw": "{\n  \"currentPassword\": \"kartik@1234\",\n  \"newPassword\": \"kartik@123\"\n}",
                 "form": []
             },
-            "tests": []
-        },
-        {
-            "_id": "b098bcca-5aa6-48ea-95bf-c8f6fc0832eb",
-            "colId": "130a0d35-e850-4272-94c7-536e70449844",
-            "containerId": "",
-            "name": "logOut",
-            "url": "http://localhost:8000/api/logout",
-            "method": "GET",
-            "sortNum": 7500,
-            "created": "2023-06-25T19:56:39.040Z",
-            "modified": "2023-06-26T20:17:56.286Z",
-            "headers": [],
-            "params": [],
-            "tests": []
-        },
-        {
-            "_id": "dd00ab8c-6c64-4550-aaf0-403e2729e174",
-            "colId": "130a0d35-e850-4272-94c7-536e70449844",
-            "containerId": "",
-            "name": "openEntry",
-            "url": "http://localhost:8000/api/student/exit-request",
-            "method": "POST",
-            "sortNum": 8125,
-            "created": "2023-06-25T19:56:24.624Z",
-            "modified": "2023-06-26T20:29:18.133Z",
-            "headers": [],
-            "params": [],
-            "body": {
-                "type": "json",
-                "raw": "{\n  \"reason\":\"Going to Market\",\n  \"latitude\": \"26.250106\", \n  \"longitude\": \"78.17652\"\n}",
-                "form": []
-            },
-            "tests": []
-        },
-        {
-            "_id": "624cad8a-542d-4df2-aed9-786d43eabbc5",
-            "colId": "130a0d35-e850-4272-94c7-536e70449844",
-            "containerId": "",
-            "name": "closeEntry",
-            "url": "http://localhost:8000/api/security/close-entry/bcs_2021012",
-            "method": "GET",
-            "sortNum": 8437.5,
-            "created": "2023-06-25T19:56:28.640Z",
-            "modified": "2023-06-27T06:12:42.265Z",
-            "headers": [],
-            "params": [],
             "tests": []
         },
         {
@@ -167,7 +139,7 @@
             "name": "getCurrentUser",
             "url": "http://localhost:8000/api/profile",
             "method": "GET",
-            "sortNum": 8750,
+            "sortNum": 3437.5,
             "created": "2023-06-25T19:56:45.016Z",
             "modified": "2023-06-27T06:13:04.542Z",
             "headers": [],
@@ -181,9 +153,9 @@
             "name": "getOutings",
             "url": "http://localhost:8000/api/outings",
             "method": "GET",
-            "sortNum": 9375,
+            "sortNum": 3593.8,
             "created": "2023-06-25T19:56:35.016Z",
-            "modified": "2023-06-26T20:29:09.725Z",
+            "modified": "2023-06-27T20:48:51.496Z",
             "headers": [
                 {
                     "name": "Accept",
@@ -237,78 +209,88 @@
             "tests": []
         },
         {
+            "_id": "34938c18-0703-4500-b12a-052532ca0155",
+            "colId": "130a0d35-e850-4272-94c7-536e70449844",
+            "containerId": "",
+            "name": "updateUser",
+            "url": "http://localhost:8000/api/update-profile",
+            "method": "PATCH",
+            "sortNum": 3750,
+            "created": "2023-06-25T19:56:41.944Z",
+            "modified": "2023-06-27T20:49:32.459Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"room\":\"340\",\n  \"name\": \"Kartikay Tiwari\",\n  \"hostel\": \"BH1\",\n  \"mobile\": \"7905934905\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "b098bcca-5aa6-48ea-95bf-c8f6fc0832eb",
+            "colId": "130a0d35-e850-4272-94c7-536e70449844",
+            "containerId": "",
+            "name": "logOut",
+            "url": "http://localhost:8000/api/logout",
+            "method": "GET",
+            "sortNum": 7500,
+            "created": "2023-06-25T19:56:39.040Z",
+            "modified": "2023-06-26T20:17:56.286Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
             "_id": "56c46b1c-c816-4238-b90a-0d8560f20cf7",
             "colId": "130a0d35-e850-4272-94c7-536e70449844",
             "containerId": "",
-            "name": "search",
-            "url": "http://localhost:8000/api/search?key=bcs_2021035",
+            "name": "searchStudents",
+            "url": "http://localhost:8000/api/search",
             "method": "GET",
-            "sortNum": 10000,
+            "sortNum": 7812.5,
             "created": "2023-06-25T19:56:15.248Z",
-            "modified": "2023-06-27T06:13:38.183Z",
+            "modified": "2023-06-27T20:50:44.390Z",
             "headers": [],
             "params": [
                 {
                     "name": "key",
                     "value": "bcs_2021035",
+                    "isDisabled": true,
                     "isPath": false
                 }
             ],
             "tests": []
         },
         {
-            "_id": "7f2e4939-1338-4827-b740-241dfab246b0",
+            "_id": "624cad8a-542d-4df2-aed9-786d43eabbc5",
             "colId": "130a0d35-e850-4272-94c7-536e70449844",
             "containerId": "",
-            "name": "isRegistered",
-            "url": "http://localhost:8000/api/is-registered",
-            "method": "POST",
-            "sortNum": 15000,
-            "created": "2023-06-27T09:40:12.034Z",
-            "modified": "2023-06-27T09:43:41.753Z",
+            "name": "closeGateEntry",
+            "url": "http://localhost:8000/api/security/close-entry/bcs_2021012",
+            "method": "GET",
+            "sortNum": 7968.8,
+            "created": "2023-06-25T19:56:28.640Z",
+            "modified": "2023-06-27T06:12:42.265Z",
             "headers": [],
             "params": [],
-            "body": {
-                "type": "json",
-                "raw": "{\n  \"email\": \"pks@iiitm.ac.in\"\n}",
-                "form": []
-            },
             "tests": []
         },
         {
-            "_id": "526d02c4-f120-47b3-be49-ed814585cce2",
+            "_id": "dd00ab8c-6c64-4550-aaf0-403e2729e174",
             "colId": "130a0d35-e850-4272-94c7-536e70449844",
             "containerId": "",
-            "name": "resetPassword",
-            "url": "http://localhost:8000/api/reset-password",
+            "name": "openGateEntry",
+            "url": "http://localhost:8000/api/student/exit-request",
             "method": "POST",
-            "sortNum": 17500,
-            "created": "2023-06-27T10:09:11.192Z",
-            "modified": "2023-06-27T10:16:30.591Z",
+            "sortNum": 8125,
+            "created": "2023-06-25T19:56:24.624Z",
+            "modified": "2023-06-26T20:29:18.133Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"currentPassword\": \"kartik@123\",\n  \"newPassword\": \"12345678@\"\n}",
-                "form": []
-            },
-            "tests": []
-        },
-        {
-            "_id": "2dbeaac4-a001-4559-97c2-5517efa9360f",
-            "colId": "130a0d35-e850-4272-94c7-536e70449844",
-            "containerId": "",
-            "name": "forgotPassword",
-            "url": "http://localhost:8000/api/forgot-password",
-            "method": "POST",
-            "sortNum": 18750,
-            "created": "2023-06-27T10:46:46.547Z",
-            "modified": "2023-06-27T10:47:13.251Z",
-            "headers": [],
-            "params": [],
-            "body": {
-                "type": "json",
-                "raw": "{\n  \"currentPassword\": \"kartik@123\",\n  \"newPassword\": \"12345678\"\n}",
+                "raw": "{\n  \"reason\":\"Going to Market\",\n  \"latitude\": \"26.250106\", \n  \"longitude\": \"78.17652\"\n}",
                 "form": []
             },
             "tests": []
