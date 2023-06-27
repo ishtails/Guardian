@@ -44,6 +44,7 @@ app.use(
     },
   })
 );
+export { redisClient };
 
 // Database Connenction
 mongoose
