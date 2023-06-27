@@ -61,9 +61,9 @@ mongoose
 
 // Configure Cloudinary
 cloudinary.config({
-  cloud_name: CLOUDINARY_NAME,
-  api_key: CLOUDINARY_APIKEY,
-  api_secret: CLOUDINARY_APISECRET,
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_APIKEY,
+  api_secret: process.env.CLOUDINARY_APISECRET,
 });
 
 // Root Route
