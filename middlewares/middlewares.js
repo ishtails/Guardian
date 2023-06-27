@@ -46,19 +46,9 @@ export const verifyOutingChecks = (req, res, next) => {
 // OTP Generation
 export const sendOTP = async (req, res) => {
   try {
-    //Generate & Store OTP in redis
-    const otp = otpGenerator.generate(6, {
-      upperCaseAlphabets: false,
-      lowerCaseAlphabets: false,
-      specialChars: false,
-    });
-
-    if (req.body.email) {
-      req.session.email = req.body.email;
+    if (!req.body.email) {
+      res.status(400).json({ error: "No Email Provided!" });
     }
-
-    req.session.otp = otp;
-    req.session.otpExpiry = Date.now() + 300000; //5 Minutes from now
 
     //load OTP Email template
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -66,7 +56,14 @@ export const sendOTP = async (req, res) => {
       .readFileSync(path.join(__dirname, "../others/otpTemplate.html"), "utf-8")
       .replace("{{otp}}", otp);
 
-    //Configure options for NodeMailer
+    //Generate & Store OTP in redis
+    const otp = otpGenerator.generate(6, {
+      upperCaseAlphabets: false,
+      lowerCaseAlphabets: false,
+      specialChars: false,
+    });
+
+    //NodeMailer
     const mailOptions = {
       from: "ishtails@gmail.com",
       to: req.body.email,
@@ -75,7 +72,13 @@ export const sendOTP = async (req, res) => {
     };
 
     const result = await sendMail(mailOptions);
-    return res.json({ message: "OTP Sent Successfully!", result });
+
+    // Store temporary information
+    req.session.otp = otp;
+    req.session.email = req.body.email;
+    req.session.otpExpiry = Date.now() + 300000; //5 Minutes from now
+
+    res.json({ message: "OTP Sent Successfully!", result });
   } catch (error) {
     res.status(500).json({ message: "ERROR: " + error });
   }
@@ -94,6 +97,7 @@ export const verifyOTP = async (req, res) => {
 
     if (Date.now() > storedOTPExpiry) {
       delete req.session.otp;
+      delete req.session.email;
       delete req.session.otpExpiry;
       return res.status(401).send("OTP expired!");
     }
@@ -102,7 +106,7 @@ export const verifyOTP = async (req, res) => {
       delete req.session.otp;
       delete req.session.otpExpiry;
       req.session.tempSessionExp = Date.now() + 300000; //5 Minutes from now
-      res.send("OTP Verified Successfully!");
+      return res.send("OTP Verified Successfully!");
     } else {
       return res.status(400).send("Wrong OTP!");
     }
@@ -129,7 +133,7 @@ export const sendMail = async (mailOptions) => {
   }
 };
 
-export const isRegistered = async (req, res, next) => {
+export const isRegistered = async (req, res) => {
   try {
     const email = req.body.email;
 
@@ -152,13 +156,13 @@ export const isRegistered = async (req, res, next) => {
     // isRegistered
     const user = await users.findOne({ email }, { _id: 0, username: 1 });
     if (user) {
-      res.status(200).send({  email, isRegistered: true });
+      res.status(200).send({ email, isRegistered: true });
     } else {
-      res.status(200).send({  email, isRegistered: false });
+      res.status(200).send({ email, isRegistered: false });
     }
   } catch (error) {
-    if(error.details){
-      return res.status(422).json(error.details)
+    if (error.details) {
+      return res.status(422).json(error.details);
     }
 
     return res.status(500).json("ERROR: " + error);
