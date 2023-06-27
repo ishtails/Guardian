@@ -117,25 +117,27 @@ export const logOut = (req, res) => {
   });
 };
 
-// Upload Image to Cloudinary
+// Functoin to Upload Image to Cloudinary
 const uploadImage = async (file) => {
   try {
-    const result = await cloudinary.v2.uploader.upload(file.path);
-
+    const result = await cloudinary.v2.uploader.upload(file, {
+      folder: "Guardian",
+    });
     const imageUrl = result.secure_url;
     return imageUrl;
   } catch (error) {
-    res.status(500).send("Failed to upload image to Cloudinary.");
+    return error;
   }
 };
 //Update User Details
 export const updateUser = (req, res) => {
   try {
-    const newObject = req.body;
-    const { name, mobile, hostel, room, idCard } = newObject;
+    // const newObject = req.body;
+    const { name, mobile, hostel, room, idCard } = req.body;
 
     const imageUrl = uploadImage(idCard);
     const updateFields = { name, mobile, hostel, room, imageUrl };
+    // const updateFields = { name, mobile, hostel, room, idCard };
 
     const username = req.session.username;
     users
