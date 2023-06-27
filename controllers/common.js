@@ -126,7 +126,9 @@ export const updateUser = (req, res) => {
   try {
     const newObject = req.body;
     const { name, mobile, hostel, room, idCard } = newObject;
-    const updateFields = { name, mobile, hostel, room, idCard };
+    
+    const imageUrl = uploadImage(idCard);
+    const updateFields = { name, mobile, hostel, room, imageUrl };
 
     const username = req.session.username;
     users
