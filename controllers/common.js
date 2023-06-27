@@ -104,6 +104,18 @@ export const loginUser = async (req, res) => {
     if (passwordCorrect) {
       req.session.username = user.username;
       req.session.role = user.role;
+
+      // Update active-sessions of user
+      redisClient.SADD(
+        `active-sessions:${user.username}`,
+        req.sessionID,
+        (err, result) => {
+          if (err) {
+            console.error("Error adding session to active sessions:", err);
+          }
+        }
+      );
+
       return res.status(200).json({
         username: user.username,
         role: user.role,
@@ -118,10 +130,22 @@ export const loginUser = async (req, res) => {
 };
 
 export const logOut = (req, res) => {
+  const { username } = req.session;
   req.session.destroy((err) => {
     if (err) {
       console.error("Error destroying session:", err);
     }
+
+    redisClient.SREM(
+      `active-sessions:${username}`,
+      req.sessionID,
+      (err, result) => {
+        if (err) {
+          console.error("Error removing session from active sessions:", err);
+        }
+      }
+    );
+
     res.clearCookie("sid");
     res.json({ message: "Logged out successfully" });
   });
@@ -261,19 +285,43 @@ export const getOutings = async (req, res) => {
 };
 
 //Revoke User Sessions
-export const RevokeUserSessions = async () => {};
+export const revokeUserSessions = async (username) => {
+  try {
+    const sessionIds = await redisClient.sMembers(`active-sessions:${username}`);
+    
+    for (const sessionId of sessionIds) {
+      await redisClient.DEL(`sess:${sessionId}`);
+      console.log(`Session destroyed: sess:${sessionId}`);
+    }
 
-// Forgot Password
-export const forgotPassword = async (req, res) => {};
+    await redisClient.DEL(`active-sessions:${username}`);
+    console.log(`Active sessions cleared for user ${username}`);
+  } catch (err) {
+    console.error('Error revoking sessions:', err);
+  }
+};
 
 // Reset Password
 export const resetPassword = async (req, res) => {
   try {
-    const { username } = req.session;
+    let id = "";
+    if (req.session.username) {
+      id = req.session.username;
+    } else {
+      id = req.session.email;
+    }
+
+    if (id === "") {
+      res.status(400).send({ error: "No username or email active session!" });
+    }
+
     const { currentPassword, newPassword } = req.body;
 
     // Match Current Password
-    const user = await users.findOne({ username }, { password: 1 });
+    const user = await users.findOne(
+      { $or: [{ username: id }, { email: id }] },
+      { password: 1, username: 1 }
+    );
     if (!user) {
       return res.status(404).send("Not registered!");
     }
@@ -297,7 +345,8 @@ export const resetPassword = async (req, res) => {
 
     await passwordSchema.validateAsync({ password: newPassword });
 
-    // Revoke all active user sessions??
+    // Revoke all active user sessions
+    revokeUserSessions(user.username);
 
     // Save new password to mongoDB
     const newHash = await bcrypt.hash(newPassword, 15);
@@ -308,7 +357,7 @@ export const resetPassword = async (req, res) => {
     if (error.details) {
       return res.status(422).json(error);
     }
-    
+
     res.status(500).json({ message: "ERROR RESETTING PASSWORD", error });
   }
 };
