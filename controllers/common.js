@@ -4,6 +4,16 @@ import bcrypt from "bcrypt";
 import moment from "moment";
 import Joi from "joi";
 
+//Import Cloudinary
+const cloudinary = require("cloudinary").v2;
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_APIKEY,
+  api_secret: process.env.CLOUDINARY_APISECRET,
+});
+
 //Register user
 export const registerStudent = async (req, res) => {
   try {
@@ -126,7 +136,7 @@ export const updateUser = (req, res) => {
   try {
     const newObject = req.body;
     const { name, mobile, hostel, room, idCard } = newObject;
-    
+
     const imageUrl = uploadImage(idCard);
     const updateFields = { name, mobile, hostel, room, imageUrl };
 
@@ -202,7 +212,7 @@ export const getOutings = async (req, res) => {
       outingFilters.username = req.session.username;
     }
 
-    if(req.session.role === "security") {
+    if (req.session.role === "security") {
       outingFilters.outTime = {
         $gte: moment().subtract(1, "day").toDate(),
         $lt: moment().add(1, "day").toDate(),
