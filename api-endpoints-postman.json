@@ -1,47 +1,168 @@
 {
     "info": {
-        "_postman_id": "67f960f6-7dde-47aa-8541-5575d58e8299",
+        "_postman_id": "141e740c-5762-4596-8d00-caeb56fc9b08",
         "name": "Guardian",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
         "description": ""
     },
     "item": [
         {
-            "name": "search",
+            "name": "generateOTP",
             "request": {
-                "method": "GET",
+                "method": "POST",
                 "url": {
-                    "raw": "http://localhost:8000/api/search",
-                    "query": [
-                        {
-                            "key": "key",
-                            "value": "",
-                            "disabled": true
-                        }
-                    ],
-                    "variable": [],
+                    "raw": "http://localhost:8000/api/send-otp",
                     "path": [
                         "api",
-                        "search"
+                        "send-otp"
                     ],
                     "protocol": "http",
                     "host": [
                         "localhost"
                     ],
                     "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"email\": \"bcs_2021076@iiitm.ac.in\"\n}"
                 }
             }
         },
         {
-            "name": "isOutside",
+            "name": "verifyOTP",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/api/verify-otp",
+                    "path": [
+                        "api",
+                        "verify-otp"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"otp\":\"777908\"\n}"
+                }
+            }
+        },
+        {
+            "name": "registerUser",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/api/register",
+                    "query": [
+                        {
+                            "key": "hostel",
+                            "value": "BH1",
+                            "disabled": true
+                        },
+                        {
+                            "key": "name",
+                            "value": "Kartikay Tiwari",
+                            "disabled": true
+                        }
+                    ],
+                    "variable": [],
+                    "path": [
+                        "api",
+                        "register"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"password\": \"vyshnav@123\"\n}"
+                }
+            }
+        },
+        {
+            "name": "updateUser",
+            "request": {
+                "method": "PATCH",
+                "url": {
+                    "raw": "http://localhost:8000/api/update-profile",
+                    "path": [
+                        "api",
+                        "update-profile"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"room\":\"263\",\n  \"name\": \"Vysh\",\n  \"hostel\": \"BH1\",\n  \"mobile\": \"8129462042\"\n}"
+                }
+            }
+        },
+        {
+            "name": "login",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/api/login",
+                    "path": [
+                        "api",
+                        "login"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"id\": \"bcs_2021012@iiitm.ac.in\",\n  \"password\": \"aneeka@123\"\n}"
+                }
+            }
+        },
+        {
+            "name": "logOut",
             "request": {
                 "method": "GET",
                 "url": {
-                    "raw": "http://localhost:8000/api/student/outing-status",
+                    "raw": "http://localhost:8000/api/logout",
                     "path": [
                         "api",
-                        "student",
-                        "outing-status"
+                        "logout"
                     ],
                     "protocol": "http",
                     "host": [
@@ -84,12 +205,12 @@
             "request": {
                 "method": "GET",
                 "url": {
-                    "raw": "http://localhost:8000/api/security/close-entry/bcs_2021076",
+                    "raw": "http://localhost:8000/api/security/close-entry/bcs_2021012",
                     "path": [
                         "api",
                         "security",
                         "close-entry",
-                        "bcs_2021076"
+                        "bcs_2021012"
                     ],
                     "protocol": "http",
                     "host": [
@@ -100,43 +221,20 @@
             }
         },
         {
-            "name": "registerUser",
+            "name": "getCurrentUser",
             "request": {
-                "method": "POST",
+                "method": "GET",
                 "url": {
-                    "raw": "http://localhost:8000/api/student/register",
-                    "query": [
-                        {
-                            "key": "hostel",
-                            "value": "BH1",
-                            "disabled": true
-                        },
-                        {
-                            "key": "name",
-                            "value": "Kartikay Tiwari",
-                            "disabled": true
-                        }
-                    ],
-                    "variable": [],
+                    "raw": "http://localhost:8000/api/profile",
                     "path": [
                         "api",
-                        "student",
-                        "register"
+                        "profile"
                     ],
                     "protocol": "http",
                     "host": [
                         "localhost"
                     ],
                     "port": "8000"
-                },
-                "body": {
-                    "mode": "raw",
-                    "options": {
-                        "raw": {
-                            "language": "json"
-                        }
-                    },
-                    "raw": "{\n  \"email\": \"bcs_2021076@iiitm.ac.in\",\n  \"password\": \"vyshnav@123\"\n}"
                 }
             }
         },
@@ -204,86 +302,39 @@
             }
         },
         {
-            "name": "logOut",
+            "name": "search",
             "request": {
                 "method": "GET",
                 "url": {
-                    "raw": "http://localhost:8000/api/logout",
-                    "path": [
-                        "api",
-                        "logout"
-                    ],
-                    "protocol": "http",
-                    "host": [
-                        "localhost"
-                    ],
-                    "port": "8000"
-                }
-            }
-        },
-        {
-            "name": "updateUser",
-            "request": {
-                "method": "PATCH",
-                "url": {
-                    "raw": "http://localhost:8000/api/update-profile",
-                    "path": [
-                        "api",
-                        "update-profile"
-                    ],
-                    "protocol": "http",
-                    "host": [
-                        "localhost"
-                    ],
-                    "port": "8000"
-                },
-                "body": {
-                    "mode": "raw",
-                    "options": {
-                        "raw": {
-                            "language": "json"
+                    "raw": "http://localhost:8000/api/search?key=bcs_2021035",
+                    "query": [
+                        {
+                            "key": "key",
+                            "value": "bcs_2021035"
                         }
-                    },
-                    "raw": "{\n  \"room\":\"263\",\n  \"name\": \"Vyshnav Ajith\",\n  \"hostel\": \"BH1\",\n  \"mobile\": \"8129462042\"\n}"
-                }
-            }
-        },
-        {
-            "name": "getCurrentUser",
-            "request": {
-                "method": "GET",
-                "url": {
-                    "raw": "http://localhost:8000/api/profile",
+                    ],
+                    "variable": [],
                     "path": [
                         "api",
-                        "profile"
+                        "search"
                     ],
                     "protocol": "http",
                     "host": [
                         "localhost"
                     ],
                     "port": "8000"
-                },
-                "body": {
-                    "mode": "raw",
-                    "options": {
-                        "raw": {
-                            "language": "json"
-                        }
-                    },
-                    "raw": "{\n  \"id\": \"bcs_2021076\",\n  \"password\": \"vyshnav@123\"\n}"
                 }
             }
         },
         {
-            "name": "loginUser",
+            "name": "isRegistered",
             "request": {
                 "method": "POST",
                 "url": {
-                    "raw": "http://localhost:8000/api/login",
+                    "raw": "http://localhost:8000/api/is-registered",
                     "path": [
                         "api",
-                        "login"
+                        "is-registered"
                     ],
                     "protocol": "http",
                     "host": [
@@ -298,7 +349,80 @@
                             "language": "json"
                         }
                     },
-                    "raw": "{\n  \"id\": \"bcs_2021076\",\n  \"password\": \"vyshnav@123\"\n}"
+                    "raw": "{\n  \"email\": \"pks@iiitm.ac.in\"\n}"
+                }
+            }
+        },
+        {
+            "name": "resetPassword",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/api/reset-password",
+                    "path": [
+                        "api",
+                        "reset-password"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"currentPassword\": \"kartik@123\",\n  \"newPassword\": \"12345678@\"\n}"
+                }
+            }
+        },
+        {
+            "name": "forgotPassword",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/api/forgot-password",
+                    "path": [
+                        "api",
+                        "forgot-password"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"currentPassword\": \"kartik@123\",\n  \"newPassword\": \"12345678\"\n}"
+                }
+            }
+        },
+        {
+            "name": "isOutside",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:8000/api/student/outing-status",
+                    "path": [
+                        "api",
+                        "student",
+                        "outing-status"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
                 }
             }
         }

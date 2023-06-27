@@ -1,42 +1,47 @@
 import { Router } from "express";
-import { verifyOutingChecks, requireAuth, sendOTP, sendMail, verifyOTP } from "../middlewares/middlewares.js";
+import {
+  verifyOutingChecks,
+  requireAuth,
+  sendOTP,
+  verifyOTP,
+  isRegistered,
+} from "../middlewares/middlewares.js";
 import {
   registerStudent,
   getCurrentUser,
   updateUser,
   loginUser,
   getOutings,
-  logOut
+  logOut,
+  resetPassword,
+  forgotPassword,
 } from "../controllers/common.js";
-import {
-  searchStudents,
-  closeGateEntry,
-} from "../controllers/security.js";
-import {
-  isOutside,
-  openGateEntry,
-} from "../controllers/students.js";
+import { searchStudents, closeGateEntry } from "../controllers/security.js";
+import { isOutside, openGateEntry } from "../controllers/students.js";
 
 const router = Router();
 
-// COMMON
+// GENERAL
 router.post("/login", loginUser);
+router.post("/is-registered", isRegistered);
+router.post("/send-otp", sendOTP);
+router.post("/verify-otp", verifyOTP);
+router.post("/register-student", registerStudent);
+router.post("/forgot-password", forgotPassword); //WIP
+
+// GENERAL
 router.get("/profile", requireAuth, getCurrentUser);
-router.patch("/update-profile",requireAuth, updateUser);
-router.get("/outings", getOutings);
-router.get('/logout',requireAuth, logOut);
+router.get("/outings", requireAuth, getOutings);
+router.patch("/update-profile", requireAuth, updateUser);
+router.post("/reset-password", requireAuth, resetPassword); //WIP
+router.get("/logout", requireAuth, logOut);
 
 // STUDENTS
-router.post("/register", registerStudent);
 router.post("/student/exit-request", requireAuth, verifyOutingChecks, openGateEntry);
 router.get("/student/outing-status", requireAuth, isOutside);
 
 // ADMIN & SECURITY
-router.get("/search", searchStudents); 
-router.get("/security/close-entry/:username", closeGateEntry);
-
-// TESTING
-router.post("/send-OTP", sendOTP);
-router.post("/verifyOTP", verifyOTP);
+router.get("/search", requireAuth, searchStudents);
+router.get("/security/close-entry/:username", requireAuth, closeGateEntry);
 
 export default router;
