@@ -1,134 +1,9 @@
 import users from "../models/userModel.js";
 import outings from "../models/outingModel.js";
-import bcrypt from "bcrypt";
 import moment from "moment";
-import Joi from "joi";
 import { redisClient } from "../server.js";
 
-//Register user
-export const registerStudent = async (req, res) => {
-  try {
-    console.log(req.session);
-
-    const email = req.session.email;
-    const { password } = req.body;
-
-    if (req.session.username) {
-      return res.status(400).json({ error: "Already logged in!" });
-    }
-
-    if (
-      !req.session.tempSessionExp ||
-      Date.now() > req.session.tempSessionExp
-    ) {
-      return res.status(401).send("Session Expired!");
-    }
-
-    //Form Validation
-    const registerSchema = Joi.object({
-      email: Joi.string()
-        .email()
-        .required()
-        .custom((value, helpers) => {
-          if (value.endsWith("@iiitm.ac.in")) {
-            return value;
-          } else {
-            return helpers.error("any.invalid");
-          }
-        }, "Custom Domain Validation"),
-      password: Joi.string().pattern(
-        new RegExp(
-          "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[@$!%*#?&])[a-zA-Z0-9@$!%*#?&]{8,}$"
-        )
-      ),
-    });
-
-    await registerSchema.validateAsync({ email, password });
-
-    // Destructuring Values
-    const username = email.split("@")[0];
-    const role = "student";
-
-    // Hash password & save to mongoDB
-    const hash = await bcrypt.hash(password, 15);
-    const newUser = new users({ email, password: hash, role, username });
-    await newUser.save();
-
-    // Clear Temp Session
-    delete req.session.isRegistered;
-    delete req.session.tempSessionExp;
-    delete req.session.email;
-
-    res.json({ message: "Registered Successfully!", username, role });
-  } catch (error) {
-    if (error.details) {
-      return res
-        .status(422)
-        .json(error.details.map((detail) => detail.message).join(", "));
-    }
-
-    return res.status(500).json({ error: "ERROR: " + error });
-  }
-};
-
-// Login User
-export const loginUser = async (req, res) => {
-  try {
-    if (req.session.username) {
-      return res.status(400).send("Already logged in!");
-    }
-
-    //Form Validation
-    const registerSchema = Joi.object({
-      id: Joi.string().required(),
-      password: Joi.string().min(3).required(),
-    });
-
-    await registerSchema.validateAsync(req.body);
-
-    //Search in DB
-    const { id, password } = req.body;
-    const user = await users.findOne(
-      {
-        $or: [{ email: id }, { username: id }],
-      },
-      { password: 1, username: 1, role: 1, name: 1 }
-    );
-
-    if (!user) {
-      return res.status(404).send("Not registered!");
-    }
-
-    //Verify Password
-    const passwordCorrect = await bcrypt.compare(password, user.password);
-    if (passwordCorrect) {
-      req.session.username = user.username;
-      req.session.role = user.role;
-
-      // Update active-sessions of user
-      redisClient.SADD(
-        `active-sessions:${user.username}`,
-        req.sessionID,
-        (err, result) => {
-          if (err) {
-            console.error("Error adding session to active sessions:", err);
-          }
-        }
-      );
-
-      return res.status(200).json({
-        username: user.username,
-        role: user.role,
-        message: `Login Successful`,
-      });
-    } else {
-      return res.status(400).send("Wrong Password");
-    }
-  } catch (error) {
-    return res.status(500).send(error);
-  }
-};
-
+// Logout
 export const logOut = (req, res) => {
   const { username } = req.session;
   req.session.destroy((err) => {
@@ -170,7 +45,7 @@ export const updateUser = (req, res) => {
   }
 };
 
-// Get User
+// Get User Details
 export const getCurrentUser = async (req, res) => {
   try {
     const username = req.session.username;
@@ -194,7 +69,7 @@ export const getCurrentUser = async (req, res) => {
   }
 };
 
-//Get Outings
+// Get Outings
 export const getOutings = async (req, res) => {
   try {
     const { username, isLate, startDate, endDate, isOpen, reason } = req.query;
@@ -281,83 +156,5 @@ export const getOutings = async (req, res) => {
     res.status(200).send(studentOutingData);
   } catch (error) {
     res.status(500).send(error);
-  }
-};
-
-//Revoke User Sessions
-export const revokeUserSessions = async (username) => {
-  try {
-    const sessionIds = await redisClient.sMembers(`active-sessions:${username}`);
-    
-    for (const sessionId of sessionIds) {
-      await redisClient.DEL(`sess:${sessionId}`);
-      console.log(`Session destroyed: sess:${sessionId}`);
-    }
-
-    await redisClient.DEL(`active-sessions:${username}`);
-    console.log(`Active sessions cleared for user ${username}`);
-  } catch (err) {
-    console.error('Error revoking sessions:', err);
-  }
-};
-
-// Reset Password
-export const resetPassword = async (req, res) => {
-  try {
-    let id = "";
-    if (req.session.username) {
-      id = req.session.username;
-    } else {
-      id = req.session.email;
-    }
-
-    if (id === "") {
-      res.status(400).send({ error: "No username or email active session!" });
-    }
-
-    const { currentPassword, newPassword } = req.body;
-
-    // Match Current Password
-    const user = await users.findOne(
-      { $or: [{ username: id }, { email: id }] },
-      { password: 1, username: 1 }
-    );
-    if (!user) {
-      return res.status(404).send("Not registered!");
-    }
-
-    const passwordCorrect = await bcrypt.compare(
-      currentPassword,
-      user.password
-    );
-    if (!passwordCorrect) {
-      return res.status(400).send("Current Password doesn't match!");
-    }
-
-    //newPassword Validation
-    const passwordSchema = Joi.object({
-      password: Joi.string().pattern(
-        new RegExp(
-          "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[@$!%*#?&])[a-zA-Z0-9@$!%*#?&]{8,}$"
-        )
-      ),
-    });
-
-    await passwordSchema.validateAsync({ password: newPassword });
-
-    // Revoke all active user sessions
-    revokeUserSessions(user.username);
-
-    // Save new password to mongoDB
-    const newHash = await bcrypt.hash(newPassword, 15);
-    user.password = newHash;
-    await user.save();
-    res.send({ message: "Password Reset Successful!" });
-  } catch (error) {
-    if (error.details) {
-      return res.status(422).json(error);
-    }
-
-    res.status(500).json({ message: "ERROR RESETTING PASSWORD", error });
   }
 };
