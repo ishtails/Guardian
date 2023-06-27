@@ -3,12 +3,25 @@ import outings from "../models/outingModel.js";
 import bcrypt from "bcrypt";
 import moment from "moment";
 import Joi from "joi";
+import { redisClient } from "../server.js";
 
 //Register user
 export const registerStudent = async (req, res) => {
   try {
+    console.log(req.session);
+
+    const email = req.session.email;
+    const { password } = req.body;
+
     if (req.session.username) {
-      return res.status(400).json({ error: "You are logged in!" });
+      return res.status(400).json({ error: "Already logged in!" });
+    }
+
+    if (
+      !req.session.tempSessionExp ||
+      Date.now() > req.session.tempSessionExp
+    ) {
+      return res.status(401).send("Session Expired!");
     }
 
     //Form Validation
@@ -30,10 +43,9 @@ export const registerStudent = async (req, res) => {
       ),
     });
 
-    await registerSchema.validateAsync(req.body);
+    await registerSchema.validateAsync({ email, password });
 
     // Destructuring Values
-    const { email, password } = req.body;
     const username = email.split("@")[0];
     const role = "student";
 
@@ -41,6 +53,12 @@ export const registerStudent = async (req, res) => {
     const hash = await bcrypt.hash(password, 10);
     const newUser = new users({ email, password: hash, role, username });
     await newUser.save();
+
+    // Clear Temp Session
+    delete req.session.isRegistered;
+    delete req.session.tempSessionExp;
+    delete req.session.email;
+
     res.json({ message: "Registered Successfully!", username, role });
   } catch (error) {
     if (error.details) {
@@ -92,7 +110,7 @@ export const loginUser = async (req, res) => {
         message: `Login Successful`,
       });
     } else {
-      return res.status(400).send("Bad Credentials");
+      return res.status(400).send("Wrong Password");
     }
   } catch (error) {
     return res.status(500).send(error);
@@ -188,7 +206,7 @@ export const getOutings = async (req, res) => {
       outingFilters.username = req.session.username;
     }
 
-    if(req.session.role === "security") {
+    if (req.session.role === "security") {
       outingFilters.outTime = {
         $gte: moment().subtract(1, "day").toDate(),
         $lt: moment().add(1, "day").toDate(),
@@ -241,3 +259,57 @@ export const getOutings = async (req, res) => {
     res.status(500).send(error);
   }
 };
+
+//Destroy User Sessions
+export const destroyAllUserSessions = async () => {};
+
+// Forgot Password
+export const forgotPassword = async (req, res) => {};
+
+// Reset Password
+export const resetPassword = async (req, res) => {
+  try {
+    const { username, role } = req.session;
+    const { currentPassword, newPassword } = req.body;
+
+    // Match Current Password
+    const user = await users.findOne({ username }, { password: 1 });
+    if (!user) {
+      return res.status(404).send("Not registered!");
+    }
+
+    const passwordCorrect = await bcrypt.compare(
+      currentPassword,
+      user.password
+    );
+    if (!passwordCorrect) {
+      return res.status(400).send("Current Password doesn't match!");
+    }
+
+    //newPassword Validation
+    const passwordSchema = Joi.object({
+      password: Joi.string().pattern(
+        new RegExp(
+          "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[@$!%*#?&])[a-zA-Z0-9@$!%*#?&]{8,}$"
+        )
+      ),
+    });
+
+    await passwordSchema.validateAsync({ password: newPassword });
+
+    // Revoke all active user sessions??
+
+    // Save new password to mongoDB
+    const newHash = await bcrypt.hash(newPassword, 10);
+    user.password = newHash;
+    await user.save();
+    res.send({ message: "Password Reset Successful!" });
+  } catch (error) {
+    if (error.details) {
+      return res.status(422).json(error);
+    }
+    
+    res.status(500).json({ message: "ERROR RESETTING PASSWORD", error });
+  }
+};
+
