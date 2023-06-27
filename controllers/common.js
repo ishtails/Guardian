@@ -3,12 +3,10 @@ import outings from "../models/outingModel.js";
 import bcrypt from "bcrypt";
 import moment from "moment";
 import Joi from "joi";
-
-//Import Cloudinary
-import { v2 as cloudinary } from "cloudinary";
+import cloudinary from "cloudinary";
 
 // Configure Cloudinary
-cloudinary.config({
+cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_APIKEY,
   api_secret: process.env.CLOUDINARY_APISECRET,
@@ -122,7 +120,7 @@ export const logOut = (req, res) => {
 // Upload Image to Cloudinary
 const uploadImage = async (file) => {
   try {
-    const result = await cloudinary.uploader.upload(file.path);
+    const result = await cloudinary.v2.uploader.upload(file.path);
 
     const imageUrl = result.secure_url;
     return imageUrl;
