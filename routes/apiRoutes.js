@@ -14,7 +14,6 @@ import {
   getOutings,
   logOut,
   resetPassword,
-  forgotPassword,
 } from "../controllers/common.js";
 import { searchStudents, closeGateEntry } from "../controllers/security.js";
 import { isOutside, openGateEntry } from "../controllers/students.js";
@@ -27,13 +26,12 @@ router.post("/is-registered", isRegistered);
 router.post("/send-otp", sendOTP);
 router.post("/verify-otp", verifyOTP);
 router.post("/register-student", registerStudent);
-router.post("/forgot-password", forgotPassword); //WIP
 
 // GENERAL
 router.get("/profile", requireAuth, getCurrentUser);
 router.get("/outings", requireAuth, getOutings);
 router.patch("/update-profile", requireAuth, updateUser);
-router.post("/reset-password", requireAuth, resetPassword); //WIP
+router.post("/reset-password", requireAuth, resetPassword);
 router.get("/logout", requireAuth, logOut);
 
 // STUDENTS
