@@ -50,7 +50,7 @@ export const registerStudent = async (req, res) => {
     const role = "student";
 
     // Hash password & save to mongoDB
-    const hash = await bcrypt.hash(password, 10);
+    const hash = await bcrypt.hash(password, 15);
     const newUser = new users({ email, password: hash, role, username });
     await newUser.save();
 
@@ -260,8 +260,8 @@ export const getOutings = async (req, res) => {
   }
 };
 
-//Destroy User Sessions
-export const destroyAllUserSessions = async () => {};
+//Revoke User Sessions
+export const RevokeUserSessions = async () => {};
 
 // Forgot Password
 export const forgotPassword = async (req, res) => {};
@@ -269,7 +269,7 @@ export const forgotPassword = async (req, res) => {};
 // Reset Password
 export const resetPassword = async (req, res) => {
   try {
-    const { username, role } = req.session;
+    const { username } = req.session;
     const { currentPassword, newPassword } = req.body;
 
     // Match Current Password
@@ -300,7 +300,7 @@ export const resetPassword = async (req, res) => {
     // Revoke all active user sessions??
 
     // Save new password to mongoDB
-    const newHash = await bcrypt.hash(newPassword, 10);
+    const newHash = await bcrypt.hash(newPassword, 15);
     user.password = newHash;
     await user.save();
     res.send({ message: "Password Reset Successful!" });
@@ -312,4 +312,3 @@ export const resetPassword = async (req, res) => {
     res.status(500).json({ message: "ERROR RESETTING PASSWORD", error });
   }
 };
-
