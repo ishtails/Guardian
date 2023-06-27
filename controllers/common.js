@@ -5,7 +5,7 @@ import moment from "moment";
 import Joi from "joi";
 
 //Import Cloudinary
-const cloudinary = require("cloudinary").v2;
+import { v2 as cloudinary } from "cloudinary";
 
 // Configure Cloudinary
 cloudinary.config({
@@ -122,7 +122,6 @@ export const logOut = (req, res) => {
 // Upload Image to Cloudinary
 const uploadImage = async (file) => {
   try {
-    const { file } = req.body;
     const result = await cloudinary.uploader.upload(file.path);
 
     const imageUrl = result.secure_url;
