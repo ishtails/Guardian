@@ -17,7 +17,8 @@ const MONG_URI = process.env.MONG_URI;
 
 // Redis Initialization
 let redisClient = createClient();
-redisClient.connect()
+redisClient
+  .connect()
   .then(console.log("Connected to Redis Store"))
   .catch(console.error);
 
@@ -60,9 +61,9 @@ mongoose
 
 // Configure Cloudinary
 cloudinary.config({
-  cloud_name: 'your_cloud_name',
-  api_key: 'your_api_key',
-  api_secret: 'your_api_secret',
+  cloud_name: CLOUDINARY_NAME,
+  api_key: CLOUDINARY_APIKEY,
+  api_secret: CLOUDINARY_APISECRET,
 });
 
 // Root Route
