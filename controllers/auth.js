@@ -128,7 +128,7 @@ export const sendOTP = async (req, res) => {
 
     //NodeMailer
     const mailOptions = {
-      from: "ishtails@gmail.com",
+      from: process.env.GMAIL_ID,
       to: req.body.email,
       subject: "Guardian - OTP Verification",
       html: otpTemplate,
