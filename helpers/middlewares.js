@@ -4,7 +4,7 @@ import moment from "moment";
 // Check Session
 export const requireAuth = (req, res, next) => {
   if (!req.session.username) {
-    return res.status(401).json({error: "Unauthorized"});
+    return res.status(401).json({ error: "Not Logged In" });
   }
 
   next();
@@ -16,7 +16,9 @@ export const verifyOutingChecks = (req, res, next) => {
   const currentTime = moment().format("HH:mm");
 
   if (currentTime > "22:00" || currentTime < "05:00") {
-    return res.status(403).json({message: "Cannot go out, intime deadline exceeded!"});
+    return res
+      .status(403)
+      .json({ message: "Cannot go out, intime deadline exceeded!" });
   }
 
   // Check Location
@@ -33,12 +35,3 @@ export const verifyOutingChecks = (req, res, next) => {
     return res.status(403).send("Location verification failed!");
   }
 };
-
-// Send Email
-export const sendEmail = (req, res, next) => {next()}
-
-// OTP Generation
-export const generateOTP = (req, res, next) => {next()}
-
-// OTP Verification
-export const verifyOTP = (req, res, next) => {next()}

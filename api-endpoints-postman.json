@@ -1,13 +1,13 @@
 {
     "info": {
-        "_postman_id": "67f960f6-7dde-47aa-8541-5575d58e8299",
+        "_postman_id": "a6cce88a-a34a-41ba-939e-b6afc86c7e73",
         "name": "Guardian",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
         "description": ""
     },
     "item": [
         {
-            "name": "search",
+            "name": "searchStudents",
             "request": {
                 "method": "GET",
                 "url": {
@@ -15,7 +15,7 @@
                     "query": [
                         {
                             "key": "key",
-                            "value": "",
+                            "value": "bcs_2021035",
                             "disabled": true
                         }
                     ],
@@ -52,7 +52,7 @@
             }
         },
         {
-            "name": "openEntry",
+            "name": "openGateEntry",
             "request": {
                 "method": "POST",
                 "url": {
@@ -80,16 +80,16 @@
             }
         },
         {
-            "name": "closeEntry",
+            "name": "closeGateEntry",
             "request": {
                 "method": "GET",
                 "url": {
-                    "raw": "http://localhost:8000/api/security/close-entry/bcs_2021076",
+                    "raw": "http://localhost:8000/api/security/close-entry/bcs_2021012",
                     "path": [
                         "api",
                         "security",
                         "close-entry",
-                        "bcs_2021076"
+                        "bcs_2021012"
                     ],
                     "protocol": "http",
                     "host": [
@@ -100,11 +100,11 @@
             }
         },
         {
-            "name": "registerUser",
+            "name": "registerStudent",
             "request": {
                 "method": "POST",
                 "url": {
-                    "raw": "http://localhost:8000/api/student/register",
+                    "raw": "http://localhost:8000/api/register-student",
                     "query": [
                         {
                             "key": "hostel",
@@ -120,8 +120,7 @@
                     "variable": [],
                     "path": [
                         "api",
-                        "student",
-                        "register"
+                        "register-student"
                     ],
                     "protocol": "http",
                     "host": [
@@ -136,7 +135,7 @@
                             "language": "json"
                         }
                     },
-                    "raw": "{\n  \"email\": \"bcs_2021076@iiitm.ac.in\",\n  \"password\": \"vyshnav@123\"\n}"
+                    "raw": "{\n  \"password\": \"kartik@123\"\n}"
                 }
             }
         },
@@ -244,7 +243,7 @@
                             "language": "json"
                         }
                     },
-                    "raw": "{\n  \"room\":\"263\",\n  \"name\": \"Vyshnav Ajith\",\n  \"hostel\": \"BH1\",\n  \"mobile\": \"8129462042\"\n}"
+                    "raw": "{\n  \"room\":\"340\",\n  \"name\": \"Kartikay Tiwari\",\n  \"hostel\": \"BH1\",\n  \"mobile\": \"7905934905\"\n}"
                 }
             }
         },
@@ -263,15 +262,6 @@
                         "localhost"
                     ],
                     "port": "8000"
-                },
-                "body": {
-                    "mode": "raw",
-                    "options": {
-                        "raw": {
-                            "language": "json"
-                        }
-                    },
-                    "raw": "{\n  \"id\": \"bcs_2021076\",\n  \"password\": \"vyshnav@123\"\n}"
                 }
             }
         },
@@ -298,7 +288,115 @@
                             "language": "json"
                         }
                     },
-                    "raw": "{\n  \"id\": \"bcs_2021076\",\n  \"password\": \"vyshnav@123\"\n}"
+                    "raw": "{\n  \"id\": \"bcs_2021035@iiitm.ac.in\",\n  \"password\": \"kartik@123\"\n}"
+                }
+            }
+        },
+        {
+            "name": "sendOTP",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/api/send-otp",
+                    "path": [
+                        "api",
+                        "send-otp"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"email\": \"bcs_2021035@iiitm.ac.in\"\n}"
+                }
+            }
+        },
+        {
+            "name": "verifyOTP",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/api/verify-otp",
+                    "path": [
+                        "api",
+                        "verify-otp"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"otp\":\"858041\"\n}"
+                }
+            }
+        },
+        {
+            "name": "isRegistered",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/api/is-registered",
+                    "path": [
+                        "api",
+                        "is-registered"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"email\": \"bcs_2021035@iiitm.ac.in\"\n}"
+                }
+            }
+        },
+        {
+            "name": "resetPassword",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/api/reset-password",
+                    "path": [
+                        "api",
+                        "reset-password"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"currentPassword\": \"kartik@1234\",\n  \"newPassword\": \"kartik@123\"\n}"
                 }
             }
         }
