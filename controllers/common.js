@@ -1,8 +1,7 @@
 import users from "../models/userModel.js";
 import outings from "../models/outingModel.js";
-import bcrypt from "bcrypt";
 import moment from "moment";
-import Joi from "joi";
+import { redisClient } from "../server.js";
 import cloudinary from "cloudinary";
 
 // Configure Cloudinary
@@ -12,106 +11,24 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_APISECRET,
 });
 
-//Register user
-export const registerStudent = async (req, res) => {
-  try {
-    if (req.session.username) {
-      return res.status(400).json({ error: "You are logged in!" });
-    }
-
-    //Form Validation
-    const registerSchema = Joi.object({
-      email: Joi.string()
-        .email()
-        .required()
-        .custom((value, helpers) => {
-          if (value.endsWith("@iiitm.ac.in")) {
-            return value;
-          } else {
-            return helpers.error("any.invalid");
-          }
-        }, "Custom Domain Validation"),
-      password: Joi.string().pattern(
-        new RegExp(
-          "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[@$!%*#?&])[a-zA-Z0-9@$!%*#?&]{8,}$"
-        )
-      ),
-    });
-
-    await registerSchema.validateAsync(req.body);
-
-    // Destructuring Values
-    const { email, password } = req.body;
-    const username = email.split("@")[0];
-    const role = "student";
-
-    // Hash password & save to mongoDB
-    const hash = await bcrypt.hash(password, 10);
-    const newUser = new users({ email, password: hash, role, username });
-    await newUser.save();
-    res.json({ message: "Registered Successfully!", username, role });
-  } catch (error) {
-    if (error.details) {
-      return res
-        .status(422)
-        .json(error.details.map((detail) => detail.message).join(", "));
-    }
-
-    return res.status(500).json({ error: "ERROR: " + error });
-  }
-};
-
-// Login User
-export const loginUser = async (req, res) => {
-  try {
-    if (req.session.username) {
-      return res.status(400).send("Already logged in!");
-    }
-
-    //Form Validation
-    const registerSchema = Joi.object({
-      id: Joi.string().required(),
-      password: Joi.string().min(3).required(),
-    });
-
-    await registerSchema.validateAsync(req.body);
-
-    //Search in DB
-    const { id, password } = req.body;
-    const user = await users.findOne(
-      {
-        $or: [{ email: id }, { username: id }],
-      },
-      { password: 1, username: 1, role: 1, name: 1 }
-    );
-
-    if (!user) {
-      return res.status(404).send("Not registered!");
-    }
-
-    //Verify Password
-    const passwordCorrect = await bcrypt.compare(password, user.password);
-    if (passwordCorrect) {
-      req.session.username = user.username;
-      req.session.role = user.role;
-      return res.status(200).json({
-        username: user.username,
-        role: user.role,
-        message: `Login Successful`,
-      });
-    } else {
-      return res.status(400).send("Bad Credentials");
-    }
-  } catch (error) {
-    return res.status(500).send(error);
-  }
-};
-
+// Logout
 export const logOut = (req, res) => {
+  const { username } = req.session;
   req.session.destroy((err) => {
     if (err) {
       console.error("Error destroying session:", err);
     }
+
+    redisClient.SREM(
+      `active-sessions:${username}`,
+      req.sessionID,
+      (err, result) => {
+        if (err) {
+          console.error("Error removing session from active sessions:", err);
+        }
+      }
+    );
+
     res.clearCookie("sid");
     res.json({ message: "Logged out successfully" });
   });
@@ -129,6 +46,7 @@ const uploadImage = async (file) => {
     return error;
   }
 };
+
 //Update User Details
 export const updateUser = (req, res) => {
   try {
@@ -152,7 +70,7 @@ export const updateUser = (req, res) => {
   }
 };
 
-// Get User
+// Get User Details
 export const getCurrentUser = async (req, res) => {
   try {
     const username = req.session.username;
@@ -176,7 +94,7 @@ export const getCurrentUser = async (req, res) => {
   }
 };
 
-//Get Outings
+// Get Outings
 export const getOutings = async (req, res) => {
   try {
     const { username, isLate, startDate, endDate, isOpen, reason } = req.query;

@@ -16,10 +16,10 @@ const PORT = process.env.PORT;
 const MONG_URI = process.env.MONG_URI;
 
 // Redis Initialization
-let redisClient = createClient();
+const redisClient = createClient();
 redisClient
   .connect()
-  .then(console.log("Connected to Redis Store"))
+  .then(console.log("Connected to Redis Session Store"))
   .catch(console.error);
 
 // Middlewares
@@ -44,6 +44,7 @@ app.use(
     },
   })
 );
+export { redisClient };
 
 // Database Connenction
 mongoose
