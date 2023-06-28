@@ -2,6 +2,14 @@ import users from "../models/userModel.js";
 import outings from "../models/outingModel.js";
 import moment from "moment";
 import { redisClient } from "../server.js";
+import cloudinary from "cloudinary";
+
+// Configure Cloudinary
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_APIKEY,
+  api_secret: process.env.CLOUDINARY_APISECRET,
+});
 
 // Logout
 export const logOut = (req, res) => {
@@ -26,12 +34,28 @@ export const logOut = (req, res) => {
   });
 };
 
+// Functoin to Upload Image to Cloudinary
+const uploadImage = async (file) => {
+  try {
+    const result = await cloudinary.v2.uploader.upload(file, {
+      folder: "Guardian",
+    });
+    const imageUrl = result.secure_url;
+    return imageUrl;
+  } catch (error) {
+    return error;
+  }
+};
+
 //Update User Details
 export const updateUser = (req, res) => {
   try {
-    const newObject = req.body;
-    const { name, mobile, hostel, room } = newObject;
-    const updateFields = { name, mobile, hostel, room };
+    // const newObject = req.body;
+    const { name, mobile, hostel, room, idCard } = req.body;
+
+    const imageUrl = uploadImage(idCard);
+    const updateFields = { name, mobile, hostel, room, imageUrl };
+    // const updateFields = { name, mobile, hostel, room, idCard };
 
     const username = req.session.username;
     users

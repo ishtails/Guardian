@@ -60,6 +60,7 @@ mongoose
     console.log(err);
   });
 
+
 // Root Route
 app.get("/", (req, res) => {
   res.send("Server Home Page");
