@@ -24,6 +24,7 @@ BACKEND:
 - reset password flow - pass email as query --> check if email exists --> generate an OTP & send it to email --> take OTP as query and compare with generated one --> create reset session if OTP matches (once) --> PUT / PATCH new password taken as query
 
 - nodemailer & mailgen for sending emails (ethereal account for testing)
+
 ------------ DONE ------------
 
 - caching may be implemented to make loading outing data fast by using redis
