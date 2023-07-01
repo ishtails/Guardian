@@ -38,7 +38,7 @@ Follow these steps to install and run the Node Express app locally:
    ```
 
    NOTE: 
-   1. You need to install redis using bash (WSL on windows), and then run "redis-server" command on it to start redis in background (after every system reboot), for using this application.
+   1. You need to install redis using bash (WSL on windows), and then run "redis-server" command on it to start redis in background (after every system reboot), for using this application. [Guide](https://redis.io/docs/getting-started/installation/)
 
    2. You'll also need mongoDB community server installed on locally. ([Guide](https://www.mongodb.com/docs/manual/administration/install-community/))
 
