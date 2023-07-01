@@ -1,4 +1,5 @@
 # Links
+
 Documentation: [Click Here](https://docs.google.com/document/d/1icATDE41zBhdGM5qlPNgBdHJe0I8uJxtTujov9Cpqn4/edit?usp=sharing)<br/>
 UI Design (Figma): [Click Here](https://www.figma.com/file/k5eDd6Edq2NL3xGf4do5Ki/Guardian?type=design&node-id=0%3A1&t=Js4hdwCZioEZo3dU-1)<br/>
 Frontend Repo: [Click Here](https://github.com/ishtails/Guardian-Frontend)<br/>
@@ -36,11 +37,22 @@ Follow these steps to install and run the Node Express app locally:
    npm install
    ```
 
+   NOTE: 
+   1. You need to install redis using bash (WSL on windows), and then run "redis-server" command on it to start redis in background (after every system reboot), for using this application.
+
+   2. You'll also need mongoDB community server installed on locally. ([Guide](https://www.mongodb.com/docs/manual/administration/install-community/))
+
+   3. You'll need a client like Postman or Thunder Client (VSCode Extention) to test the API. Import the "api-endpoints-postman.json" file in postman to import all the routes in postman or "api-endpoints-thunder.json" in thunder if you prefer that
+
+
 4. Rename the `.env.template` file in the project to `.env` file and fill your local environment variable values. For Example
 
    ```
    PORT=8000
    MONGO_URL = mongodb://localhost:27017/Guardian
+   SESS_SECRET=12345678
+   GMAIL_ID= (Google email)
+   GMAIL_APP_PASS= (Google App Password from 2FA option)
    ```
 
    Note: Modify the values according to your needs.
