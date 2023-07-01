@@ -30,7 +30,6 @@ BACKEND:
 - caching may be implemented to make loading outing data fast by using redis
 - fakerjs for generating fake data for testing purposes
 
-
 FRONTEND:
 
 - create api.ts in frontend and create functions which send api calls to backend for all our needs using fetch/axios 
