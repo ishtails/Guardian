@@ -8,6 +8,7 @@ import apiRouter from "./routes/apiRoutes.js";
 import RedisStore from "connect-redis";
 import session from "express-session";
 import { createClient } from "redis";
+import { rateLimit } from "express-rate-limit";
 
 // Const declarations
 dotenv.config();
@@ -22,11 +23,21 @@ redisClient
   .then(console.log("Connected to Redis Session Store"))
   .catch(console.error);
 
+// Rate Limiter
+const limiter = rateLimit({
+	windowMs: 60 * 1000, 
+  max: 20,
+  message: 'Too many requests. Please try again later.',
+	standardHeaders: true, 
+	legacyHeaders: false, 
+})
+
 // Middlewares
 app.use(express.json());
 app.use(cors());
 app.use(morgan("tiny"));
 app.use(helmet());
+app.use(limiter)
 app.use(
   session({
     store: new RedisStore({
@@ -59,7 +70,6 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
-
 
 // Root Route
 app.get("/", (req, res) => {
