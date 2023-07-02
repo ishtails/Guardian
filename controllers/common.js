@@ -3,6 +3,8 @@ import outings from "../models/outingModel.js";
 import moment from "moment";
 import { redisClient } from "../server.js";
 import cloudinary from "cloudinary";
+import Joi from "joi";
+import { uploadImage } from "../helpers/helpers.js";
 
 // Configure Cloudinary
 cloudinary.v2.config({
@@ -34,38 +36,43 @@ export const logOut = (req, res) => {
   });
 };
 
-// Functoin to Upload Image to Cloudinary
-const uploadImage = async (file) => {
-  try {
-    const result = await cloudinary.v2.uploader.upload(file, {
-      folder: "Guardian",
-    });
-    const imageUrl = result.secure_url;
-    return imageUrl;
-  } catch (error) {
-    return error;
-  }
-};
-
 //Update User Details
-export const updateUser = (req, res) => {
+export const updateUser = async (req, res) => {
   try {
-    // const newObject = req.body;
-    const { name, mobile, hostel, room, idCard } = req.body;
+    // Validation
+    const updateSchema = Joi.object({
+      name: Joi.string(),
+      mobile: Joi.string().length(10).regex(/^\d+$/),
+      gender: Joi.string().valid('male', 'female'),
+      hostel: Joi.string().valid('BH1', 'BH2', 'BH3', 'IVH', 'GH'),
+      room: Joi.number().max(400),
+      profilePic: Joi.string(),
+      idCard: Joi.any(),
+    });
 
-    const imageUrl = uploadImage(idCard);
-    // const imageUrl = idCard;
-    const updateFields = { name, mobile, hostel, room, idCard:imageUrl };
-    // const updateFields = { name, mobile, hostel, room, idCard };
+    await updateSchema.validateAsync(req.body);
+
+    // Update Fields
+    const { name, mobile, hostel, room, gender, profilePic, idCard } = req.body;
+    
+    let imageUrl = "";
+    if (idCard) {
+      imageUrl = uploadImage(idCard);
+    }
+
+    const updateFields = { name, mobile, hostel, room, gender, profilePic, idCard: imageUrl };
 
     const username = req.session.username;
-    users
-      .updateOne({ username }, { $set: updateFields })
-      .then((result) => {
-        res.status(200).json(result);
-      })
-      .catch((err) => res.status(400).send(err));
+
+    const result = await users.updateOne({ username }, { $set: updateFields });
+    return res.status(200).send(result);
   } catch (error) {
+    if (error.details) {
+      return res
+        .status(422)
+        .json(error.details.map((detail) => detail.message).join(", "));
+    }
+
     res.status(500).json({ error: "ERROR: " + error });
   }
 };
@@ -81,6 +88,7 @@ export const getCurrentUser = async (req, res) => {
         email: 1,
         username: 1,
         name: 1,
+        gender: 1,
         role: 1,
         name: 1,
         mobile: 1,
@@ -148,6 +156,7 @@ export const getOutings = async (req, res) => {
           _id: 0,
           username: 1,
           name: 1,
+          gender: 1,
           mobile: 1,
           hostel: 1,
           room: 1,

@@ -35,3 +35,16 @@ export const revokeUserSessions = async (username) => {
       console.error('Error revoking sessions:', err);
     }
   };
+
+// Function to Upload Image to Cloudinary
+export const uploadImage = async (file) => {
+  try {
+    const result = await cloudinary.v2.uploader.upload(file, {
+      folder: "Guardian",
+    });
+    const imageUrl = result.secure_url;
+    return imageUrl;
+  } catch (error) {
+    return error;
+  }
+};
