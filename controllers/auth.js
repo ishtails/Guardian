@@ -106,11 +106,11 @@ export const isRegistered = async (req, res) => {
 export const sendOTP = async (req, res) => {
   try {
     if (!req.body.email) {
-      res.status(400).json({ error: "No Email Provided!" });
+      return res.status(400).json({ error: "No Email Provided!" });
     }
 
     if(req.session.username){
-      res.status(403).json({ error: "Already Logged in!" });
+      return res.status(403).json({ error: "Already Logged in!" });
     }
 
     //Generate & Store OTP in redis
@@ -141,9 +141,9 @@ export const sendOTP = async (req, res) => {
     req.session.email = req.body.email;
     req.session.otpExpiry = Date.now() + 300000; //5 Minutes from now
 
-    res.json({ message: "OTP Sent Successfully!", result });
+    return res.json({ message: "OTP Sent Successfully!", result });
   } catch (error) {
-    res.status(500).json({ message: "ERROR: " + error });
+    return res.status(500).json({ message: "ERROR: " + error });
   }
 };
 
