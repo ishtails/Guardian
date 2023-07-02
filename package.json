@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "clamscan": "^2.1.2",
     "cloudinary": "^1.37.3",
     "connect-redis": "^7.1.0",
     "cors": "^2.8.5",

@@ -2,16 +2,8 @@ import users from "../models/userModel.js";
 import outings from "../models/outingModel.js";
 import moment from "moment";
 import { redisClient } from "../server.js";
-import cloudinary from "cloudinary";
 import Joi from "joi";
 import { uploadImage } from "../helpers/helpers.js";
-
-// Configure Cloudinary
-cloudinary.v2.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_APIKEY,
-  api_secret: process.env.CLOUDINARY_APISECRET,
-});
 
 // Logout
 export const logOut = (req, res) => {
@@ -54,6 +46,7 @@ export const updateUser = async (req, res) => {
 
     // Update Fields
     const { name, mobile, hostel, room, gender, profilePic, idCard } = req.body;
+    await clamScan(idCard);
     
     let imageUrl = "";
     if (idCard) {
@@ -71,6 +64,10 @@ export const updateUser = async (req, res) => {
       return res
         .status(422)
         .json(error.details.map((detail) => detail.message).join(", "));
+    }
+
+    if(error = "Virus detected!"){
+      res.status(400).json("Virus Detected in ID Card image file!");
     }
 
     res.status(500).json({ error: "ERROR: " + error });
