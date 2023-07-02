@@ -2,6 +2,7 @@ import nodemailer from "nodemailer";
 import { redisClient } from "../server.js";
 import cloudinary from "cloudinary";
 import NodeClam from "clamscan";
+import sharp from "sharp";
 
 // Configure Cloudinary
 cloudinary.v2.config({
@@ -28,8 +29,14 @@ export const clamScan = async (file) => {
 // Upload Image to Cloudinary
 export const uploadImage = async (file) => {
   try {
+    // Compress image
+    const compressedImageBuffer = await sharp(file)
+      .resize({ fit: 'inside', width: 500 })
+      .jpeg({ quality: 60 })
+      .toBuffer();
+
     // Upload to Cloudinary
-    const result = await cloudinary.v2.uploader.upload(file, {
+    const result = await cloudinary.v2.uploader.upload(compressedImageBuffer, {
       folder: "Guardian",
       allowed_formats: ["jpg", "jpeg", "png"],
     });
