@@ -16,12 +16,12 @@ export const loginUser = async (req, res) => {
     }
 
     //Form Validation
-    const registerSchema = Joi.object({
+    const loginSchema = Joi.object({
       id: Joi.string().required(),
       password: Joi.string().min(3).required(),
     });
 
-    await registerSchema.validateAsync(req.body);
+    await loginSchema.validateAsync(req.body);
 
     //Search in DB
     const { id, password } = req.body;
