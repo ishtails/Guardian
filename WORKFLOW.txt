@@ -13,7 +13,7 @@ BACKEND:
 - before logging in - bcrypt handles password hashing during registration & password verification during logging in 
 
 - after logged in -	1. either use jwt access & refresh tokens to verify identity of user for authorization grant to api calls (not safe for sessions afaik)
-				2. else use server session management with cookies e.g. using redis as a cache/session db
+				    2. else use server session management with cookies e.g. using redis as a cache/session db
 
 - client to server -
 	- req.body for attaching data for POST / PUT
