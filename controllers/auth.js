@@ -19,12 +19,13 @@ export const loginUser = async (req, res) => {
     const loginSchema = Joi.object({
       id: Joi.string().required(),
       password: Joi.string().min(3).required(),
+      remember_me: Joi.bool(),
     });
 
     await loginSchema.validateAsync(req.body);
 
     //Search in DB
-    const { id, password } = req.body;
+    const { id, password, remember_me } = req.body;
     const user = await users.findOne(
       {
         $or: [{ email: id }, { username: id }],
@@ -41,6 +42,9 @@ export const loginUser = async (req, res) => {
     if (passwordCorrect) {
       req.session.username = user.username;
       req.session.role = user.role;
+      if (remember_me) {
+        req.session.cookie.maxAge = 182 * 24 * 60 * 60 * 1000; // 6 months
+      }
 
       // Update active-sessions of user
       redisClient.SADD(
