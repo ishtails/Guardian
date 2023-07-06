@@ -3,7 +3,6 @@ import outings from "../models/outingModel.js";
 import moment from "moment";
 import { redisClient } from "../server.js";
 import Joi from "joi";
-import { uploadImage } from "../helpers/helpers.js";
 
 // Logout
 export const logOut = (req, res) => {
@@ -43,19 +42,11 @@ export const updateUser = async (req, res) => {
     });
 
     await updateSchema.validateAsync(req.body);
-    console.log(req.body)
 
     // Update Fields
     const { name, mobile, hostel, room, gender } = req.body;
-    // const {idCard} = req.file;
-    
-    let imageUrl = "";
-    // if (idCard) {
-    //   imageUrl = uploadImage(idCard);
-    // }
 
-    const updateFields = { name, mobile, hostel, room, gender, idCard: imageUrl };
-
+    const updateFields = { name, mobile, hostel, room, gender, idCard: req.file?.path };
     const username = req.session.username;
 
     const result = await users.updateOne({ username }, { $set: updateFields });

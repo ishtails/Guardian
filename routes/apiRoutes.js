@@ -16,6 +16,7 @@ import {
   isRegistered,
   registerStudent,
 } from "../controllers/auth.js";
+import { upload } from "../helpers/helpers.js";
 const router = Router();
 
 // AUTH
@@ -29,7 +30,7 @@ router.post("/reset-password", resetPassword);
 // COMMON
 router.get("/profile", requireAuth, getCurrentUser);
 router.get("/outings", requireAuth, getOutings);
-router.patch("/update-profile", requireAuth, updateUser);
+router.patch("/update-profile", requireAuth, upload.single('idCard'), updateUser);
 router.get("/logout", requireAuth, logOut);
 
 // SECURITY
