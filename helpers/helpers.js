@@ -1,8 +1,23 @@
 import nodemailer from "nodemailer";
 import { redisClient } from "../server.js";
 import cloudinary from "cloudinary";
-import NodeClam from "clamscan";
 import sharp from "sharp";
+
+// import NodeClam from "clamscan";
+// export const clamScan = async (file) => {
+//   // Check for virus
+//   try {
+//     const clamscan = new NodeClam().init();
+//     const isInfected = await clamscan.isInfected(file);
+//     if (isInfected) {
+//       return new Error("Virus detected!");
+//     } else {
+//       return "File OK!";
+//     }
+//   } catch (error) {
+//     return error;
+//   }
+// };
 
 // Configure Cloudinary
 cloudinary.v2.config({
@@ -10,21 +25,6 @@ cloudinary.v2.config({
   api_key: process.env.CLOUDINARY_APIKEY,
   api_secret: process.env.CLOUDINARY_APISECRET,
 });
-
-export const clamScan = async (file) => {
-  // Check for virus
-  try {
-    const clamscan = new NodeClam().init();
-    const isInfected = await clamscan.isInfected(file);
-    if (isInfected) {
-      return new Error("Virus detected!");
-    } else {
-      return "File OK!";
-    }
-  } catch (error) {
-    return error;
-  }
-};
 
 // Upload Image to Cloudinary
 export const uploadImage = async (file) => {

@@ -46,7 +46,6 @@ export const updateUser = async (req, res) => {
 
     // Update Fields
     const { name, mobile, hostel, room, gender, profilePic, idCard } = req.body;
-    await clamScan(idCard);
     
     let imageUrl = "";
     if (idCard) {
