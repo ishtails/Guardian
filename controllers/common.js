@@ -43,16 +43,18 @@ export const updateUser = async (req, res) => {
     });
 
     await updateSchema.validateAsync(req.body);
+    console.log(req.body)
 
     // Update Fields
-    const { name, mobile, hostel, room, gender, profilePic, idCard } = req.body;
+    const { name, mobile, hostel, room, gender } = req.body;
+    // const {idCard} = req.file;
     
     let imageUrl = "";
-    if (idCard) {
-      imageUrl = uploadImage(idCard);
-    }
+    // if (idCard) {
+    //   imageUrl = uploadImage(idCard);
+    // }
 
-    const updateFields = { name, mobile, hostel, room, gender, profilePic, idCard: imageUrl };
+    const updateFields = { name, mobile, hostel, room, gender, idCard: imageUrl };
 
     const username = req.session.username;
 
@@ -65,11 +67,7 @@ export const updateUser = async (req, res) => {
         .json(error.details.map((detail) => detail.message).join(", "));
     }
 
-    if(error = "Virus detected!"){
-      res.status(400).json("Virus Detected in ID Card image file!");
-    }
-
-    res.status(500).json({ error: "ERROR: " + error });
+    return res.status(500).json({ error: "ERROR: " + error });
   }
 };
 
