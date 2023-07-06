@@ -161,6 +161,7 @@ export const getOutings = async (req, res) => {
         username: user.username,
         name: user.name,
         mobile: user.mobile,
+        gender: user.gender,
         hostel: user.hostel,
         room: user.room,
         idCard: user.idCard,
