@@ -79,6 +79,8 @@ export const getCurrentUser = async (req, res) => {
         mobile: 1,
         hostel: 1,
         room: 1,
+        profilePic: 1,
+        idCard: 1
       }
     );
     res.send(user);

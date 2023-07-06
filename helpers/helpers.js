@@ -18,7 +18,7 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary.v2,
   params: {
     folder: "Guardian",
-    public_id: (req, file) => file.fieldname + "-" + Date.now(),
+    public_id: (req, file) => file.fieldname + "-" + req.session.username,
   },
 });
 
