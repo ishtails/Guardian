@@ -25,22 +25,24 @@ redisClient
 
 // Rate Limiter
 const limiter = rateLimit({
-	windowMs: 60 * 1000, 
+  windowMs: 60 * 1000,
   max: 20,
-  message: 'Too many requests. Please try again later.',
-	standardHeaders: true, 
-	legacyHeaders: false, 
-})
+  message: "Too many requests. Please try again later.",
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 // Middlewares
 app.use(express.json());
-app.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(morgan("tiny"));
 app.use(helmet());
-app.use(limiter)
+app.use(limiter);
 app.use(
   session({
     store: new RedisStore({
