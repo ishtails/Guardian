@@ -140,3 +140,19 @@
 //       res.status(500).send(error);
 //     }
 //   };
+
+// import NodeClam from "clamscan";
+// export const clamScan = async (file) => {
+//   // Check for virus
+//   try {
+//     const clamscan = new NodeClam().init();
+//     const isInfected = await clamscan.isInfected(file);
+//     if (isInfected) {
+//       return new Error("Virus detected!");
+//     } else {
+//       return "File OK!";
+//     }
+//   } catch (error) {
+//     return error;
+//   }
+// };
