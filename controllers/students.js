@@ -3,7 +3,7 @@ import outings from "../models/outingModel.js";
 //Open Outing Entry
 export const openGateEntry = async (req, res) => {
   try {
-    if(req.session.username !== "student"){
+    if(req.session.role !== "student"){
       return res.json("Only for students")
     }
 
