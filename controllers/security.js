@@ -6,7 +6,7 @@ import users from "../models/userModel.js";
 export const searchStudents = async (req, res) => {
   try {
     if (!req.session.username || req.session.role === "student") {
-      return res.status(401).json("Not Authorized!");
+      return res.status(401).json("Not authorized");
     }
 
     const { key } = req.query;
@@ -29,14 +29,14 @@ export const searchStudents = async (req, res) => {
 export const closeGateEntry = async (req, res) => {
   try {
     if (!(req.session.role === "security")) {
-      return res.status(401).json("Not Authorized!");
+      return res.status(401).json("Not authorized");
     }
 
     const { username } = req.params;
     const result = await outings.findOne({ username, isOpen: true });
 
     if (!result) {
-      return res.status(404).json("No open entries for this user!");
+      return res.status(404).json("No open entries for this user");
     }
 
     result.isOpen = false;
@@ -56,7 +56,7 @@ export const closeGateEntry = async (req, res) => {
 
     await result.save();
 
-    return res.status(200).send({ message: "Entry closed successfully!" });
+    return res.status(200).send("Entry closed successfully");
   } catch (error) {
     return res.status(500).json(error.message);
   }
