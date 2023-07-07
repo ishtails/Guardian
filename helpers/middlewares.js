@@ -20,7 +20,7 @@ export const verifyOutingChecks = (req, res, next) => {
   if (currentTime > "22:00" || currentTime < "05:00") {
     return res
       .status(403)
-      .json("Cannot go out, intime deadline exceeded!");
+      .json("Intime deadline exceeded");
   }
 
   // Check Location
@@ -34,6 +34,6 @@ export const verifyOutingChecks = (req, res, next) => {
   if (distance <= verificationRadius) {
     next();
   } else {
-    return res.status(403).send("Location verification failed!");
+    return res.status(403).send("Location verification failed");
   }
 };
