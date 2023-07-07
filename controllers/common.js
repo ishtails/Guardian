@@ -109,7 +109,7 @@ export const getOutings = async (req, res) => {
       outingFilters.isOpen = isOpen;
     }
 
-    if (isLate) {
+    if (isLate === true) {
       outingFilters.lateBy = { $gt: 0 };
     }
 
