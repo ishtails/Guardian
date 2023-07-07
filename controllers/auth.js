@@ -113,7 +113,7 @@ export const sendOTP = async (req, res) => {
       return res.status(400).json({ error: "No Email Provided!" });
     }
 
-    if(req.session.username){
+    if (req.session.username) {
       return res.status(403).json({ error: "Already Logged in!" });
     }
 
@@ -154,7 +154,7 @@ export const sendOTP = async (req, res) => {
 // OTP Verification
 export const verifyOTP = async (req, res) => {
   try {
-    if(req.session.username){
+    if (req.session.username) {
       return res.status(403).send("Already Logged in!");
     }
 
@@ -263,10 +263,12 @@ export const resetPassword = async (req, res) => {
     }
 
     if (!id) {
-      return res.status(400).send({ error: "No login or OTP based temp active session!" });
+      return res
+        .status(400)
+        .send({ error: "No login or OTP based temp active session!" });
     }
 
-    console.log(id)
+    console.log(id);
 
     const { currentPassword, newPassword } = req.body;
 
@@ -289,8 +291,10 @@ export const resetPassword = async (req, res) => {
     }
 
     // Same Password Check
-    if(currentPassword === newPassword){
-      return res.status(400).send({ error: "Old & new password cannot be same" });
+    if (currentPassword === newPassword) {
+      return res
+        .status(400)
+        .send({ error: "Old & new password cannot be same" });
     }
 
     //newPassword Validation

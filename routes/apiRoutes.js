@@ -37,7 +37,12 @@ router.get("/search", requireAuth, searchStudents);
 router.get("/security/close-entry/:username", requireAuth, closeGateEntry);
 
 // STUDENTS
-router.post("/student/exit-request", requireAuth, verifyOutingChecks, openGateEntry);
+router.post(
+  "/student/exit-request",
+  requireAuth,
+  verifyOutingChecks,
+  openGateEntry
+);
 router.get("/student/outing-status", requireAuth, isOutside);
 
 export default router;
