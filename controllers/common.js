@@ -3,7 +3,6 @@ import outings from "../models/outingModel.js";
 import moment from "moment";
 import { redisClient } from "../server.js";
 import Joi from "joi";
-import { uploadImage } from "../helpers/helpers.js";
 
 // Logout
 export const logOut = (req, res) => {
@@ -45,16 +44,9 @@ export const updateUser = async (req, res) => {
     await updateSchema.validateAsync(req.body);
 
     // Update Fields
-    const { name, mobile, hostel, room, gender, profilePic, idCard } = req.body;
-    await clamScan(idCard);
-    
-    let imageUrl = "";
-    if (idCard) {
-      imageUrl = uploadImage(idCard);
-    }
+    const { name, mobile, hostel, room, gender } = req.body;
 
-    const updateFields = { name, mobile, hostel, room, gender, profilePic, idCard: imageUrl };
-
+    const updateFields = { name, mobile, hostel, room, gender, idCard: req.file?.path };
     const username = req.session.username;
 
     const result = await users.updateOne({ username }, { $set: updateFields });
@@ -66,11 +58,7 @@ export const updateUser = async (req, res) => {
         .json(error.details.map((detail) => detail.message).join(", "));
     }
 
-    if(error = "Virus detected!"){
-      res.status(400).json("Virus Detected in ID Card image file!");
-    }
-
-    res.status(500).json({ error: "ERROR: " + error });
+    return res.status(500).json({ error: "ERROR: " + error });
   }
 };
 
@@ -91,6 +79,8 @@ export const getCurrentUser = async (req, res) => {
         mobile: 1,
         hostel: 1,
         room: 1,
+        profilePic: 1,
+        idCard: 1
       }
     );
     res.send(user);
@@ -171,6 +161,7 @@ export const getOutings = async (req, res) => {
         username: user.username,
         name: user.name,
         mobile: user.mobile,
+        gender: user.gender,
         hostel: user.hostel,
         room: user.room,
         idCard: user.idCard,

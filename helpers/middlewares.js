@@ -1,5 +1,7 @@
 import geolib from "geolib";
 import moment from "moment";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 // Check Session
 export const requireAuth = (req, res, next) => {

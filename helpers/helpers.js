@@ -1,51 +1,28 @@
 import nodemailer from "nodemailer";
 import { redisClient } from "../server.js";
 import cloudinary from "cloudinary";
-import NodeClam from "clamscan";
 import sharp from "sharp";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import multer from "multer";
+import * as dotenv from "dotenv";
+dotenv.config();
 
-// Configure Cloudinary
+//Multer Cloudinary Storage
 cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_APIKEY,
   api_secret: process.env.CLOUDINARY_APISECRET,
 });
 
-export const clamScan = async (file) => {
-  // Check for virus
-  try {
-    const clamscan = new NodeClam().init();
-    const isInfected = await clamscan.isInfected(file);
-    if (isInfected) {
-      return new Error("Virus detected!");
-    } else {
-      return "File OK!";
-    }
-  } catch (error) {
-    return error;
-  }
-};
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary.v2,
+  params: {
+    folder: "Guardian",
+    public_id: (req, file) => file.fieldname + "-" + req.session.username,
+  },
+});
 
-// Upload Image to Cloudinary
-export const uploadImage = async (file) => {
-  try {
-    // Compress image
-    const compressedImageBuffer = await sharp(file)
-      .resize({ fit: 'inside', width: 500 })
-      .jpeg({ quality: 60 })
-      .toBuffer();
-
-    // Upload to Cloudinary
-    const result = await cloudinary.v2.uploader.upload(compressedImageBuffer, {
-      folder: "Guardian",
-      allowed_formats: ["jpg", "jpeg", "png"],
-    });
-    const imageUrl = result.secure_url;
-    return imageUrl;
-  } catch (error) {
-    return error;
-  }
-};
+export const upload = multer({ storage: storage });
 
 // Send Email
 export const sendMail = async (mailOptions) => {
