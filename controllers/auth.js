@@ -7,6 +7,8 @@ import otpGenerator from "otp-generator";
 import { fileURLToPath } from "url";
 import { redisClient } from "../server.js";
 import { revokeUserSessions, sendMail } from "../helpers/helpers.js";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 // Login User
 export const loginUser = async (req, res) => {
