@@ -20,7 +20,7 @@ export const verifyOutingChecks = (req, res, next) => {
   if (currentTime > "22:00" || currentTime < "05:00") {
     return res
       .status(403)
-      .json({ message: "Cannot go out, intime deadline exceeded!" });
+      .json("Cannot go out, intime deadline exceeded!");
   }
 
   // Check Location

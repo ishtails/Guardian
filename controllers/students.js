@@ -34,12 +34,12 @@ export const isOutside = async (req, res) => {
     const result = await outings.findOne({ username, isOpen: true }, {reason:1, outTime:1});
 
     if (!result) {
-      return res.status(200).json({ username, status: "inside" });
+      return res.status(200).json("inside");
     } else {
       const { reason, outTime } = result;
       return res
         .status(200)
-        .json({ username, status: "outside", outTime, reason });
+        .json("outside");
     }
   } catch (error) {
     return res.status(500).send(error.message);

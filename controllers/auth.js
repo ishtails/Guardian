@@ -164,7 +164,7 @@ export const sendOTP = async (req, res) => {
     req.session.email = req.body.email;
     req.session.otpExpiry = Date.now() + 300000; //5 Minutes from now
 
-    return res.json({ message: "OTP Sent Successfully!", result });
+    return res.json("OTP Sent Successfully!");
   } catch (error) {
     return res.status(500).json(error.message);
   }
@@ -259,7 +259,7 @@ export const registerStudent = async (req, res) => {
     delete req.session.tempSessionExp;
     delete req.session.email;
 
-    return res.json({ message: "Registered Successfully!", username, role });
+    return res.json({ message: "Registered Successfully", username, role });
   } catch (error) {
     if (error.details) {
       return res
@@ -334,7 +334,7 @@ export const resetPassword = async (req, res) => {
     const newHash = await bcrypt.hash(newPassword, 12);
     user.password = newHash;
     await user.save();
-    return res.send({ message: "Password Reset Successful!" });
+    return res.json("Password Reset Successful!");
   } catch (error) {
     if (error.details) {
       return res
