@@ -250,7 +250,7 @@ export const registerStudent = async (req, res) => {
     const role = "student";
 
     // Hash password & save to mongoDB
-    const hash = await bcrypt.hash(password, 15);
+    const hash = await bcrypt.hash(password, 12);
     const newUser = new users({ email, password: hash, role, username });
     await newUser.save();
 
@@ -331,7 +331,7 @@ export const resetPassword = async (req, res) => {
     revokeUserSessions(user.username);
 
     // Save new password to mongoDB
-    const newHash = await bcrypt.hash(newPassword, 15);
+    const newHash = await bcrypt.hash(newPassword, 12);
     user.password = newHash;
     await user.save();
     return res.send({ message: "Password Reset Successful!" });
