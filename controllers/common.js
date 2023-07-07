@@ -23,7 +23,7 @@ export const logOut = (req, res) => {
     );
 
     res.clearCookie("sid");
-    res.json({ message: "Logged out successfully" });
+    return res.json("Logged out successfully");
   });
 };
 
@@ -58,7 +58,7 @@ export const updateUser = async (req, res) => {
         .json(error.details.map((detail) => detail.message).join(", "));
     }
 
-    return res.status(500).json({ error: "ERROR: " + error });
+    return res.status(500).json(error.message);
   }
 };
 
@@ -83,9 +83,9 @@ export const getCurrentUser = async (req, res) => {
         idCard: 1
       }
     );
-    res.send(user);
+    return res.send(user);
   } catch (error) {
-    res.status(500).send(error);
+    return res.status(500).send(error.message);
   }
 };
 
@@ -175,8 +175,8 @@ export const getOutings = async (req, res) => {
       studentOutingData.push(studentOutingObj);
     }
 
-    res.status(200).send(studentOutingData);
+    return res.status(200).send(studentOutingData);
   } catch (error) {
-    res.status(500).send(error);
+    return res.status(500).send(error.message);
   }
 };

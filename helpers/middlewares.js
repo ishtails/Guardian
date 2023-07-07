@@ -6,7 +6,7 @@ dotenv.config();
 // Check Session
 export const requireAuth = (req, res, next) => {
   if (!req.session.username) {
-    return res.status(401).json({ error: "Not Logged In" });
+    return res.status(401).json("Not Logged In");
   }
 
   next();

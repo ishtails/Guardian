@@ -68,7 +68,7 @@ export const loginUser = async (req, res) => {
       return res.status(400).send("Wrong Password");
     }
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).send(error.message);
   }
 };
 
@@ -95,16 +95,18 @@ export const isRegistered = async (req, res) => {
     // isRegistered
     const user = await users.findOne({ email }, { _id: 0, username: 1 });
     if (user) {
-      res.status(200).send({ email, isRegistered: true });
+      return res.status(200).send(true);
     } else {
-      res.status(200).send({ email, isRegistered: false });
+      return res.status(200).send(false);
     }
   } catch (error) {
     if (error.details) {
-      return res.status(422).json(error.details);
+      return res
+        .status(422)
+        .json(error.details.map((detail) => detail.message).join(", "));
     }
 
-    return res.status(500).json("ERROR: " + error);
+    return res.status(500).json(error.message);
   }
 };
 
@@ -112,12 +114,27 @@ export const isRegistered = async (req, res) => {
 export const sendOTP = async (req, res) => {
   try {
     if (!req.body.email) {
-      return res.status(400).json({ error: "No Email Provided!" });
+      return res.status(400).json("No Email Provided!");
     }
 
     if (req.session.username) {
-      return res.status(403).json({ error: "Already Logged in!" });
+      return res.status(403).json("Already Logged in!");
     }
+
+    //Email Validation
+    const emailSchema = Joi.object({
+      email: Joi.string()
+        .email()
+        .required()
+        .custom((value, helpers) => {
+          if (value.endsWith("@iiitm.ac.in")) {
+            return value;
+          } else {
+            return helpers.error("any.invalid");
+          }
+        }, "Custom Domain Validation"),
+    });
+    await emailSchema.validateAsync({ email });
 
     //Generate & Store OTP in redis
     const otp = otpGenerator.generate(6, {
@@ -149,7 +166,7 @@ export const sendOTP = async (req, res) => {
 
     return res.json({ message: "OTP Sent Successfully!", result });
   } catch (error) {
-    return res.status(500).json({ message: "ERROR: " + error });
+    return res.status(500).json(error.message);
   }
 };
 
@@ -184,7 +201,7 @@ export const verifyOTP = async (req, res) => {
       return res.status(400).send("Wrong OTP!");
     }
   } catch (error) {
-    return res.status(500).json("ERROR: " + error);
+    return res.status(500).json(error.message);
   }
 };
 
@@ -197,7 +214,7 @@ export const registerStudent = async (req, res) => {
     const { password } = req.body;
 
     if (req.session.username) {
-      return res.status(400).json({ error: "Already logged in!" });
+      return res.status(400).json("Already logged in!");
     }
 
     if (
@@ -242,7 +259,7 @@ export const registerStudent = async (req, res) => {
     delete req.session.tempSessionExp;
     delete req.session.email;
 
-    res.json({ message: "Registered Successfully!", username, role });
+    return res.json({ message: "Registered Successfully!", username, role });
   } catch (error) {
     if (error.details) {
       return res
@@ -250,7 +267,7 @@ export const registerStudent = async (req, res) => {
         .json(error.details.map((detail) => detail.message).join(", "));
     }
 
-    return res.status(500).json({ error: "ERROR: " + error });
+    return res.status(500).json(error.message);
   }
 };
 
@@ -267,7 +284,7 @@ export const resetPassword = async (req, res) => {
     if (!id) {
       return res
         .status(400)
-        .send({ error: "No login or OTP based temp active session!" });
+        .send("No login or OTP based temp active session");
     }
 
     console.log(id);
@@ -289,14 +306,14 @@ export const resetPassword = async (req, res) => {
     );
 
     if (!passwordCorrect) {
-      return res.status(400).send("Current Password doesn't match!");
+      return res.status(400).send("Current Password doesn't match");
     }
 
     // Same Password Check
     if (currentPassword === newPassword) {
       return res
         .status(400)
-        .send({ error: "Old & new password cannot be same" });
+        .send("Old & new password cannot be same");
     }
 
     //newPassword Validation
@@ -317,12 +334,14 @@ export const resetPassword = async (req, res) => {
     const newHash = await bcrypt.hash(newPassword, 15);
     user.password = newHash;
     await user.save();
-    res.send({ message: "Password Reset Successful!" });
+    return res.send({ message: "Password Reset Successful!" });
   } catch (error) {
     if (error.details) {
-      return res.status(422).json(error);
+      return res
+        .status(422)
+        .json(error.details.map((detail) => detail.message).join(", "));
     }
 
-    res.status(500).json({ message: "ERROR RESETTING PASSWORD", error });
+    return res.status(500).json(error.message);
   }
 };

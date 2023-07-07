@@ -78,7 +78,7 @@ mongoose
 
 // Root Route
 app.get("/", (req, res) => {
-  res.send("Server Home Page");
+  return res.send("Guardian");
 });
 
 app.use("/api", apiRouter);

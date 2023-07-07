@@ -5,12 +5,8 @@ import users from "../models/userModel.js";
 //Display student info on search
 export const searchStudents = async (req, res) => {
   try {
-    if (!req.session.username) {
-      return res.status(401).json({ error: "Not Authorized!" });
-    }
-
-    if (req.session.role === "student") {
-      return res.status(401).json({ error: "Not Authorized!" });
+    if (!req.session.username || req.session.role === "student") {
+      return res.status(401).json("Not Authorized!");
     }
 
     const { key } = req.query;
@@ -25,7 +21,7 @@ export const searchStudents = async (req, res) => {
       .limit(5);
     return res.status(200).send(user);
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).send(error.message);
   }
 };
 
@@ -33,14 +29,14 @@ export const searchStudents = async (req, res) => {
 export const closeGateEntry = async (req, res) => {
   try {
     if (!(req.session.role === "security")) {
-      return res.status(401).json({ error: "Not Authorized!" });
+      return res.status(401).json("Not Authorized!");
     }
 
     const { username } = req.params;
     const result = await outings.findOne({ username, isOpen: true });
 
     if (!result) {
-      return res.status(404).json({ error: "No open entries for this user!" });
+      return res.status(404).json("No open entries for this user!");
     }
 
     result.isOpen = false;
@@ -60,8 +56,8 @@ export const closeGateEntry = async (req, res) => {
 
     await result.save();
 
-    res.status(200).send({ message: "Entry closed successfully!" });
+    return res.status(200).send({ message: "Entry closed successfully!" });
   } catch (error) {
-    res.status(500).json({ error });
+    return res.status(500).json(error.message);
   }
 };

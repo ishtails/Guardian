@@ -3,12 +3,16 @@ import outings from "../models/outingModel.js";
 //Open Outing Entry
 export const openGateEntry = async (req, res) => {
   try {
+    if(req.session.username !== "student"){
+      return res.json("Only for students")
+    }
+
     const { username } = req.session;
     const { reason } = req.body;
 
     const result = await outings.findOne({ username, isOpen: true });
     if (result) {
-      return res.status(400).send("Already outside!");
+      return res.status(400).json("Already outside");
     }
 
     const newOuting = new outings({
@@ -17,9 +21,9 @@ export const openGateEntry = async (req, res) => {
     });
 
     await newOuting.save();
-    res.send("Outing Registered Successfully!");
+    return res.json("Outing Registered Successfully");
   } catch (error) {
-    res.status(422).send(error);
+    return res.status(500).json(error.message);
   }
 };
 
@@ -38,7 +42,7 @@ export const isOutside = async (req, res) => {
         .json({ username, status: "outside", outTime, reason });
     }
   } catch (error) {
-    res.status(500).send(error);
+    return res.status(500).send(error.message);
   }
 };
 
