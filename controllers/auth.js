@@ -122,19 +122,19 @@ export const sendOTP = async (req, res) => {
     }
 
     //Email Validation
-    const emailSchema = Joi.object({
-      email: Joi.string()
-        .email()
-        .required()
-        .custom((value, helpers) => {
-          if (value.endsWith("@iiitm.ac.in")) {
-            return value;
-          } else {
-            return helpers.error("any.invalid");
-          }
-        }, "Custom Domain Validation"),
-    });
-    await emailSchema.validateAsync({ email });
+    // const emailSchema = Joi.object({
+    //   email: Joi.string()
+    //     .email()
+    //     .required()
+    //     .custom((value, helpers) => {
+    //       if (value.endsWith("@iiitm.ac.in")) {
+    //         return value;
+    //       } else {
+    //         return helpers.error("any.invalid");
+    //       }
+    //     }, "Custom Domain Validation"),
+    // });
+    // await emailSchema.validateAsync({ email });
 
     //Generate & Store OTP in redis
     const otp = otpGenerator.generate(6, {
@@ -164,7 +164,7 @@ export const sendOTP = async (req, res) => {
     req.session.email = req.body.email;
     req.session.otpExpiry = Date.now() + 300000; //5 Minutes from now
 
-    return res.json("OTP Sent Successfully!");
+    return res.json({ message: "OTP Sent Successfully!", result });
   } catch (error) {
     return res.status(500).json(error.message);
   }
@@ -282,9 +282,7 @@ export const resetPassword = async (req, res) => {
     }
 
     if (!id) {
-      return res
-        .status(400)
-        .send("No login or OTP based temp active session");
+      return res.status(400).send("No login or OTP based temp active session");
     }
 
     console.log(id);
@@ -311,9 +309,7 @@ export const resetPassword = async (req, res) => {
 
     // Same Password Check
     if (currentPassword === newPassword) {
-      return res
-        .status(400)
-        .send("Old & new password cannot be same");
+      return res.status(400).send("Old & new password cannot be same");
     }
 
     //newPassword Validation
