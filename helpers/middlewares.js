@@ -17,7 +17,7 @@ export const verifyOutingChecks = (req, res, next) => {
   // Check Timing
   const currentTime = moment().format("HH:mm");
 
-  if (currentTime > "22:00" || currentTime < "05:00") {
+  if (currentTime > "04:00" || currentTime < "05:00") {
     return res
       .status(403)
       .json("Intime deadline exceeded");
@@ -27,7 +27,7 @@ export const verifyOutingChecks = (req, res, next) => {
   const { latitude, longitude } = req.body;
 
   const centralLocation = { latitude: 26.250106, longitude: 78.17652 };
-  const verificationRadius = 200;
+  const verificationRadius = 2000;
 
   const distance = geolib.getDistance({ latitude, longitude }, centralLocation);
 
