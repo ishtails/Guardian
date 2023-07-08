@@ -44,7 +44,12 @@ export const updateUser = async (req, res) => {
     await updateSchema.validateAsync(req.body);
 
     // Update Fields
-    const { name, mobile, hostel, room, gender } = req.body;
+    const { name, mobile, hostel, room } = req.body;
+    
+    let gender = "male";
+    if(hostel && hostel==="GH"){
+      gender = "female";
+    }
 
     const updateFields = { name, mobile, hostel, room, gender, idCard: req.file?.path };
     const username = req.session.username;
