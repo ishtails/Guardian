@@ -4,20 +4,8 @@ import users from "../models/userModel.js";
 //Open Outing Entry
 export const openGateEntry = async (req, res) => {
   try {
-    if (req.session.role !== "student") {
-      return res.status(403).json("Only for students");
-    }
-
     const { username } = req.session;
     const { reason } = req.body;
-
-    const result = await outings.findOne(
-      { username, isOpen: true },
-      { username: 1 }
-    );
-    if (result) {
-      return res.status(400).json("Already outside");
-    }
 
     const { gender } = await users.findOne({ username }, { gender: 1 });
 
