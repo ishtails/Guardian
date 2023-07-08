@@ -17,11 +17,11 @@ export const verifyOutingChecks = (req, res, next) => {
   // Check Timing
   const currentTime = moment().format("HH:mm");
 
-  if (currentTime > "04:00" || currentTime < "05:00") {
-    return res
-      .status(403)
-      .json("Intime deadline exceeded");
-  }
+  // if (currentTime > "22:00" || currentTime < "05:00") {
+  //   return res
+  //     .status(403)
+  //     .json("Intime deadline exceeded");
+  // }
 
   // Check Location
   const { latitude, longitude } = req.body;
