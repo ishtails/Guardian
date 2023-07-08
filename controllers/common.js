@@ -92,7 +92,7 @@ export const getCurrentUser = async (req, res) => {
 // Get Outings
 export const getOutings = async (req, res) => {
   try {
-    const { username, isLate, startDate, endDate, isOpen, reason } = req.query;
+    const { username, isLate, startDate, endDate, isOpen, reason, gender } = req.query;
     const outingFilters = {};
 
     // Conditional Outing Queries
@@ -111,6 +111,10 @@ export const getOutings = async (req, res) => {
 
     if (isLate) {
       outingFilters.lateBy = { $gt: 0 };
+    }
+
+    if (gender) {
+      outingFilters.gender = gender;
     }
 
     if (startDate && endDate) {
@@ -169,7 +173,7 @@ export const getOutings = async (req, res) => {
         reason: outing.reason,
         lateBy,
         outTime: moment(outing.outTime).format("DD-MM-YYYY HH:mm"),
-        inTime: moment(outing.inTime).format("DD-MM-YYYY HH:mm"),
+        inTime: outing.inTime===null ? "NA" : moment(outing.inTime).format("DD-MM-YYYY HH:mm"),
       };
 
       studentOutingData.push(studentOutingObj);

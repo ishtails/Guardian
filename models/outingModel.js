@@ -6,6 +6,10 @@ const outingSchema = new mongoose.Schema(
       type: String,
       required: [true, "Provide Username"],
     },
+    gender: {
+      type: String,
+      default: "",
+    },
     reason: {
       type: String,
       required: [true, "Provide Reason"],
