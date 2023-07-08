@@ -134,7 +134,7 @@ export const sendOTP = async (req, res) => {
           }
         }, "Custom Domain Validation"),
     });
-    await emailSchema.validateAsync({ email });
+    await emailSchema.validateAsync({ email: req.body.email });
 
     //Generate & Store OTP in redis
     const otp = otpGenerator.generate(6, {
@@ -159,13 +159,23 @@ export const sendOTP = async (req, res) => {
 
     const result = await sendMail(mailOptions);
 
-    // Store temporary information
-    req.session.otp = otp;
-    req.session.email = req.body.email;
-    req.session.otpExpiry = Date.now() + 300000; //5 Minutes from now
+    if (result.accepted) {
+      // Store temporary information
+      req.session.otp = otp;
+      req.session.email = req.body.email;
+      req.session.otpExpiry = Date.now() + 300000; //5 Minutes from now
 
-    return res.json("OTP Sent Successfully!");
+      return res.json(result);
+    }
+
+    res.status(500).send("Error sending OTP");
   } catch (error) {
+    if (error.details) {
+      return res
+        .status(422)
+        .json(error.details.map((detail) => detail.message).join(", "));
+    }
+
     return res.status(500).json(error.message);
   }
 };
@@ -282,9 +292,7 @@ export const resetPassword = async (req, res) => {
     }
 
     if (!id) {
-      return res
-        .status(400)
-        .send("No login or OTP based temp active session");
+      return res.status(400).send("No login or OTP based temp active session");
     }
 
     console.log(id);
@@ -311,9 +319,7 @@ export const resetPassword = async (req, res) => {
 
     // Same Password Check
     if (currentPassword === newPassword) {
-      return res
-        .status(400)
-        .send("Old & new password cannot be same");
+      return res.status(400).send("Old & new password cannot be same");
     }
 
     //newPassword Validation

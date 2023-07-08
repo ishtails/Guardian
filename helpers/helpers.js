@@ -40,6 +40,7 @@ export const sendMail = async (mailOptions) => {
 
     const info = await transporter.sendMail(mailOptions);
     return info;
+
   } catch (error) {
     return error.message;
   }
