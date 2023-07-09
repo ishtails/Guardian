@@ -34,8 +34,8 @@ export const updateUser = async (req, res) => {
     const updateSchema = Joi.object({
       name: Joi.string(),
       mobile: Joi.string().length(10).regex(/^\d+$/),
-      gender: Joi.string().valid('male', 'female'),
-      hostel: Joi.string().valid('BH1', 'BH2', 'BH3', 'IVH', 'GH'),
+      gender: Joi.string().valid("male", "female"),
+      hostel: Joi.string().valid("BH1", "BH2", "BH3", "IVH", "GH"),
       room: Joi.number().max(400),
       profilePic: Joi.string(),
       idCard: Joi.any(),
@@ -45,17 +45,26 @@ export const updateUser = async (req, res) => {
 
     // Update Fields
     const { name, mobile, hostel, room, profilePic } = req.body;
-    
+
     let gender = "male";
-    if(hostel && hostel==="GH"){
+    if (hostel && hostel === "GH") {
       gender = "female";
     }
 
-    const updateFields = { name, mobile, hostel, room, gender, idCard: req.file?.path, profilePic };
+    const updateFields = {
+      name,
+      mobile,
+      hostel,
+      room,
+      gender,
+      idCard: req.file?.path,
+      profilePic,
+    };
     const username = req.session.username;
 
-    const result = await users.updateOne({ username }, { $set: updateFields });
-    return res.status(200).send(result);
+    await users.updateOne({ username }, { $set: updateFields });
+    await outings.updateMany({ username }, { $set: { gender } });
+    return res.status(200).send("Successful");
   } catch (error) {
     if (error.details) {
       return res
@@ -85,7 +94,7 @@ export const getCurrentUser = async (req, res) => {
         hostel: 1,
         room: 1,
         profilePic: 1,
-        idCard: 1
+        idCard: 1,
       }
     );
     return res.send(user);
@@ -97,7 +106,8 @@ export const getCurrentUser = async (req, res) => {
 // Get Outings
 export const getOutings = async (req, res) => {
   try {
-    const { username, isLate, startDate, endDate, isOpen, reason, gender } = req.query;
+    const { username, isLate, startDate, endDate, isOpen, reason, gender } =
+      req.query;
     const outingFilters = {};
 
     // Conditional Outing Queries
@@ -178,7 +188,10 @@ export const getOutings = async (req, res) => {
         reason: outing.reason,
         lateBy,
         outTime: moment(outing.outTime).format("DD-MM-YYYY HH:mm"),
-        inTime: outing.inTime===null ? "NA" : moment(outing.inTime).format("DD-MM-YYYY HH:mm"),
+        inTime:
+          outing.inTime === null
+            ? "NA"
+            : moment(outing.inTime).format("DD-MM-YYYY HH:mm"),
       };
 
       studentOutingData.push(studentOutingObj);
