@@ -258,10 +258,11 @@ export const registerStudent = async (req, res) => {
     // Destructuring Values
     const username = email.split("@")[0];
     const role = "student";
+    const profilePic = "https://res.cloudinary.com/dqjkucbjn/image/upload/v1688890088/Avatars/thumbs-1688889944751_w9xb0e.svg";
 
     // Hash password & save to mongoDB
     const hash = await bcrypt.hash(password, 12);
-    const newUser = new users({ email, password: hash, role, username });
+    const newUser = new users({ email, password: hash, role, username, profilePic });
     await newUser.save();
 
     // Clear Temp Session
