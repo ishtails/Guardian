@@ -41,6 +41,10 @@ export const verifyOutingChecks = async (req, res, next) => {
   const centralLocation = { latitude: 26.250106, longitude: 78.17652 };
   const verificationRadius = 2000000;
 
+  if(!latitude || !longitude){
+    return res.status(404).json("Location undetermined");
+  }
+
   const distance = geolib.getDistance({ latitude, longitude }, centralLocation);
 
   if (distance <= verificationRadius) {
