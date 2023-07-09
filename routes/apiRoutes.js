@@ -35,7 +35,7 @@ router.get("/logout", requireAuth, logOut);
 
 // SECURITY
 router.get("/search", requireAuth, searchStudents);
-router.get("/security/close-entry/:username", requireAuth, closeGateEntry);
+router.get("/security/close-entry", requireAuth, closeGateEntry);
 
 // STUDENTS
 router.post(

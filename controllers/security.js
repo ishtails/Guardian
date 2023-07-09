@@ -32,7 +32,7 @@ export const closeGateEntry = async (req, res) => {
       return res.status(401).json("Not authorized");
     }
 
-    const { username } = req.params;
+    const { username } = req.query;
     const result = await outings.findOne({ username, isOpen: true });
 
     if (!result) {

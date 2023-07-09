@@ -44,15 +44,7 @@ export const updateUser = async (req, res) => {
     await updateSchema.validateAsync(req.body);
 
     // Update Fields
-    const { name, mobile, hostel, room, profilePic } = req.body;
-
-    let gender = null;
-    if (hostel === "GH") {
-      gender = "female";
-    }
-    if (["BH1", "BH2", "BH3", "IVH"].includes(hostel)) {
-      gender = "male";
-    }
+    const { name, mobile, hostel, room, profilePic, gender } = req.body;
 
     const updateFields = {
       name,
@@ -66,11 +58,9 @@ export const updateUser = async (req, res) => {
     const username = req.session.username;
 
     await users.updateOne({ username }, { $set: updateFields });
-    if (gender) {
-      await outings.updateMany({ username }, { $set: { gender } });
-    }
+    await outings.updateMany({ username }, { $set: { gender } });
 
-    return res.status(200).send("Successful");
+    return res.status(200).send("Updated successfully");
   } catch (error) {
     if (error.details) {
       return res
