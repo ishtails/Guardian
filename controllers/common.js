@@ -44,14 +44,14 @@ export const updateUser = async (req, res) => {
     await updateSchema.validateAsync(req.body);
 
     // Update Fields
-    const { name, mobile, hostel, room } = req.body;
+    const { name, mobile, hostel, room, profilePic } = req.body;
     
     let gender = "male";
     if(hostel && hostel==="GH"){
       gender = "female";
     }
 
-    const updateFields = { name, mobile, hostel, room, gender, idCard: req.file?.path };
+    const updateFields = { name, mobile, hostel, room, gender, idCard: req.file?.path, profilePic };
     const username = req.session.username;
 
     const result = await users.updateOne({ username }, { $set: updateFields });
