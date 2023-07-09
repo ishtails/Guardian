@@ -15,7 +15,7 @@ export const searchStudents = async (req, res) => {
     const user = await users
       .find(
         { $or: [{ username: regexKey }, { name: regexKey }] },
-        { _id: 0, username: 1, name: 1, hostel: 1, room: 1, mobile: 1 }
+        { _id: 0, username: 1, name: 1, hostel: 1, room: 1, mobile: 1, profilePic:1, idCard:1 }
       )
       .sort({ name: 1 })
       .limit(5);
