@@ -46,9 +46,12 @@ export const updateUser = async (req, res) => {
     // Update Fields
     const { name, mobile, hostel, room, profilePic } = req.body;
 
-    let gender = "male";
-    if (hostel && hostel === "GH") {
+    let gender = null;
+    if (hostel === "GH") {
       gender = "female";
+    }
+    if (["BH1", "BH2", "BH3", "IVH"].includes(hostel)) {
+      gender = "male";
     }
 
     const updateFields = {
@@ -63,7 +66,10 @@ export const updateUser = async (req, res) => {
     const username = req.session.username;
 
     await users.updateOne({ username }, { $set: updateFields });
-    await outings.updateMany({ username }, { $set: { gender } });
+    if (gender) {
+      await outings.updateMany({ username }, { $set: { gender } });
+    }
+
     return res.status(200).send("Successful");
   } catch (error) {
     if (error.details) {
