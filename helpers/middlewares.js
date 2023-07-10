@@ -30,16 +30,16 @@ export const verifyOutingChecks = async (req, res, next) => {
   }
 
   // Check Timing
-  const currentTime = moment().format("HH:mm");
-  if (currentTime > "22:00" || currentTime < "05:00") {
-    return res.status(403).json("Intime deadline exceeded");
-  }
+  // const currentTime = moment().format("HH:mm");
+  // if (currentTime > "22:00" || currentTime < "05:00") {
+  //   return res.status(403).json("Intime deadline exceeded");
+  // }
 
   // Check Location
   const { latitude, longitude } = req.body;
 
   const centralLocation = { latitude: 26.250106, longitude: 78.17652 };
-  const verificationRadius = 2000000;
+  const verificationRadius = 1500;
 
   if(!latitude || !longitude){
     return res.status(404).json("Location undetermined");
