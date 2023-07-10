@@ -270,7 +270,7 @@ export const registerStudent = async (req, res) => {
     delete req.session.tempSessionExp;
     delete req.session.email;
 
-    return res.json({ message: "Registered Successfully", username, role });
+    return res.json({ message: "Student registered" });
   } catch (error) {
     if (error.details) {
       return res
