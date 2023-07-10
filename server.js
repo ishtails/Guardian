@@ -26,8 +26,8 @@ redisClient
 // Rate Limiter
 const limiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 45,
-  message: "Too many requests. Please try again later.",
+  max: 120,
+  message: "Too many requests. IP blocked.",
   standardHeaders: true,
   legacyHeaders: false,
 });
