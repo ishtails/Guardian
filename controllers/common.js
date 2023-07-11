@@ -142,7 +142,7 @@ export const getOutings = async (req, res) => {
 
     if (req.session.role === "security") {
       outingFilters.outTime = {
-        $gte: moment().subtract(1, "day").toDate(),
+        $gte: moment().subtract(3, "day").toDate(),
         $lt: moment().add(1, "day").toDate(),
       };
     }

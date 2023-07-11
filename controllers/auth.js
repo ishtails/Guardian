@@ -114,11 +114,19 @@ export const isRegistered = async (req, res) => {
 export const sendOTP = async (req, res) => {
   try {
     if (!req.body.email) {
-      return res.status(400).json("No Email Provided!");
+      return res.status(400).json("No email provided!");
     }
 
     if (req.session.username) {
-      return res.status(403).json("Already Logged in!");
+      return res.status(403).json("Already logged in");
+    }
+
+    if (
+      req.session.otpExpiry &&
+      Date.now() < req.session.otpExpiry &&
+      req.body.email === req.session.email
+    ) {
+      return res.status(400).send("OTP not expired");
     }
 
     //Email Validation
@@ -153,7 +161,7 @@ export const sendOTP = async (req, res) => {
     const mailOptions = {
       from: process.env.GMAIL_ID,
       to: req.body.email,
-      subject: "Guardian - OTP Verification",
+      subject: `Guardian - Your OTP for verification is ${otp}`,
       html: otpTemplate,
     };
 
@@ -163,7 +171,7 @@ export const sendOTP = async (req, res) => {
       // Store temporary information
       req.session.otp = otp;
       req.session.email = req.body.email;
-      req.session.otpExpiry = Date.now() + 300000; //5 Minutes from now
+      req.session.otpExpiry = Date.now() + 180000; //5 Minutes from now
 
       return res.json(result);
     }
@@ -184,7 +192,7 @@ export const sendOTP = async (req, res) => {
 export const verifyOTP = async (req, res) => {
   try {
     if (req.session.username) {
-      return res.status(403).send("Already Logged in!");
+      return res.status(403).send("Already logged in");
     }
 
     const userEnteredOTP = req.body.otp;
@@ -192,14 +200,14 @@ export const verifyOTP = async (req, res) => {
     const storedOTPExpiry = req.session.otpExpiry;
 
     if (!req.session.otp || !req.session.otpExpiry || !req.session.email) {
-      return res.status(400).send("No OTP generated!");
+      return res.status(400).send("Not generated");
     }
 
     if (Date.now() > storedOTPExpiry) {
       delete req.session.otp;
       delete req.session.email;
       delete req.session.otpExpiry;
-      return res.status(401).send("OTP expired!");
+      return res.status(401).send("OTP expired");
     }
 
     if (userEnteredOTP === storedOTP) {
@@ -208,7 +216,7 @@ export const verifyOTP = async (req, res) => {
       req.session.tempSessionExp = Date.now() + 300000; //5 Minutes from now
       return res.send("OTP Verified Successfully!");
     } else {
-      return res.status(400).send("Wrong OTP!");
+      return res.status(403).send("Wrong OTP!");
     }
   } catch (error) {
     return res.status(500).json(error.message);
@@ -258,11 +266,18 @@ export const registerStudent = async (req, res) => {
     // Destructuring Values
     const username = email.split("@")[0];
     const role = "student";
-    const profilePic = "https://res.cloudinary.com/dqjkucbjn/image/upload/v1688890088/Avatars/thumbs-1688889944751_w9xb0e.svg";
+    const profilePic =
+      "https://res.cloudinary.com/dqjkucbjn/image/upload/v1688890088/Avatars/thumbs-1688889944751_w9xb0e.svg";
 
     // Hash password & save to mongoDB
     const hash = await bcrypt.hash(password, 12);
-    const newUser = new users({ email, password: hash, role, username, profilePic });
+    const newUser = new users({
+      email,
+      password: hash,
+      role,
+      username,
+      profilePic,
+    });
     await newUser.save();
 
     // Clear Temp Session
@@ -292,35 +307,39 @@ export const resetPassword = async (req, res) => {
       id = req.session.email;
     }
 
-    if (!id) {
-      return res.status(400).send("No login or OTP based temp active session");
+    if (
+      (!id && !req.session.tempSessionExp) ||
+      Date.now() > req.session.tempSessionExp
+    ) {
+      return res.status(401).send("Session Expired!");
     }
-
-    console.log(id);
 
     const { currentPassword, newPassword } = req.body;
 
-    // Match Current Password
     const user = await users.findOne(
       { $or: [{ username: id }, { email: id }] },
       { password: 1, username: 1 }
     );
+
+    // Same Password Check
+    if (newPassword === user.password) {
+      return res.status(400).send("Old & new password cannot be same");
+    }
+
     if (!user) {
       return res.status(404).send("Not registered!");
     }
 
-    const passwordCorrect = await bcrypt.compare(
-      currentPassword,
-      user.password
-    );
+    // Match Current Password
+    if (currentPassword) {
+      const passwordCorrect = await bcrypt.compare(
+        currentPassword,
+        user.password
+      );
 
-    if (!passwordCorrect) {
-      return res.status(400).send("Current Password doesn't match");
-    }
-
-    // Same Password Check
-    if (currentPassword === newPassword) {
-      return res.status(400).send("Old & new password cannot be same");
+      if (!passwordCorrect) {
+        return res.status(400).send("Current Password doesn't match");
+      }
     }
 
     //newPassword Validation
@@ -334,13 +353,16 @@ export const resetPassword = async (req, res) => {
 
     await passwordSchema.validateAsync({ password: newPassword });
 
-    // Revoke all active user sessions
-    revokeUserSessions(user.username);
-
     // Save new password to mongoDB
     const newHash = await bcrypt.hash(newPassword, 12);
     user.password = newHash;
     await user.save();
+
+    // Revoke all active user sessions
+    revokeUserSessions(user.username);
+    if (req.session.email) delete req.session.email;
+    delete req.session.req.session.tempSessionExp;
+
     return res.json("Password Reset Successful!");
   } catch (error) {
     if (error.details) {
