@@ -214,9 +214,9 @@ export const verifyOTP = async (req, res) => {
       delete req.session.otp;
       delete req.session.otpExpiry;
       req.session.tempSessionExp = Date.now() + 300000; //5 Minutes from now
-      return res.send("OTP Verified Successfully!");
+      return res.send("OTP Verified");
     } else {
-      return res.status(403).send("Wrong OTP!");
+      return res.status(403).send("Wrong OTP");
     }
   } catch (error) {
     return res.status(500).json(error.message);
