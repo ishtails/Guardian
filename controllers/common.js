@@ -183,7 +183,7 @@ export const getOutings = async (req, res) => {
         isOpen: outing.isOpen,
         reason: outing.reason,
         lateBy,
-        outTime: moment(outing.outTime).format("DD-MM-YYYY HH:mm"),
+        outTime: moment(outing.outTime).format("DD-MM-YYYY HH:mm:ss"),
         inTime:
           outing.inTime === null
             ? "NA"
