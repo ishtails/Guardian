@@ -1,0 +1,121 @@
+[{
+  "_id": {
+    "$oid": "64a82779a43fcba4618bc871"
+  },
+  "email": "bcs_2021012@iiitm.ac.in",
+  "username": "bcs_2021012",
+  "password": "$2b$12$j59wWSFmoUVpyvw5qV497e398KwJafHyZMNSjkZ9R/oQYNQZ9Wlvq",
+  "role": "admin",
+  "name": "Aneeka Mangal",
+  "gender": "female",
+  "mobile": {
+    "$numberLong": "9119119119"
+  },
+  "hostel": "GH",
+  "room": 120,
+  "profilePic": "https://res.cloudinary.com/dqjkucbjn/image/upload/v1688816383/Avatars/adventurer-1688816288685_okyzba.svg",
+  "idCard": "https://res.cloudinary.com/dqjkucbjn/image/upload/v1688849307/Guardian/idCard-bcs_2021012.jpg",
+  "createdAt": {
+    "$date": "2023-07-06T14:49:13.624Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-11T18:47:10.012Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64a835d0f78255e6935a9a58"
+  },
+  "email": "bcs_2021076@iiitm.ac.in",
+  "username": "bcs_2021076",
+  "password": "$2b$12$F5G7ejkYP.kUmBKbrzdYF.j467mY2zSEsJ2QZsCs8UsvFactAj3A6",
+  "role": "student",
+  "name": "Vyshnav Ajith",
+  "gender": "male",
+  "mobile": {
+    "$numberLong": "9876543210"
+  },
+  "hostel": "BH1",
+  "room": 263,
+  "profilePic": "https://res.cloudinary.com/dqjkucbjn/image/upload/v1688886124/Avatars/adventurer-1688886054815_hdw1wr.svg",
+  "idCard": "",
+  "createdAt": {
+    "$date": "2023-07-05T14:49:13.624Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-10T08:44:41.920Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64a83621f78255e6935a9a5b"
+  },
+  "email": "bcs_2021072@iiitm.ac.in",
+  "username": "bcs_2021072",
+  "password": "$2b$12$PiLzhsy0fIDRZ/7z9AYB3uPejtQKD6/qTnlCQZFixEdTBgCW8IPRe",
+  "role": "security",
+  "name": "Aryan Sharma",
+  "gender": "male",
+  "mobile": 1111222233,
+  "hostel": "BH1",
+  "room": 304,
+  "profilePic": "https://res.cloudinary.com/dqjkucbjn/image/upload/v1688886124/Avatars/adventurer-1688886040306_lw3ck7.svg",
+  "idCard": "",
+  "createdAt": {
+    "$date": "2023-07-07T14:49:13.624Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-09T11:44:13.036Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64aa741ba79dbbc59280312a"
+  },
+  "email": "bcs_2021074@iiitm.ac.in",
+  "username": "bcs_2021074",
+  "password": "$2b$12$pI6Fzg8CtnrPIvTcW0A5g.H/9S3BTm1NTOSrywuef6D5SVuGuV76a",
+  "role": "student",
+  "name": "Sachin Jayadev",
+  "gender": "male",
+  "mobile": 1234567890,
+  "hostel": "BH1",
+  "room": 204,
+  "profilePic": "https://res.cloudinary.com/dqjkucbjn/image/upload/v1688886124/Avatars/adventurer-1688886054815_hdw1wr.svg",
+  "idCard": "https://res.cloudinary.com/dqjkucbjn/image/upload/v1688903193/Guardian/idCard-bcs_2021074.jpg",
+  "createdAt": {
+    "$date": "2023-07-09T08:47:23.093Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-09T20:05:02.257Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ac51de215e61541fdca456"
+  },
+  "email": "bcs_2021035@iiitm.ac.in",
+  "username": "bcs_2021035",
+  "password": "$2b$12$GAiTWXpj22zCCZ8FiQ.4V.AqwbwLKclRIaIs0.kMPNm4LPCUTopby",
+  "role": "student",
+  "name": "Kartikay Tiwari",
+  "gender": "male",
+  "mobile": {
+    "$numberLong": "7905934905"
+  },
+  "hostel": "BH1",
+  "room": 340,
+  "profilePic": "https://res.cloudinary.com/dqjkucbjn/image/upload/v1688816383/Avatars/adventurer-1688816283386_cqfqgb.svg",
+  "idCard": "https://res.cloudinary.com/dqjkucbjn/image/upload/v1689102056/Guardian/idCard-bcs_2021035.jpg",
+  "createdAt": {
+    "$date": "2023-07-10T18:45:50.048Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-12T08:46:39.544Z"
+  },
+  "__v": 0
+}]

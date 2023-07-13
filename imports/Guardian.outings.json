@@ -1,0 +1,678 @@
+[{
+  "_id": {
+    "$oid": "64a86d6e9a0458f4b25b68b1"
+  },
+  "username": "bcs_2021012",
+  "gender": "female",
+  "reason": "Going to Market",
+  "inTime": {
+    "$date": "2023-07-07T23:57:41.659Z"
+  },
+  "lateBy": -992,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-07T19:54:22.758Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64a86db810c9c0c3fe30052d"
+  },
+  "username": "bcs_2021076",
+  "gender": "male",
+  "reason": "Going to Market",
+  "inTime": {
+    "$date": "2023-07-08T16:40:54.545Z"
+  },
+  "lateBy": 10,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-07T19:55:36.475Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64a86dc010c9c0c3fe300532"
+  },
+  "username": "bcs_2021074",
+  "gender": "male",
+  "reason": "Going to Market",
+  "inTime": {
+    "$date": "2023-07-07T19:57:44.227Z"
+  },
+  "lateBy": -1232,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-07T19:55:44.758Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64a86e4803ef26402a249b60"
+  },
+  "username": "bcs_2021074",
+  "gender": "male",
+  "reason": "Going to Market",
+  "inTime": {
+    "$date": "2023-07-07T19:58:26.506Z"
+  },
+  "lateBy": 300,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-07T19:58:00.231Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64a86e5303ef26402a249b65"
+  },
+  "username": "bcs_2021076",
+  "gender": "male",
+  "reason": "Going to Market",
+  "inTime": {
+    "$date": "2023-07-07T21:33:26.838Z"
+  },
+  "lateBy": -1136,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-07T19:58:11.802Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64a9883a208f29b24eb008d8"
+  },
+  "username": "bcs_2021012",
+  "gender": "female",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-08T20:49:18.167Z"
+  },
+  "lateBy": 259,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-08T16:00:58.311Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64aa6d1af3ee268e5c69ca4c"
+  },
+  "username": "bcs_2021035",
+  "gender": "male",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-09T08:19:20.645Z"
+  },
+  "lateBy": -490,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-09T08:17:30.587Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64aa710467eb9c7cdf505c64"
+  },
+  "username": "bcs_2021012",
+  "gender": "female",
+  "reason": "bas yun hi",
+  "inTime": {
+    "$date": "2023-07-09T08:35:44.885Z"
+  },
+  "lateBy": -474,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-09T08:34:12.149Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64aa83ef460bd34ec9bc06c3"
+  },
+  "username": "bcs_2021012",
+  "gender": "female",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-09T09:55:16.608Z"
+  },
+  "lateBy": -394,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-09T09:54:55.728Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64aa84b858ba3fc877a60fbc"
+  },
+  "username": "bcs_2021035",
+  "gender": "male",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-09T09:58:38.064Z"
+  },
+  "lateBy": -391,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-09T09:58:16.298Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64aa84dc58ba3fc877a60fe7"
+  },
+  "username": "bcs_2021035",
+  "gender": "male",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-09T10:30:51.947Z"
+  },
+  "lateBy": -359,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-09T09:58:52.375Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64aa8cca58ba3fc877a61015"
+  },
+  "username": "bcs_2021035",
+  "gender": "male",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-09T10:33:17.267Z"
+  },
+  "lateBy": -356,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-09T10:32:42.991Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64aa8de858ba3fc877a61051"
+  },
+  "username": "bcs_2021035",
+  "gender": "male",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-09T10:52:02.890Z"
+  },
+  "lateBy": -337,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-09T10:37:28.867Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64aa916e58ba3fc877a612fc"
+  },
+  "username": "bcs_2021035",
+  "gender": "male",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-10T08:45:59.883Z"
+  },
+  "lateBy": 975,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-09T10:52:30.695Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64aaa108cd0780d6da494933"
+  },
+  "username": "bcs_2021012",
+  "gender": "female",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-09T19:28:48.769Z"
+  },
+  "lateBy": 178,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-09T11:59:04.233Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64aaa8e659010ae9dff9f402"
+  },
+  "username": "bcs_2021012",
+  "gender": "female",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-09T19:48:19.276Z"
+  },
+  "lateBy": 198,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-09T12:32:38.176Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ab0f0e4269fdcb32fd6143"
+  },
+  "username": "bcs_2021012",
+  "gender": "female",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-09T19:54:48.175Z"
+  },
+  "lateBy": -1235,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-09T19:48:30.460Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ab10cb4269fdcb32fd61ea"
+  },
+  "username": "bcs_2021012",
+  "gender": "female",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-09T19:56:52.716Z"
+  },
+  "lateBy": -1233,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-09T19:55:55.547Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ab11407a6ad820ae7e0e23"
+  },
+  "username": "bcs_2021012",
+  "gender": "female",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-11T08:54:33.424Z"
+  },
+  "lateBy": 984,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-09T19:57:52.536Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ab13117a6ad820ae7e0f6f"
+  },
+  "username": "bcs_2021074",
+  "gender": "male",
+  "reason": "market",
+  "inTime": {
+    "$date": "2023-07-10T18:37:08.227Z"
+  },
+  "lateBy": 127,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-09T20:05:37.558Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64abc504c7de022bc22ff349"
+  },
+  "username": "bcs_2021076",
+  "gender": "male",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-11T08:54:35.666Z"
+  },
+  "lateBy": 984,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-10T08:44:52.011Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ac4fe3215e61541fdca432"
+  },
+  "username": "bcs_2021074",
+  "gender": "male",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-10T18:38:16.762Z"
+  },
+  "lateBy": -1311,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-10T18:37:23.846Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ac532f215e61541fdca4bb"
+  },
+  "username": "bcs_2021035",
+  "gender": "male",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-10T18:52:37.426Z"
+  },
+  "lateBy": -1297,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-10T18:51:27.388Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ac920b54339e00b0505abc"
+  },
+  "username": "bcs_2021035",
+  "gender": "male",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-11T08:54:37.818Z"
+  },
+  "lateBy": -455,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-10T23:19:39.673Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ad38eb792e941f04537152"
+  },
+  "username": "bcs_2021035",
+  "gender": "male",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-11T19:02:24.711Z"
+  },
+  "lateBy": 152,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-11T11:11:39.759Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ad5cf2a64e01f4091a68a4"
+  },
+  "username": "bcs_2021074",
+  "gender": "male",
+  "reason": "market",
+  "inTime": {
+    "$date": "2023-07-10T18:37:08.227Z"
+  },
+  "lateBy": 127,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-09T20:05:37.558Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ad5cf9a64e01f4091a68a5"
+  },
+  "username": "bcs_2021012",
+  "gender": "female",
+  "reason": "Going to Market",
+  "inTime": {
+    "$date": "2023-07-07T23:57:41.659Z"
+  },
+  "lateBy": -992,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-07T19:54:22.758Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ad5cfca64e01f4091a68a6"
+  },
+  "username": "bcs_2021012",
+  "gender": "female",
+  "reason": "Going to Market",
+  "inTime": {
+    "$date": "2023-07-07T23:57:41.659Z"
+  },
+  "lateBy": -992,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-07T19:54:22.758Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ad5cfea64e01f4091a68a7"
+  },
+  "username": "bcs_2021012",
+  "gender": "female",
+  "reason": "Going to Market",
+  "inTime": {
+    "$date": "2023-07-07T23:57:41.659Z"
+  },
+  "lateBy": -992,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-07T19:54:22.758Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ad5d00a64e01f4091a68a8"
+  },
+  "username": "bcs_2021012",
+  "gender": "female",
+  "reason": "Going to Market",
+  "inTime": {
+    "$date": "2023-07-07T23:57:41.659Z"
+  },
+  "lateBy": -992,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-07T19:54:22.758Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ada7132490efd05f50495a"
+  },
+  "username": "bcs_2021076",
+  "gender": "male",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-11T19:06:28.526Z"
+  },
+  "lateBy": -1283,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-11T19:01:39.320Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ada8592490efd05f5049a2"
+  },
+  "username": "bcs_2021076",
+  "gender": "male",
+  "reason": "bas yun hi",
+  "inTime": {
+    "$date": "2023-07-11T19:07:20.248Z"
+  },
+  "lateBy": -1282,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-11T19:07:05.932Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64adab634bb00be7a8a734af"
+  },
+  "username": "bcs_2021035",
+  "gender": "male",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-11T19:21:25.085Z"
+  },
+  "lateBy": -1268,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-11T19:20:03.878Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ae48c9dddf630289fdf171"
+  },
+  "username": "bcs_2021035",
+  "gender": "male",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-12T06:51:54.351Z"
+  },
+  "lateBy": -578,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-12T06:31:37.758Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ae4d94dad51d3eae79f58a"
+  },
+  "username": "bcs_2021035",
+  "gender": "male",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-12T06:53:02.667Z"
+  },
+  "lateBy": -576,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-12T06:52:04.706Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ae4ddedad51d3eae79f5ab"
+  },
+  "username": "bcs_2021035",
+  "gender": "male",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-12T06:53:50.668Z"
+  },
+  "lateBy": -576,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-12T06:53:18.937Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ae4e0adad51d3eae79f5db"
+  },
+  "username": "bcs_2021035",
+  "gender": "male",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-12T06:54:49.156Z"
+  },
+  "lateBy": -575,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-12T06:54:02.970Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ae4e3edad51d3eae79f618"
+  },
+  "username": "bcs_2021035",
+  "gender": "male",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-12T06:55:02.868Z"
+  },
+  "lateBy": -574,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-12T06:54:54.454Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ae681bae8e2defd3a9b1df"
+  },
+  "username": "bcs_2021035",
+  "gender": "male",
+  "reason": "Market",
+  "inTime": {
+    "$date": "2023-07-12T08:46:17.262Z"
+  },
+  "lateBy": -463,
+  "isOpen": false,
+  "outTime": {
+    "$date": "2023-07-12T08:45:15.688Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ae692cae8e2defd3a9b427"
+  },
+  "username": "bcs_2021035",
+  "gender": "male",
+  "reason": "Market",
+  "inTime": null,
+  "lateBy": 0,
+  "isOpen": true,
+  "outTime": {
+    "$date": "2023-07-12T08:49:48.696Z"
+  },
+  "__v": 0
+}]
