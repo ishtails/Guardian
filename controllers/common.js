@@ -102,8 +102,16 @@ export const getCurrentUser = async (req, res) => {
 // Get Outings
 export const getOutings = async (req, res) => {
   try {
-    const { username, isLate, startDate, endDate, isOpen, reason, gender } =
-      req.query;
+    const {
+      username,
+      isLate,
+      startDate,
+      endDate,
+      isOpen,
+      reason,
+      gender,
+      page,
+    } = req.query;
     const outingFilters = {};
 
     // Conditional Outing Queries
@@ -148,7 +156,11 @@ export const getOutings = async (req, res) => {
     }
 
     // Fetching Outings
-    const allOutings = await outings.find(outingFilters);
+    const allOutings = await outings
+      .find(outingFilters)
+      .sort({ outTime: -1 })
+      .skip(((page || 1) - 1) * 20)
+      .limit(20);
     let studentOutingData = [];
 
     for (const outing of allOutings) {
