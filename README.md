@@ -76,7 +76,7 @@ If you need to customize the configuration of the Node Express app, you can modi
 
 ## Usage
 
-Once the Node Express app is up and running, you can interact with it using your preferred API testing tool or by making HTTP requests from your own applications.
+Once the Node Express app is up and running, you can interact with it using your preferred API testing tool or by making HTTP requests from your own applications...
 
 The app provides API endpoints that you can access to perform various actions according to its functionality. Refer to the app's documentation or source code for details on the available endpoints and their usage.
 
