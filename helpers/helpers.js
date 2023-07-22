@@ -1,7 +1,6 @@
 import nodemailer from "nodemailer";
 import { redisClient } from "../server.js";
 import cloudinary from "cloudinary";
-import sharp from "sharp";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import multer from "multer";
 import * as dotenv from "dotenv";
