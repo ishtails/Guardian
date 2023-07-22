@@ -1,29 +1,18 @@
-# Stage 1: Install dependencies
-FROM node:lts as builder
+FROM node:lts-alpine
 
-WORKDIR /app
+# Install Redis and other dependencies
+RUN apk add --no-cache redis
 
-# Copy package.json and package-lock.json first to leverage Docker cache
-COPY package*.json ./
-RUN npm install
-
-# Copy the rest of the application code
+ENV NODE_ENV=production
+WORKDIR /usr/src/app
+COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
+RUN npm install --production --silent && mv node_modules ../
 COPY . .
+EXPOSE 8000
 
-# Stage 2: Create the final container
-FROM redis:latest
+# Change ownership of the application directory
+RUN chown -R node /usr/src/app
+USER node
 
-# Expose Redis port
-EXPOSE 6379
-
-# Set the working directory to /app
-WORKDIR /app
-
-# Copy the application source code and dependencies from the previous stage
-COPY --from=builder /app .
-
-# Install production dependencies (excluding devDependencies)
-RUN npm install --only=production
-
-# Command to run Redis and the Node.js application
-CMD ["sh", "-c", "redis-server & node server.js"]
+# Run Node.js server
+CMD ["redis-server" ,"node", "server.js"]
