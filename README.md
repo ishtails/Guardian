@@ -12,8 +12,8 @@ This is a simple guide to help you locally install and run the backend.
 
 Before proceeding with the installation, make sure you have the following prerequisites installed on your machine:
 
-- Node.js (version 14 or above)
-- npm (Node Package Manager)
+- Node.js
+- npm
 
 ## Installation
 
