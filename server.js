@@ -16,7 +16,13 @@ const app = express();
 const PORT = process.env.PORT;
 const MONG_URI = process.env.MONG_URI;
 
-const redisClient = createClient({host: process.env.NODE_ENV === 'production' ? 'redis' : 'localhost'});
+// Configure Redis Client
+const redisClient = createClient({
+  socket: {
+    host: "redis",
+    port: 6379
+  }
+});
 redisClient
   .connect()
   .then(console.log("Connected to Redis Session Store"))
@@ -81,3 +87,5 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api", apiRouter);
+
+// Say Hi to the user
