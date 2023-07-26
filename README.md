@@ -6,7 +6,7 @@ Frontend Repo: [Click Here](https://github.com/ishtails/Guardian-Frontend)<br/>
 
 # Installation Guide
 
-This is a simple guide to help you locally install and run the backend.
+This is a simple guide to help you locally setup the backend for development.
 
 ## Prerequisites
 
