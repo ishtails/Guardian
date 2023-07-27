@@ -48,7 +48,7 @@ Follow these steps to install and run the Node Express app locally:
 4. Install the dependencies using npm:
 
    ```bash
-   docker-compose up -d
+   docker-compose up -d --build
    ```
 
    NOTE: Wait for the the server to start before making requests (Check logs of "Backend" container in docker)
