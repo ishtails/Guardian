@@ -8,6 +8,8 @@ services:
     command: redis-server --save 60 1
     ports:
       - "6379:6379"
+    environment:
+      TZ: "Asia/Kolkata"
 
   mongodb:
     image: mongo
@@ -16,6 +18,9 @@ services:
       - "27017:27017"
     volumes:
       - ./data:/data/db
+    restart: always
+    environment:
+      TZ: "Asia/Kolkata"
 
   server:
     build:
@@ -32,3 +37,5 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/node_modules
+    environment:
+      TZ: "Asia/Kolkata"

@@ -39,7 +39,7 @@ export const verifyOutingChecks = async (req, res, next) => {
   const { latitude, longitude } = req.body;
 
   const centralLocation = { latitude: 26.250106, longitude: 78.17652 };
-  const verificationRadius = 100;
+  const verificationRadius = 200;
 
   if(!latitude || !longitude){
     return res.status(404).json("Location undetermined");
