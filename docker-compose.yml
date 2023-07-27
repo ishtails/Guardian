@@ -39,3 +39,18 @@ services:
       - /usr/src/node_modules
     environment:
       TZ: "Asia/Kolkata"
+
+  client:
+    container_name: Frontend
+    depends_on:
+      - server
+    build:
+      context: ./Guardian-Frontend
+      dockerfile: Dockerfile
+    ports:
+      - 5173:5173
+    volumes:
+      - ./Guardian-Frontend:/usr/src/app
+      - /usr/src/node_modules
+    environment:
+      TZ: "Asia/Kolkata"
