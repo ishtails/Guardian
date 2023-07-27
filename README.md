@@ -30,7 +30,7 @@ Follow these steps to install and run the Node Express app locally:
    cd Guardian-Backend
    ```
 
-3. Duplicate the `.env.template` file in the project and rename it to `.env` file and fill your local environment variable values.
+3. Duplicate the `.env.template` file in the project and rename it to `.env` file and fill your local environment variable values. (Important)
 
    ```
    PORT=8000
@@ -45,7 +45,9 @@ Follow these steps to install and run the Node Express app locally:
 
    NOTE: Google App Password is not the same as your regular password [Guide](https://support.google.com/accounts/answer/185833?hl=en)
 
-4. Install the dependencies using npm:
+4. Clone [Frontend](https://github.com/ishtails/Guardian-Frontend) inside the backend folder. (Important)
+
+5. Run the command to start the application:
 
    ```bash
    docker-compose up -d --build
@@ -54,7 +56,7 @@ Follow these steps to install and run the Node Express app locally:
    NOTE: Wait for the the server to start before making requests (Check logs of "Backend" container in docker)
 
 
-5. You'll need a client like Postman or Thunder Client (VSCode Extention) to test the API. Import the "api-endpoints-postman.json" file in postman to import all the routes in postman or "api-endpoints-thunder.json" in thunder if you prefer Thunder Client. (You may also set up the Guardian-Frontend)
+6. You'll need a client like Postman or Thunder Client (VSCode Extention) to test the API. Import the "api-endpoints-postman.json" file in postman to import all the routes in postman or "api-endpoints-thunder.json" in thunder if you prefer Thunder Client. (You may also set up the Guardian-Frontend)
 
 ## Configuration
 
