@@ -22,6 +22,7 @@ services:
       TZ: "Asia/Kolkata"
 
   server:
+    image: Guardian-Backend
     build:
       context: .
       dockerfile: Dockerfile
@@ -40,6 +41,7 @@ services:
       TZ: "Asia/Kolkata"
 
   client:
+    image: Guardian-Frontend
     container_name: Frontend
     depends_on:
       - server
