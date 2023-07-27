@@ -27,7 +27,7 @@ Follow these steps to install and run the Node Express app locally:
 2. Navigate to the project directory:
 
    ```bash
-   cd Guardian-Backend
+   cd Guardian
    ```
 
 3. Duplicate the `.env.template` file in the project and rename it to `.env` file and fill your local environment variable values. (Important)
@@ -45,7 +45,7 @@ Follow these steps to install and run the Node Express app locally:
 
    NOTE: Google App Password is not the same as your regular password [Guide](https://support.google.com/accounts/answer/185833?hl=en)
 
-4. Clone [Frontend](https://github.com/ishtails/Guardian-Frontend) inside the backend folder. (Important)
+4. Clone [Frontend](https://github.com/ishtails/Guardian-Frontend) inside in the current directory (Guardian). (Important)
 
 5. Run the command to start the application:
 
