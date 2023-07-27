@@ -12,7 +12,7 @@ This is a simple guide to help you locally setup the backend for development.
 
 Before proceeding with the installation, make sure you have the following prerequisites installed on your machine:
 
-- Docker
+- Docker [Guide](https://docs.docker.com/engine/install/)
 
 ## Installation
 
