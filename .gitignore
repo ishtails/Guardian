@@ -25,3 +25,5 @@ dist-ssr
 
 .env
 *.rdb
+data
+sessionData

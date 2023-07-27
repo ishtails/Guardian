@@ -87,5 +87,3 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api", apiRouter);
-
-// Say Hi to the user

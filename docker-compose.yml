@@ -1,17 +1,33 @@
-version: "3"
+version: "3.4"
 services:
   redis:
     image: redis:latest
     container_name: redis
+    volumes:
+      - ./sessionData:/data
+    command: redis-server --save 60 1 --loglevel warning
+    ports:
+      - "6379:6379"
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
 
   server:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: Guardian
+    container_name: Backend
     depends_on:
       - redis
+      - mongodb
     ports:
       - "8000:8000"
     env_file:
       - .env
+    volumes:
+      - .:/usr/src/app
