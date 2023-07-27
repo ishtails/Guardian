@@ -12,8 +12,7 @@ This is a simple guide to help you locally setup the backend for development.
 
 Before proceeding with the installation, make sure you have the following prerequisites installed on your machine:
 
-- Node.js
-- npm
+- Docker
 
 ## Installation
 
@@ -31,54 +30,44 @@ Follow these steps to install and run the Node Express app locally:
    cd Guardian-Backend
    ```
 
-3. Install the dependencies using npm:
-
-   ```bash
-   npm install
-   ```
-
-   NOTE: 
-   1. You need to install redis using bash (WSL on windows), and then run "redis-server" command on it to start redis in background (after every system reboot), for using this application. [Guide](https://redis.io/docs/getting-started/installation/)
-
-   2. You'll also need mongoDB community server installed on locally. ([Guide](https://www.mongodb.com/docs/manual/administration/install-community/))
-
-   3. You'll need a client like Postman or Thunder Client (VSCode Extention) to test the API. Import the "api-endpoints-postman.json" file in postman to import all the routes in postman or "api-endpoints-thunder.json" in thunder if you prefer that
-
-
-4. Rename the `.env.template` file in the project to `.env` file and fill your local environment variable values. For Example
+3. Duplicate the `.env.template` file in the project and rename it to `.env` file and fill your local environment variable values.
 
    ```
    PORT=8000
    MONGO_URL = mongodb://localhost:27017/Guardian
-   SESS_SECRET=12345678
+   SESS_SECRET=cc666a5c76a80bdf4dcd0b0a965179bda63b66793fb25fa9d84546be9cc0a3dc
    GMAIL_ID= (Google email)
    GMAIL_APP_PASS= (Google App Password from 2FA option)
+   CLOUDINARY_NAME= (Cloudinary Credentials)
+   CLOUDINARY_APIKEY= (Cloudinary Credentials)
+   CLOUDINARY_APISECRET= (Cloudinary Credentials)
    ```
 
-   Note: Modify the values according to your needs.
+   NOTE: Google App Password is not the same as your regular password [Guide](https://support.google.com/accounts/answer/185833?hl=en)
 
-5. Start the application:
+4. Install the dependencies using npm:
 
    ```bash
-   npm run dev
+   docker-compose up -d
    ```
 
-   This command will start the server and make the app available at `http://localhost:8000` by default.
+   NOTE: Wait for the the server to start before making requests (Check logs of "Backend" container in docker)
 
-6. Open your web browser and navigate to `http://localhost:8000` to see the application running.
+
+5. You'll need a client like Postman or Thunder Client (VSCode Extention) to test the API. Import the "api-endpoints-postman.json" file in postman to import all the routes in postman or "api-endpoints-thunder.json" in thunder if you prefer Thunder Client. (You may also set up the Guardian-Frontend)
 
 ## Configuration
 
 If you need to customize the configuration of the Node Express app, you can modify the following files:
 
-- `server.js`: The main application file where you can set up middleware, routes, and other configurations.
+- `server.js`: The main application file where you can set up middleware, and other configurations.
 - `.env`: The environment variables file where you can define settings like the port number, database connection string, etc.
 
 ## Usage
 
 Once the Node Express app is up and running, you can interact with it using your preferred API testing tool or by making HTTP requests from your own applications...
 
-The app provides API endpoints that you can access to perform various actions according to its functionality. Refer to the app's documentation or source code for details on the available endpoints and their usage.
+The app provides API endpoints (check apiRouter file) that you can access to perform various actions according to its functionality. Refer to the app's documentation or source code for details on the available endpoints and their usage.
 
 ## Contributing
 
