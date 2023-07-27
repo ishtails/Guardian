@@ -16,6 +16,7 @@
 **/Dockerfile*
 **/node_modules
 **/data
+**/Guardian-Frontend
 **/sessionData
 **/npm-debug.log
 **/obj
