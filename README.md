@@ -1,6 +1,6 @@
 # Links
 
-Documentation: [Click Here](https://docs.google.com/document/d/1icATDE41zBhdGM5qlPNgBdHJe0I8uJxtTujov9Cpqn4/edit?usp=sharing)<br/>
+Paper: [Click Here](https://drive.google.com/file/d/1KRv_YBNtan94x9XF6fUw3y1G5wY68zJP/view?usp=sharing)<br/>
 UI Design (Figma): [Click Here](https://www.figma.com/file/k5eDd6Edq2NL3xGf4do5Ki/Guardian?type=design&node-id=0%3A1&t=Js4hdwCZioEZo3dU-1)<br/>
 Frontend Repo: [Click Here](https://github.com/ishtails/Guardian-Frontend)<br/>
 
