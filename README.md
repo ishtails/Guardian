@@ -35,7 +35,7 @@ Follow these steps to install and run the Node Express app locally:
    ```
    PORT=8000
    MONGO_URL = mongodb://localhost:27017/Guardian
-   SESS_SECRET=cc666a5c76a80bdf4dcd0b0a965179bda63b66793fb25fa9d84546be9cc0a3dc
+   SESS_SECRET=1234567890
    GMAIL_ID= (Google email)
    GMAIL_APP_PASS= (Google App Password from 2FA option)
    CLOUDINARY_NAME= (Cloudinary Credentials)
