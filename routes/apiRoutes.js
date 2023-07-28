@@ -41,7 +41,7 @@ router.get("/security/close-entry", requireAuth, closeGateEntry);
 router.post(
   "/student/exit-request",
   requireAuth,
-  verifyOutingChecks,
+  // verifyOutingChecks,
   openGateEntry
 );
 router.get("/student/outing-status", requireAuth, isOutside);
