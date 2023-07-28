@@ -4,14 +4,12 @@ services:
     image: redis:latest
     container_name: redis
     volumes:
-      - ./sessionData:/data
+      - ./session:/data
     command: redis-server --save 60 1
     ports:
       - "6379:6379"
     environment:
       TZ: "Asia/Kolkata"
-    mem_limit: 256m
-    mem_reservation: 128M
 
   mongodb:
     image: mongo
@@ -22,48 +20,3 @@ services:
       - ./data:/data/db
     environment:
       TZ: "Asia/Kolkata"
-    mem_limit: 256m
-    mem_reservation: 128M
-
-  server:
-    image: g-backend
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: Backend
-    depends_on:
-      - redis
-      - mongodb
-    ports:
-      - "8000:8000"
-    env_file:
-      - .env
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/node_modules
-    environment:
-      TZ: "Asia/Kolkata"
-    mem_limit: 256m
-    mem_reservation: 128M
-    cpus: 0.3
-
-  client:
-    image: g-frontend
-    container_name: Frontend
-    depends_on:
-      - server
-      - mongodb
-      - redis
-    build:
-      context: ./Guardian-Frontend
-      dockerfile: Dockerfile
-    ports:
-      - 5173:5173
-    volumes:
-      - ./Guardian-Frontend:/usr/src/app
-      - /usr/src/node_modules
-    environment:
-      TZ: "Asia/Kolkata"
-    mem_limit: 256m
-    mem_reservation: 128M
-    cpus: 0.3
