@@ -19,7 +19,7 @@ const MONG_URI = process.env.MONG_URI;
 // Configure Redis Client
 const redisClient = createClient({
   socket: {
-    host: "redis",
+    host: process.env.REDIS_HOST,
     port: 6379
   }
 });
