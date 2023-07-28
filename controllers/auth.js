@@ -256,7 +256,7 @@ export const registerStudent = async (req, res) => {
         }, "Custom Domain Validation"),
       password: Joi.string().pattern(
         new RegExp(
-          "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[@$!%*#?&])[a-zA-Z0-9@$!%*#?&]{8,}$"
+          "^(?=.*[A-Za-z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$"
         )
       ),
     });
@@ -346,7 +346,7 @@ export const resetPassword = async (req, res) => {
     const passwordSchema = Joi.object({
       password: Joi.string().pattern(
         new RegExp(
-          "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[@$!%*#?&])[a-zA-Z0-9@$!%*#?&]{8,}$"
+          "^(?=.*[A-Za-z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$"
         )
       ),
     });
