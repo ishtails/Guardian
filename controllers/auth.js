@@ -45,7 +45,7 @@ export const loginUser = async (req, res) => {
       req.session.username = user.username;
       req.session.role = user.role;
       if (remember_me) {
-        req.session.cookie.maxAge = 182 * 24 * 60 * 60 * 1000; // 6 months
+        req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // 1 month
       }
 
       // Update active-sessions of user

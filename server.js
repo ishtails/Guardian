@@ -20,12 +20,12 @@ const MONG_URI = process.env.MONG_URI;
 const redisClient = createClient({
   socket: {
     host: process.env.REDIS_HOST,
-    port: 6379
-  }
+    port: 6379,
+  },
 });
 redisClient
   .connect()
-  .then(console.log("Connected to Redis Session Store"))
+  .then(console.log("Redis Connected"))
   .catch(console.error);
 
 // Rate Limiter
@@ -38,33 +38,52 @@ const limiter = rateLimit({
 });
 
 // Middlewares
-app.use(express.json());
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-);
-app.use(morgan("tiny"));
-app.use(helmet());
-app.use(limiter);
+const whitelist =
+  process.env.NODE_ENV === "production"
+    ? [
+        "https://guardian-frontend-taupe.vercel.app",
+        "https://guardian-frontend-ishtails.vercel.app",
+        "https://guardian-frontend-git-main-ishtails.vercel.app",
+      ]
+    : ["http://localhost:5173"];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+
 app.use(
   session({
     store: new RedisStore({
       client: redisClient,
     }),
     credentials: true,
-    name: "sid",
+    name: "sessid",
     resave: false,
     saveUninitialized: false,
     secret: process.env.SESS_SECRET,
     cookie: {
-      secure: false,
+      secure: process.env.NODE_ENV === "production" ? true : false,
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       httpOnly: true,
-      expires: 1000 * 60 * 60 * 24 * 1, // Cookie expires in 1 Day
+      expires: null,
     },
   })
 );
+
+if (process.env.NODE_ENV === "production") app.set("trust proxy", 1);
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(morgan("tiny"));
+app.use(helmet());
+app.use(limiter);
 export { redisClient };
 
 // Database Connenction
@@ -72,9 +91,13 @@ mongoose
   .connect(MONG_URI)
   .then(
     app.listen(PORT, () => {
-      console.log(
-        `Connected to local MongoDB Server & Listening on http://localhost:${PORT}/`
-      );
+      if (process.env.NODE_ENV === "production") {
+        console.log("Production Ready");
+      } else {
+        console.log(`Server:http://localhost:${PORT}/`);
+        console.log("redis-gui: http://localhost:8081/");
+        console.log(`mongo-gui: http://localhost:8082/`);
+      }
     })
   )
   .catch((err) => {
