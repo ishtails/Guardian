@@ -28,7 +28,7 @@ Follow these steps to install and run the Node Express app locally:
 2. Navigate to the project directory:
 
    ```bash
-   cd Guardian
+   cd guardian-server
    ```
 
 3. Duplicate the `.env.template` file in the project and rename it to `.env` file and configure the environment variables as needed. 
@@ -46,7 +46,7 @@ Follow these steps to install and run the Node Express app locally:
    ```
 
    NOTE: You do not necessarily need to setup GMAIL / CLOUDINARY environments to run the server, they are only needed for specific functions like sending Email & updating images. <br/><br/>
-   NOTE: Google App Password is not the same as your regular password [Guide](https://support.google.com/accounts/answer/185833?hl=en)
+   NOTE: Google App Password is not the same as your regular password! ([Guide](https://support.google.com/accounts/answer/185833?hl=en))
 
 5. Start docker & then run the following command to start redis & mongoDB containers (Verify all containers are running in docker):
 
@@ -66,15 +66,9 @@ Follow these steps to install and run the Node Express app locally:
 
 7. You'll need a client like Postman / Thunder Client (or [Guardian Frontend](https://github.com/ishtails/guardian-client) set up locally) to test the API endpoints. From the imports folder, Import the "api-endpoints-postman.json" file in postman to import all the routes in postman or "api-endpoints-thunder.json" in thunder if you prefer Thunder Client.
 
-8. You can access Redis-commander GUI tool on [http://localhost:8081](http://localhost:8081) & mongo-express GUI tool on [http://localhost:8081](http://localhost:8081) for managing database. The server should be live at [http://localhost:8080](http://localhost:8080).
+8. You can access Redis-commander GUI tool on [http://localhost:8081](http://localhost:8081) & mongo-express GUI tool on [http://localhost:8082](http://localhost:8082) for managing database. The server should be live at [http://localhost:8000](http://localhost:8000).
 
-9. You can import sample mongoDB data for testing from imports/Guardian.users & imports/Guardian.outings using mongo-express GUI tool.
-
-## Usage
-
-Once the Node Express app is up and running, you can interact with it using your preferred API testing tool or by making HTTP requests from your own applications...
-
-The app provides API endpoints (check apiRouter file) that you can access to perform various actions according to its functionality. Refer to the app's documentation or source code for details on the available endpoints and their usage.
+NOTE: You can import sample mongoDB data for testing from imports/Guardian.users & imports/Guardian.outings using mongo-express GUI tool.
 
 ## Contributing
 
