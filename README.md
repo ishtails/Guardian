@@ -2,7 +2,7 @@
 
 Paper: [Click Here](https://drive.google.com/file/d/1KRv_YBNtan94x9XF6fUw3y1G5wY68zJP/view?usp=sharing)<br/>
 UI Design (Figma): [Click Here](https://www.figma.com/file/k5eDd6Edq2NL3xGf4do5Ki/Guardian?type=design&node-id=0%3A1&t=Js4hdwCZioEZo3dU-1)<br/>
-Frontend Repo: [Click Here](https://github.com/ishtails/Guardian-Frontend)<br/>
+Frontend Repo: [Click Here](https://github.com/ishtails/guardian-client)<br/>
 
 # Installation Guide
 
@@ -12,7 +12,8 @@ This is a simple guide to help you locally setup the backend for development.
 
 Before proceeding with the installation, make sure you have the following prerequisites installed on your machine:
 
-- Docker - [Guide](https://docs.docker.com/engine/install/)
+- Docker - [Setup](https://docs.docker.com/engine/install/)
+- NodeJS - [Setup](https://nodejs.org/en/download)
 
 ## Installation
 
@@ -30,11 +31,12 @@ Follow these steps to install and run the Node Express app locally:
    cd Guardian
    ```
 
-3. Duplicate the `.env.template` file in the project and rename it to `.env` file and fill your local environment variable values. (Important)
+3. Duplicate the `.env.template` file in the project and rename it to `.env` file and configure the environment variables as needed. 
 
    ```
    PORT=8000
-   MONGO_URL = mongodb://localhost:27017/Guardian
+   MONGO_URL=mongodb://localhost:27017/Guardian
+   REDIS_HOST="localhost"
    SESS_SECRET=1234567890
    GMAIL_ID= (Google email)
    GMAIL_APP_PASS= (Google App Password from 2FA option)
@@ -43,27 +45,28 @@ Follow these steps to install and run the Node Express app locally:
    CLOUDINARY_APISECRET= (Cloudinary Credentials)
    ```
 
+   NOTE: You do not necessarily need to setup GMAIL / CLOUDINARY environments to run the server, they are only needed for specific functions like sending Email & updating images. <br/><br/>
    NOTE: Google App Password is not the same as your regular password [Guide](https://support.google.com/accounts/answer/185833?hl=en)
 
-4. Clone [Frontend](https://github.com/ishtails/Guardian-Frontend) inside in the current directory (Guardian). (Important)
-
-5. Run the command to start the application:
+5. Run the command to start redis & mongoDB containers:
 
    ```bash
    docker-compose up -d --build
    ```
+6. Run the script to install deps:
 
-   NOTE: Wait for the the server to start before making requests (Check logs of "Backend" container in docker)
+   ```bash
+   npm i
+   ```
+7. Run the start command:
 
+   ```bash
+   npm run dev
+   ```
 
-6. You'll need a client like Postman or Thunder Client (VSCode Extention) to test the API. Import the "api-endpoints-postman.json" file in postman to import all the routes in postman or "api-endpoints-thunder.json" in thunder if you prefer Thunder Client. (You may also set up the Guardian-Frontend)
+7. You'll need a client like Postman / Thunder Client (or [Guardian Frontend](https://github.com/ishtails/guardian-client) set up locally) to test the API endpoints. From the imports folder, Import the "api-endpoints-postman.json" file in postman to import all the routes in postman or "api-endpoints-thunder.json" in thunder if you prefer Thunder Client.
 
-## Configuration
-
-If you need to customize the configuration of the Node Express app, you can modify the following files:
-
-- `server.js`: The main application file where you can set up middleware, and other configurations.
-- `.env`: The environment variables file where you can define settings like the port number, database connection string, etc.
+8. You can access Redis-GUI on [http://localhost:8081](http://localhost:8081) & mongoDB GUI on [http://localhost:8081](http://localhost:8081) for managing database. The server should be live at [http://localhost:8080](http://localhost:8080).
 
 ## Usage
 
@@ -75,7 +78,7 @@ The app provides API endpoints (check apiRouter file) that you can access to per
 
 If you would like to contribute to this project, please follow these guidelines:
 
-1. Fork the repository on GitHub.
+1. Set up the repository on locally.
 2. Create a new branch with your name in it from the `main` branch for your changes.
 3. Make your modifications, add features, or fix bugs.
 4. Ensure that your code adheres to the project's coding conventions and style.
