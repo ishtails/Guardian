@@ -48,12 +48,12 @@ Follow these steps to install and run the Node Express app locally:
    NOTE: You do not necessarily need to setup GMAIL / CLOUDINARY environments to run the server, they are only needed for specific functions like sending Email & updating images. <br/><br/>
    NOTE: Google App Password is not the same as your regular password [Guide](https://support.google.com/accounts/answer/185833?hl=en)
 
-5. Run the command to start redis & mongoDB containers:
+5. Start docker & then run the following command to start redis & mongoDB containers (Verify all containers are running in docker):
 
    ```bash
    docker-compose up -d --build
    ```
-6. Run the script to install deps:
+6. Run the script to install dependencies:
 
    ```bash
    npm i
