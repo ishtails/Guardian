@@ -66,7 +66,9 @@ Follow these steps to install and run the Node Express app locally:
 
 7. You'll need a client like Postman / Thunder Client (or [Guardian Frontend](https://github.com/ishtails/guardian-client) set up locally) to test the API endpoints. From the imports folder, Import the "api-endpoints-postman.json" file in postman to import all the routes in postman or "api-endpoints-thunder.json" in thunder if you prefer Thunder Client.
 
-8. You can access Redis-GUI on [http://localhost:8081](http://localhost:8081) & mongoDB GUI on [http://localhost:8081](http://localhost:8081) for managing database. The server should be live at [http://localhost:8080](http://localhost:8080).
+8. You can access Redis-commander GUI tool on [http://localhost:8081](http://localhost:8081) & mongo-express GUI tool on [http://localhost:8081](http://localhost:8081) for managing database. The server should be live at [http://localhost:8080](http://localhost:8080).
+
+9. You can import sample mongoDB data for testing from imports/Guardian.users & imports/Guardian.outings using mongo-express GUI tool.
 
 ## Usage
 
