@@ -23,10 +23,7 @@ const redisClient = createClient({
     port: 6379,
   },
 });
-redisClient
-  .connect()
-  .then(console.log("Redis Connected"))
-  .catch(console.error);
+redisClient.connect().then(console.log("Redis Connected")).catch(console.error);
 
 // Rate Limiter
 const limiter = rateLimit({
@@ -38,26 +35,19 @@ const limiter = rateLimit({
 });
 
 // Middlewares
-const whitelist =
-  process.env.NODE_ENV === "production"
-    ? [
-        "https://guardian-frontend-taupe.vercel.app",
-        "https://guardian-frontend-ishtails.vercel.app",
-        "https://guardian-frontend-git-main-ishtails.vercel.app",
-      ]
-    : ["http://localhost:5173"];
-
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin:
+    process.env.NODE_ENV === "production"
+      ? [
+          "https://guardian-frontend-taupe.vercel.app",
+          "https://guardian-frontend-ishtails.vercel.app",
+          "https://guardian-frontend-git-main-ishtails.vercel.app",
+        ]
+      : "http://localhost:5173",
   credentials: true,
   optionSuccessStatus: 200,
 };
+app.use(cors(corsOptions));
 
 app.use(
   session({
@@ -79,7 +69,6 @@ app.use(
 );
 
 if (process.env.NODE_ENV === "production") app.set("trust proxy", 1);
-app.use(cors(corsOptions));
 app.use(express.json());
 app.use(morgan("tiny"));
 app.use(helmet());
