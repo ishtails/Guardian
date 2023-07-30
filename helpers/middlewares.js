@@ -15,6 +15,10 @@ export const requireAuth = (req, res, next) => {
 
 //Verify Outing Checks
 export const verifyOutingChecks = async (req, res, next) => {
+  if(process.env.NODE_ENV === "development"){
+    return next();
+  }
+
   //isStudent
   if (req.session.role !== "student") {
     return res.status(403).json("Only for students");
