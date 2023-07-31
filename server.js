@@ -40,7 +40,7 @@ const corsOptions = {
     process.env.NODE_ENV === "production"
       ? [
           "https://guardian-iiitm.onrender.com",
-          "https://guardianiiitm.ninja"          
+          "https://www.guardianiiitm.ninja"          
         ]
       : "http://localhost:5173",
   credentials: true,
