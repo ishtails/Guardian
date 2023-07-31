@@ -40,9 +40,7 @@ const corsOptions = {
     process.env.NODE_ENV === "production"
       ? [
           "https://guardian-iiitm.onrender.com",
-          "https://guardian-frontend-taupe.vercel.app",
-          "https://guardian-frontend-ishtails.vercel.app",
-          "https://guardian-frontend-git-main-ishtails.vercel.app",
+          "https://guardianiiitm.ninja"          
         ]
       : "http://localhost:5173",
   credentials: true,
