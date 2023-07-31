@@ -59,7 +59,7 @@ const userSchema = new mongoose.Schema(
       default: "",
     }
   },
-  { timestamps: true }
+  { timestamps: true, expireAfterSeconds: 5*365*24*60*60 }
 );
 
 export default mongoose.model.users || mongoose.model("user", userSchema);

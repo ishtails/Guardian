@@ -30,7 +30,7 @@ const outingSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-  },
+  }, { expireAfterSeconds: 90*24*60*60}
 );
 
 export default mongoose.model.outings || mongoose.model("outing", outingSchema);
