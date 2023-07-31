@@ -6,7 +6,7 @@ import Joi from "joi";
 import otpGenerator from "otp-generator";
 import { fileURLToPath } from "url";
 import { redisClient } from "../server.js";
-import { revokeUserSessions, sendMail } from "../helpers/helpers.js";
+import { removeExpiredUserSessions, revokeUserSessions, sendMail } from "../helpers/helpers.js";
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -50,7 +50,7 @@ export const loginUser = async (req, res) => {
 
       // Update active-sessions of user
       redisClient.SADD(
-        `active-sessions:${user.username}`,
+        `user-sess:${user.username}`,
         req.sessionID,
         (err, result) => {
           if (err) {
@@ -58,6 +58,8 @@ export const loginUser = async (req, res) => {
           }
         }
       );
+
+      removeExpiredUserSessions(user.username);      
 
       return res.status(200).json({
         username: user.username,
@@ -255,9 +257,7 @@ export const registerStudent = async (req, res) => {
           }
         }, "Custom Domain Validation"),
       password: Joi.string().pattern(
-        new RegExp(
-          "^(?=.*[A-Za-z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$"
-        )
+        new RegExp("^(?=.*[A-Za-z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$")
       ),
     });
 
@@ -345,9 +345,7 @@ export const resetPassword = async (req, res) => {
     //newPassword Validation
     const passwordSchema = Joi.object({
       password: Joi.string().pattern(
-        new RegExp(
-          "^(?=.*[A-Za-z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$"
-        )
+        new RegExp("^(?=.*[A-Za-z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$")
       ),
     });
 

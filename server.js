@@ -54,7 +54,7 @@ app.use(
       client: redisClient,
     }),
     credentials: true,
-    name: "sessid",
+    name: "sid",
     resave: false,
     saveUninitialized: false,
     secret: process.env.SESS_SECRET,

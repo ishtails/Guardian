@@ -49,17 +49,35 @@ export const sendMail = async (mailOptions) => {
 export const revokeUserSessions = async (username) => {
   try {
     const sessionIds = await redisClient.sMembers(
-      `active-sessions:${username}`
+      `user-sess:${username}`
     );
 
     for (const sessionId of sessionIds) {
       await redisClient.DEL(`sess:${sessionId}`);
-      console.log(`Session destroyed: sess:${sessionId}`);
     }
 
-    await redisClient.DEL(`active-sessions:${username}`);
-    console.log(`Active sessions cleared for user ${username}`);
+    await redisClient.DEL(`user:${username}`);
+    return (`Active sessions cleared for ${username}`);
   } catch (err) {
-    console.error("Error revoking sessions:", err);
+    return new Error("Could not revoke sessions");
+  }
+};
+
+export const removeExpiredUserSessions = async (username) => {
+  try {
+    const sessionIds = await redisClient.sMembers(
+      `user-sess:${username}`
+    );
+
+    for (const sessionId of sessionIds) {
+      const sessionExists = await redisClient.exists(`sess:${sessionId}`);
+      if (!sessionExists) {
+        await redisClient.sRem(`user-sess:${username}`, sessionId);
+      }
+    }
+
+    console.log(`Expired members removed for ${username}`)
+  } catch (err) {
+    console.error(err);
   }
 };

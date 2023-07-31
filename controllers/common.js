@@ -12,16 +12,6 @@ export const logOut = (req, res) => {
       console.error("Error destroying session:", err);
     }
 
-    redisClient.SREM(
-      `active-sessions:${username}`,
-      req.sessionID,
-      (err, result) => {
-        if (err) {
-          console.error("Error removing session from active sessions:", err);
-        }
-      }
-    );
-
     res.clearCookie("sid");
     return res.json("Logged out successfully");
   });
