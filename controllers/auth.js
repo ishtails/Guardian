@@ -78,22 +78,6 @@ export const isRegistered = async (req, res) => {
   try {
     const email = req.body.email;
 
-    //Email Validation
-    const emailSchema = Joi.object({
-      email: Joi.string()
-        .email()
-        .required()
-        .custom((value, helpers) => {
-          if (value.endsWith("@iiitm.ac.in")) {
-            return value;
-          } else {
-            return helpers.error("any.invalid");
-          }
-        }, "Custom Domain Validation"),
-    });
-
-    await emailSchema.validateAsync({ email });
-
     // isRegistered
     const user = await users.findOne({ email }, { _id: 0, username: 1 });
     if (user) {
