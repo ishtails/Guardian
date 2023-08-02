@@ -59,7 +59,8 @@ const userSchema = new mongoose.Schema(
       default: "",
     }
   },
-  { timestamps: true, expireAfterSeconds: 5*365*24*60*60 }
+  { timestamps: true, expires: 60 * 60 * 24 * 365 * 5 }
 );
 
+userSchema.index({ createdAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 365 * 5 });
 export default mongoose.model.users || mongoose.model("user", userSchema);

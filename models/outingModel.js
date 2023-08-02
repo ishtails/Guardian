@@ -17,6 +17,7 @@ const outingSchema = new mongoose.Schema(
     outTime: {
       type: Date,
       default: Date.now,
+      expires: 60 * 60 * 24 * 90,
     },
     inTime: {
       type: Date,
@@ -30,7 +31,8 @@ const outingSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-  }, { expireAfterSeconds: 90*24*60*60}
+  }, 
 );
 
+outingSchema.index({ outTime: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 90 });
 export default mongoose.model.outings || mongoose.model("outing", outingSchema);
