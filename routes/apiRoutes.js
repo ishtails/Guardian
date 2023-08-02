@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { verifyOutingChecks, requireAuth } from "../helpers/middlewares.js";
+import { verifyOutingChecks, requireAuth, checkEmail } from "../helpers/middlewares.js";
 import {
   getCurrentUser,
   updateUser,
@@ -21,7 +21,7 @@ const router = Router();
 
 // AUTH
 router.post("/login", loginUser);
-router.post("/is-registered", isRegistered);
+router.post("/is-registered", checkEmail, isRegistered);
 router.post("/send-otp", sendOTP);
 router.post("/verify-otp", verifyOTP);
 router.post("/register-student", registerStudent);
