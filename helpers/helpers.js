@@ -38,8 +38,8 @@ export const sendMail = async (mailOptions) => {
     });
 
     const info = await transporter.sendMail(mailOptions);
+    console.log(info)
     return info;
-
   } catch (error) {
     return error.message;
   }
@@ -81,3 +81,12 @@ export const removeExpiredUserSessions = async (username) => {
     console.error(err);
   }
 };
+
+export const generatePastYears = (n) => {
+  const currentYear = new Date().getFullYear();
+  const years = [];
+  for (let i = 0; i < n; i++) {
+    years.push((currentYear - i).toString());
+  }
+  return years;
+}

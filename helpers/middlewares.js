@@ -2,6 +2,8 @@ import geolib from "geolib";
 import moment from "moment";
 import * as dotenv from "dotenv";
 import outings from "../models/outingModel.js";
+import { generatePastYears } from "./helpers.js";
+import Joi from "joi";
 dotenv.config();
 
 // Check Session
@@ -15,7 +17,7 @@ export const requireAuth = (req, res, next) => {
 
 //Verify Outing Checks
 export const verifyOutingChecks = async (req, res, next) => {
-  if(process.env.NODE_ENV === "development"){
+  if (process.env.NODE_ENV === "development") {
     return next();
   }
 
@@ -45,7 +47,7 @@ export const verifyOutingChecks = async (req, res, next) => {
   const centralLocation = { latitude: 26.250106, longitude: 78.17652 };
   const verificationRadius = 200;
 
-  if(!latitude || !longitude){
+  if (!latitude || !longitude) {
     return res.status(404).json("Location undetermined");
   }
 
@@ -55,5 +57,39 @@ export const verifyOutingChecks = async (req, res, next) => {
     next();
   } else {
     return res.status(403).send("Location verification failed");
+  }
+};
+
+export const checkEmail = async (req, res, next) => {
+  try {
+    const pastYears = generatePastYears(5);
+
+    const email = req.body.email;
+    const emailSchema = Joi.object({
+      email: Joi.string()
+        .email()
+        .required()
+        .custom((value, helpers) => {
+          if (
+            value.endsWith("@iiitm.ac.in") &&
+            pastYears.some((year) => value.includes(year))
+          ) {
+            return value;
+          } else {
+            return helpers.error("any.invalid");
+          }
+        }, "Custom Domain Validation"),
+    });
+
+    await emailSchema.validateAsync({ email });
+    next();
+  } catch (error) {
+    if (error.details) {
+      return res
+        .status(422)
+        .json("Invalid email.");
+    }
+
+    return res.status(500).json(error.message);
   }
 };
