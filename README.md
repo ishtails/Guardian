@@ -1,3 +1,8 @@
+# Dummy Credentials
+bcs2021_035@iiitm.ac.in / abc12345 (Student) <br />
+bcs2021_012@iiitm.ac.in / abc12345 (Admin) <br />
+bcs2021_072@iiitm.ac.in / abc12345 (Security) <br />
+
 # Links
 
 Paper: [Click Here](https://drive.google.com/file/d/1KRv_YBNtan94x9XF6fUw3y1G5wY68zJP/view?usp=sharing)<br/>
